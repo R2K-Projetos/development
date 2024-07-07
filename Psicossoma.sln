@@ -1,0 +1,99 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Crosscutting.IoC", "Ghb.Psicossoma.Crosscutting.IoC\Ghb.Psicossoma.Crosscutting.IoC.csproj", "{746719EC-5CC7-4C80-8152-3E70DED35D20}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Domains", "Ghb.Psicossoma.Domains\Ghb.Psicossoma.Domains.csproj", "{69DDE2C7-DE62-40CD-8903-6BC6C2D83F1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Repositories", "Ghb.Psicossoma.Repositories\Ghb.Psicossoma.Repositories.csproj", "{227B9AD0-B712-445A-BFA0-9A6B33FCA826}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Services", "Ghb.Psicossoma.Services\Ghb.Psicossoma.Services.csproj", "{9ADA06AA-BD2F-49D7-A6C6-EE0F3A9854C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackOffice", "BackOffice", "{517A892E-BE72-42D5-9CCF-6B596069DD88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5EB55281-09DA-4267-9E0D-4A7E6B007FAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedAbstractions", "SharedAbstractions", "{45639623-3B85-42EB-A1B9-ACA691B50C80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.SharedAbstractions.Domains", "Ghb.Psicossoma.SharedAbstractions.Domain\Ghb.Psicossoma.SharedAbstractions.Domains.csproj", "{391E8582-C449-4841-8526-713CC06095AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.SharedAbstractions.Repositories", "Ghb.Psicossoma.SharedAbstractions.Repositories\Ghb.Psicossoma.SharedAbstractions.Repositories.csproj", "{880F8EA8-CF47-4BE1-81D1-50834167431C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.SharedAbstractions.Services", "GHb.Psicossoma.SharedAbstractions.Services\Ghb.Psicossoma.SharedAbstractions.Services.csproj", "{08D1CFA5-AABC-4E00-8F2E-BB0029914D4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Webapp", "Ghb.Psicossoma.Webapp\Ghb.Psicossoma.Webapp.csproj", "{4A870F53-6B9C-4FF9-88A1-18D3CA7AD9BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Api", "Ghb.Psicossoma.Api\Ghb.Psicossoma.Api.csproj", "{396712E6-15D8-4DBD-BD5B-32E97763FA33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{5AB203A6-3DEE-4F12-AA76-1AB14E423547}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ghb.Psicossoma.Library", "Ghb.Psicossoma.Library\Ghb.Psicossoma.Library.csproj", "{7B389246-1C51-4040-9DC9-7BDB3289FC1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{746719EC-5CC7-4C80-8152-3E70DED35D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{746719EC-5CC7-4C80-8152-3E70DED35D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{746719EC-5CC7-4C80-8152-3E70DED35D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{746719EC-5CC7-4C80-8152-3E70DED35D20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69DDE2C7-DE62-40CD-8903-6BC6C2D83F1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69DDE2C7-DE62-40CD-8903-6BC6C2D83F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69DDE2C7-DE62-40CD-8903-6BC6C2D83F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69DDE2C7-DE62-40CD-8903-6BC6C2D83F1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{227B9AD0-B712-445A-BFA0-9A6B33FCA826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{227B9AD0-B712-445A-BFA0-9A6B33FCA826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{227B9AD0-B712-445A-BFA0-9A6B33FCA826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{227B9AD0-B712-445A-BFA0-9A6B33FCA826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ADA06AA-BD2F-49D7-A6C6-EE0F3A9854C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ADA06AA-BD2F-49D7-A6C6-EE0F3A9854C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ADA06AA-BD2F-49D7-A6C6-EE0F3A9854C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ADA06AA-BD2F-49D7-A6C6-EE0F3A9854C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{391E8582-C449-4841-8526-713CC06095AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{391E8582-C449-4841-8526-713CC06095AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{391E8582-C449-4841-8526-713CC06095AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{391E8582-C449-4841-8526-713CC06095AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{880F8EA8-CF47-4BE1-81D1-50834167431C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{880F8EA8-CF47-4BE1-81D1-50834167431C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{880F8EA8-CF47-4BE1-81D1-50834167431C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{880F8EA8-CF47-4BE1-81D1-50834167431C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D1CFA5-AABC-4E00-8F2E-BB0029914D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D1CFA5-AABC-4E00-8F2E-BB0029914D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D1CFA5-AABC-4E00-8F2E-BB0029914D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D1CFA5-AABC-4E00-8F2E-BB0029914D4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A870F53-6B9C-4FF9-88A1-18D3CA7AD9BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A870F53-6B9C-4FF9-88A1-18D3CA7AD9BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A870F53-6B9C-4FF9-88A1-18D3CA7AD9BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A870F53-6B9C-4FF9-88A1-18D3CA7AD9BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{396712E6-15D8-4DBD-BD5B-32E97763FA33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{396712E6-15D8-4DBD-BD5B-32E97763FA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{396712E6-15D8-4DBD-BD5B-32E97763FA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{396712E6-15D8-4DBD-BD5B-32E97763FA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B389246-1C51-4040-9DC9-7BDB3289FC1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B389246-1C51-4040-9DC9-7BDB3289FC1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B389246-1C51-4040-9DC9-7BDB3289FC1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B389246-1C51-4040-9DC9-7BDB3289FC1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{746719EC-5CC7-4C80-8152-3E70DED35D20} = {517A892E-BE72-42D5-9CCF-6B596069DD88}
+		{69DDE2C7-DE62-40CD-8903-6BC6C2D83F1D} = {517A892E-BE72-42D5-9CCF-6B596069DD88}
+		{227B9AD0-B712-445A-BFA0-9A6B33FCA826} = {517A892E-BE72-42D5-9CCF-6B596069DD88}
+		{9ADA06AA-BD2F-49D7-A6C6-EE0F3A9854C0} = {517A892E-BE72-42D5-9CCF-6B596069DD88}
+		{391E8582-C449-4841-8526-713CC06095AB} = {45639623-3B85-42EB-A1B9-ACA691B50C80}
+		{880F8EA8-CF47-4BE1-81D1-50834167431C} = {45639623-3B85-42EB-A1B9-ACA691B50C80}
+		{08D1CFA5-AABC-4E00-8F2E-BB0029914D4C} = {45639623-3B85-42EB-A1B9-ACA691B50C80}
+		{4A870F53-6B9C-4FF9-88A1-18D3CA7AD9BC} = {5AB203A6-3DEE-4F12-AA76-1AB14E423547}
+		{396712E6-15D8-4DBD-BD5B-32E97763FA33} = {5AB203A6-3DEE-4F12-AA76-1AB14E423547}
+		{7B389246-1C51-4040-9DC9-7BDB3289FC1C} = {5EB55281-09DA-4267-9E0D-4A7E6B007FAA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D30DE565-6C24-420B-A5A8-F615923BD3E5}
+	EndGlobalSection
+EndGlobal
