@@ -4,13 +4,13 @@ namespace Ghb.Psicossoma.Services.Dtos;
 
 public class UserDto : BaseDto
 {
-    public long IdPessoa { get; set; }
+    public long PessoaId { get; set; }
 
-    public string Email { get; set; } = string.Empty;
+    public int PerfilUsuarioId { get; set; }
+
+    public int StatusId { get; set; }
 
     public string Senha { get; set; } = string.Empty;
 
-    public string Nome { get; set; } = string.Empty;
-
-    public string Perfil { get; set; } = string.Empty;
+    public bool Ativo { get; set; } = false;
 }

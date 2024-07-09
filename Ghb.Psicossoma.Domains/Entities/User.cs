@@ -4,13 +4,13 @@ namespace Ghb.Psicossoma.Domains.Entities;
 
 public class User : BaseEntity
 {
-    public int IdPessoa { get; set; }
+    public int PessoaId { get; set; }
 
-    public string Email { get; set; } = string.Empty;
+    public int PerfilUsuarioId { get; set; }
+
+    public int StatusId { get; set; }
 
     public string Senha { get; set; } = string.Empty;
 
-    public string Nome { get; set; } = string.Empty;
-
-    public string Perfil { get; set; } = string.Empty;
+    public bool Ativo { get; set; } = false;
 }

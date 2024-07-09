@@ -4,6 +4,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ghb.Psicossoma.Api.Controllers;
 
@@ -22,6 +23,7 @@ public class UserController : BaseApiController
 
 
     [HttpPost, Route("Authentication")]
+    [AllowAnonymous]
     [SwaggerOperation(
     Summary = "Retorna um usuário específico de acordo com o seu identificador",
     Description = "Retorna um usuário específico de acordo com o seu identificador",

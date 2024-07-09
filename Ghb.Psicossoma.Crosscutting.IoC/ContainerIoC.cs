@@ -29,11 +29,13 @@ public static class ContainerIoC
     private static void ResolveServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IPessoaService, PessoaService>();
     }
 
     private static void ResolveRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPessoaRepository, PessoaRepository>();
     }
 
     private static void ResolveMiddlewares(this IServiceCollection services)

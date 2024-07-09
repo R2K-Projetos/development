@@ -40,8 +40,10 @@ public class UserService : BaseService<UserDto, User>, IUserService
     public ResultDto<AuthenticationDto> Login(string email, string password)
     {
         ResultDto<AuthenticationDto> result = new();
-        string filterQuery = $@"SELECT Id, Email, Nome, Senha FROM usuario 
-                                    WHERE email = '{email}';";
+        string filterQuery = $@"SELECT u.id, p.email, p.nome, u.senha
+                                FROM pessoa p
+                                INNER JOIN usuario u ON p.id = u.pessoaId
+                                WHERE p.email = '{email}';";
 
         DataTable userResult = _userRepository.Get(filterQuery);
 
@@ -49,9 +51,9 @@ public class UserService : BaseService<UserDto, User>, IUserService
         {
             DataRow? userRow = userResult.AsEnumerable().FirstOrDefault();
 
-            if (VerifyPassword(password, userRow.Field<string>("Senha")))
+            if (VerifyPassword(password, userRow.Field<string>("senha")))
             {
-                (double tokenTtl, string token) = GenerateToken(userRow.Field<long>("Id").ToString(), email, userRow.Field<string>("Nome").ToString());
+                (double tokenTtl, string token) = GenerateToken(userRow.Field<int>("id").ToString(), email, userRow.Field<string>("nome").ToString());
 
                 result.WasExecuted = true;
                 result.ResponseCode = 200;
@@ -59,7 +61,7 @@ public class UserService : BaseService<UserDto, User>, IUserService
                 result.Items = result.Items.Concat(
                     new AuthenticationDto[] {
                         new() {
-                            Id = userRow.Field<long>("Id"),
+                            Id = userRow.Field<int>("Id"),
                             Email = email,
                             Token = token,
                             TokenExpiration = DateTime.Now.AddHours(tokenTtl),
@@ -85,8 +87,8 @@ public class UserService : BaseService<UserDto, User>, IUserService
         try
         {
             var f = _mapper.Map<UserDto, User>(dto);
-            string insertQuery = $@"INSERT INTO usuario(Id,IdPessoa,Email,Senha) 
-                                        VALUES(null,{f.IdPessoa},'{f.Email.ToLower()}','{f.Senha}');";
+            string insertQuery = $@"INSERT INTO usuario(id, pessoaId, perfilUsuarioId, statusId, senha, ativo) 
+                                    VALUES(null, {f.PessoaId}, {f.PerfilUsuarioId}, {f.StatusId}, '{f.Senha}', {f.Ativo});";
 
             long newId =_userRepository.Insert(insertQuery);
             if (newId > 0)
