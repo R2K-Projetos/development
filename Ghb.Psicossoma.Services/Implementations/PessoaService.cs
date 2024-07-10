@@ -1,19 +1,13 @@
 ﻿using AutoMapper;
+using System.Data;
+using System.Diagnostics;
+using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
-using Ghb.Psicossoma.Repositories.Abstractions;
-using Ghb.Psicossoma.Repositories.Implementations;
-using Ghb.Psicossoma.Services.Abstractions;
-using Ghb.Psicossoma.Services.Dtos;
-using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using Ghb.Psicossoma.Services.Abstractions;
+using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
@@ -26,6 +20,113 @@ namespace Ghb.Psicossoma.Services.Implementations
         {
             _pessoaRepository = pessoaRepository;
             _configuration = configuration;
+        }
+
+        public override ResultDto<PessoaDto> Get(string id)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            var returnValue = new ResultDto<PessoaDto>();
+
+            try
+            {
+                string selectQuery = $@"SELECT id, nome, nomeReduzido, cpf, sexo, email, datanascimento, registroativo
+                                        FROM pessoa
+                                        WHERE id = {id};";
+
+                DataTable result = _pessoaRepository.Get(selectQuery);
+
+                if (result?.Rows.Count > 0)
+                {
+                    List<Pessoa> pessoaList = new List<Pessoa>();
+                    pessoaList = (from DataRow dr in result.Rows
+                                  select new Pessoa()
+                                  {
+                                      Id = Convert.ToInt32(dr["id"]),
+                                      Cpf = dr["cpf"].ToString(),
+                                      DataNascimento = Convert.ToDateTime(dr["datanascimento"]),
+                                      Email = dr["email"].ToString(),
+                                      Nome = dr["nome"].ToString(),
+                                      NomeReduzido = dr["nomereduzido"].ToString(),
+                                      RegistroAtivo = Convert.ToBoolean(dr["registroativo"]),
+                                      Sexo = dr["sexo"].ToString()
+                                  }).ToList();
+
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = pessoaList.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Pessoa>, IEnumerable<PessoaDto>>(pessoaList ?? Enumerable.Empty<Pessoa>());
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, $"{_entityName.ToUpper()}_EMPTY" ?? "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<PessoaDto> GetAll()
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            var returnValue = new ResultDto<PessoaDto>();
+
+            try
+            {
+                string selectQuery = $@"SELECT id, nome, nomeReduzido, cpf, sexo, email, datanascimento, registroativo
+                                        FROM pessoa;";
+
+                DataTable result = _pessoaRepository.GetAll(selectQuery);
+
+                if (result?.Rows.Count > 0)
+                {
+                    List<Pessoa> pessoaList = new List<Pessoa>();
+                    pessoaList = (from DataRow dr in result.Rows
+                                   select new Pessoa()
+                                   {
+                                       Id = Convert.ToInt32(dr["id"]),
+                                       Cpf = dr["cpf"].ToString(),
+                                       DataNascimento = Convert.ToDateTime(dr["datanascimento"]),
+                                       Email = dr["email"].ToString(),
+                                       Nome = dr["nome"].ToString(),
+                                       NomeReduzido = dr["nomereduzido"].ToString(),
+                                       RegistroAtivo = Convert.ToBoolean(dr["registroativo"]),
+                                       Sexo = dr["sexo"].ToString()
+                                   }).ToList();
+
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = pessoaList.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Pessoa>, IEnumerable<PessoaDto>>(pessoaList ?? Enumerable.Empty<Pessoa>());
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, $"{_entityName.ToUpper()}_EMPTY" ?? "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
         }
 
         public override ResultDto<PessoaDto> Insert(PessoaDto dto)

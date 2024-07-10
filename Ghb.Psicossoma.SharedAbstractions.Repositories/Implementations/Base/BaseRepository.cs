@@ -175,6 +175,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     public DataTable Get(string filterQuery)
     {
         MySqlConnection? cn = null;
+        DataSet selectionData = new();
 
         try
         {
@@ -184,39 +185,41 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
                 using (MySqlCommand cmd = new(filterQuery, cn))
                 {
-                    var r = cmd.ExecuteReader();
-
-                    DataTable schemaTable = r.GetSchemaTable();
-                    DataTable resultTable = new();
-
-                    for (int i = 0; i < schemaTable.Rows.Count; i++)
-                    {
-                        DataRow row = schemaTable.Rows[i];
-                        DataColumn column = new()
-                        {
-                            ColumnName = row["ColumnName"].ToString(),
-                            DataType = Type.GetType(row["DataType"].ToString()),
-                            AutoIncrement = (bool)row["IsAutoIncrement"],
-                            Unique = (bool)row["IsUnique"]
-                        };
-
-                        resultTable.Columns.Add(column);
-                    }
-
-                    if (r.HasRows)
-                    {
-                        while (r.Read())
-                        {
-                            DataRow newRow = resultTable.NewRow();
-                            for (int i = 0; i < resultTable.Columns.Count; i++)
-                                newRow[i] = r[i];
-
-                            resultTable.Rows.Add(newRow);
-                        }
-                    }
-
-                    return resultTable;
+                    MySqlDataAdapter store = new(cmd);
+                    store.Fill(selectionData);
                 }
+
+                return selectionData.Tables[0];
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            cn.Close();
+        }
+    }
+
+    public DataTable GetAll(string selectQuery)
+    {
+        MySqlConnection? cn = null;
+        DataSet selectionData = new();
+
+        try
+        {
+            using (cn = new(_settings.ConnectionString))
+            {
+                cn.Open();
+
+                using (MySqlCommand cmd = new(selectQuery, cn))
+                {
+                    MySqlDataAdapter store = new(cmd);
+                    store.Fill(selectionData);
+                }
+
+                return selectionData.Tables[0];
             }
         }
         catch (Exception)

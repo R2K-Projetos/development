@@ -22,7 +22,7 @@ public interface IBaseRepository<TDocument> : IDisposable where TDocument : IBas
 
     object GetEntity<K>(string entityName);
 
-    List<TDocument> GetAll();
+    DataTable GetAll(string selectQuery);
 
     DataTable Get(string filterQuery);
 

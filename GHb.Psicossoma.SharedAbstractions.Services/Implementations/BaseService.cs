@@ -167,38 +167,7 @@ public class BaseService<Dto, TDocument> : IBaseService<Dto> where Dto : BaseDto
 
     public virtual ResultDto<Dto> GetAll()
     {
-        Stopwatch elapsedTime = new();
-        elapsedTime.Start();
-
-        var returnValue = new ResultDto<Dto>();
-
-        try
-        {
-            var result = _repository.GetAll();
-
-            if (result?.Any() == false)
-            {
-                returnValue.BindError(404, $"{_entityName.ToUpper()}_EMPTY" ?? "Não foram encontrados dados para exibição");
-            }
-            else
-            {
-                returnValue.CurrentPage = 1;
-                returnValue.PageSize = -1;
-                returnValue.TotalItems = result?.Count;
-                returnValue.Items = _mapper.Map<IEnumerable<TDocument>, IEnumerable<Dto>>(result ?? Enumerable.Empty<TDocument>());
-                returnValue.WasExecuted = true;
-                returnValue.ResponseCode = 200;
-            }
-        }
-        catch (Exception ex)
-        {
-            returnValue.BindError(500, ex.GetErrorMessage());
-        }
-
-        elapsedTime.Stop();
-        returnValue.ElapsedTime = elapsedTime.Elapsed;
-
-        return returnValue;
+        throw new NotImplementedException();
     }
 
     public virtual bool Exists(Dictionary<string, object> filterDefinition)

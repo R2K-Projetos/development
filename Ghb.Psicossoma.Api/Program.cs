@@ -31,6 +31,7 @@ builder.Services
         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
     });
 
+builder.AddAuthentication();
 builder.AddSwagger(apiVersion, apiName, apiDescription);
 builder.Services.InitializeContainerIoC(contextDatabaseSettings);
 

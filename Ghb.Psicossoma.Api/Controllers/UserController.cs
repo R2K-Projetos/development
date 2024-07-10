@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ghb.Psicossoma.Services.Dtos;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Ghb.Psicossoma.Api.Controllers;
 
@@ -22,14 +22,30 @@ public class UserController : BaseApiController
     }
 
 
-    [HttpPost, Route("Authentication")]
+    /// <summary>
+    /// Loga o usuário no sistema e retorna o token de validade da sessão
+    /// </summary>
+    /// <param name="login">Dados de login do usuário</param>
+    /// <remarks>
+    /// Exemplo de requisição
+    /// <code>
+    /// POST /user/authenticate
+    /// 
+    /// {
+    ///     "email": "email@dominio.com",
+    ///     "senha": "senha*atual",
+    /// }   
+    /// </code>
+    /// </remarks>
+    /// <returns></returns>
+    [HttpPost, Route("Authenticate")]
     [AllowAnonymous]
     [SwaggerOperation(
-    Summary = "Retorna um usuário específico de acordo com o seu identificador",
-    Description = "Retorna um usuário específico de acordo com o seu identificador",
-    OperationId = "User.Get",
+    Summary = "Loga o usuário no sistema e retorna o token de validade da sessão",
+    Description = "Loga o usuário no sistema e retorna o token de validade da sessão",
+    OperationId = "User.Authenticate",
     Tags = new[] { "User" })]
-    public IActionResult Authentication(UserLoginDto login)
+    public IActionResult Authenticate(UserLoginDto login)
     {
         ResultDto<AuthenticationDto> result = new();
 
