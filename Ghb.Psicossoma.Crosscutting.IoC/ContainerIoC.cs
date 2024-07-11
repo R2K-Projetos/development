@@ -30,12 +30,14 @@ public static class ContainerIoC
     {
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPessoaService, PessoaService>();
+        services.AddScoped<IStatusService, StatusService>();
     }
 
     private static void ResolveRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPessoaRepository, PessoaRepository>();
+        services.AddScoped<IStatusRepository, StatusRepository>();
     }
 
     private static void ResolveMiddlewares(this IServiceCollection services)

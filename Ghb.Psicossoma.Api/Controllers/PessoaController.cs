@@ -8,9 +8,9 @@ using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 
 namespace Ghb.Psicossoma.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Route("api/[controller]")]
     public class PessoaController : BaseApiController
     {
         private readonly IPessoaService _pessoaService;
@@ -31,8 +31,9 @@ namespace Ghb.Psicossoma.Api.Controllers
         Summary = "Busca os dados de uma determinada pessoa",
         Description = "Busca os dados de uma determinada pessoa",
         OperationId = "Pessoa.Get",
-        Tags = new[] { "Pessoa" })
-        ]
+        Tags = new[] { "Pessoa" })]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status500InternalServerError)]
         public ActionResult<PessoaDto> Get(int id)
         {
             ResultDto<PessoaDto> result = new();
@@ -59,10 +60,11 @@ namespace Ghb.Psicossoma.Api.Controllers
         [HttpGet("GetAll")]
         [SwaggerOperation(
         Summary = "Lista todas as pessoas cadastradas",
-        Description = "lista todas as pessoas cadastradas",
+        Description = "Lista todas as pessoas cadastradas",
         OperationId = "Pessoa.GetAll",
-        Tags = new[] { "Pessoa" })
-        ]
+        Tags = new[] { "Pessoa" })]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status500InternalServerError)]
         public ActionResult<PessoaDto> GetAll()
         {
             ResultDto<PessoaDto> result = new();
@@ -93,8 +95,9 @@ namespace Ghb.Psicossoma.Api.Controllers
         Summary = "Cria uma nova pessoa",
         Description = "Cria uma nova pessoa",
         OperationId = "Pessoa.Create",
-        Tags = new[] { "Pessoa" })
-        ]
+        Tags = new[] { "Pessoa" })]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status500InternalServerError)]
         public ActionResult<PessoaDto> Create([FromBody] PessoaDto pessoaInfo)
         {
             ResultDto<PessoaDto> result = new();

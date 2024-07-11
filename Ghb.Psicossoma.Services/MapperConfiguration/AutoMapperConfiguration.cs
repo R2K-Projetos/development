@@ -10,5 +10,6 @@ public class AutoMapperConfiguration : Profile
     {
         CreateMap<User, UserDto>().ReverseMap();
         CreateMap<Pessoa, PessoaDto>().ReverseMap();
+        CreateMap<Status, StatusDto>().ReverseMap();
     }
 }

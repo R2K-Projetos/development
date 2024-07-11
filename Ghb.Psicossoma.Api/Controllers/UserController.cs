@@ -8,8 +8,8 @@ using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 
 namespace Ghb.Psicossoma.Api.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class UserController : BaseApiController
 {
     private readonly IUserService _userService;
@@ -45,6 +45,8 @@ public class UserController : BaseApiController
     Description = "Loga o usuário no sistema e retorna o token de validade da sessão",
     OperationId = "User.Authenticate",
     Tags = new[] { "User" })]
+    [ProducesResponseType(typeof(ResultDto<AuthenticationDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto<AuthenticationDto>), StatusCodes.Status500InternalServerError)]
     public IActionResult Authenticate(UserLoginDto login)
     {
         ResultDto<AuthenticationDto> result = new();
@@ -71,8 +73,9 @@ public class UserController : BaseApiController
     Summary = "Cria um novo usuário",
     Description = "Cria um novo usuário",
     OperationId = "User.Create",
-    Tags = new[] { "User" })
-    ]
+    Tags = new[] { "User" })]
+    [ProducesResponseType(typeof(ResultDto<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto<UserDto>), StatusCodes.Status500InternalServerError)]
     public ActionResult<UserDto> Create([FromBody] UserDto userInfo)
     {
         ResultDto<UserDto> result = new();
