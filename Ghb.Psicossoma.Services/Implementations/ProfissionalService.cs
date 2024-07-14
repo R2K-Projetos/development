@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using System.Data;
+using Serilog.Context;
 using System.Diagnostics;
 using Ghb.Psicossoma.Services.Dtos;
+using Microsoft.Extensions.Logging;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Microsoft.Extensions.Configuration;
@@ -15,11 +17,16 @@ namespace Ghb.Psicossoma.Services.Implementations
     {
         private readonly IProfissionalRepository _profissionalRepository;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<ProfissionalService> _logger;
 
-        public ProfissionalService(IProfissionalRepository profissionalRepository, IMapper mapper, IConfiguration configuration) : base(profissionalRepository, mapper)
+        public ProfissionalService(IProfissionalRepository profissionalRepository,
+                                   ILogger<ProfissionalService> logger,
+                                   IMapper mapper,
+                                   IConfiguration configuration) : base(profissionalRepository, mapper)
         {
             _profissionalRepository = profissionalRepository;
             _configuration = configuration;
+            _logger = logger;
         }
 
         ResultDto<ProfissionalResponseDto> IProfissionalService.Get(string id)
@@ -28,14 +35,15 @@ namespace Ghb.Psicossoma.Services.Implementations
             elapsedTime.Start();
 
             ResultDto<ProfissionalResponseDto> returnValue = new();
+            string? selectQuery = null;
 
             try
             {
-                string selectQuery = $@"SELECT pf.Id, ps.Nome, rp.Descricao AS RegistroProfissional, pf.Numero, pf.Ativo
-                                        FROM profissional pf
-                                        INNER JOIN pessoa ps ON pf.pessoaId = ps.Id
-                                        INNER JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id
-                                        WHERE pf.Id = {id};";
+                 selectQuery = $@"SELECT pf.Id, ps.Nome, rp.Descricao AS RegistroProfissional, pf.Numero, pf.Ativo
+                                  FROM profissional pf
+                                  INNER JOIN pessoa ps ON pf.pessoaId = ps.Id
+                                  INNER JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id
+                                  WHERE pf.Id = {id};";
 
                 DataTable result = _profissionalRepository.Get(selectQuery);
                 List<ProfissionalResponse> profissionais = result.CreateListFromTable<ProfissionalResponse>();
@@ -57,6 +65,8 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 
             elapsedTime.Stop();
@@ -71,13 +81,14 @@ namespace Ghb.Psicossoma.Services.Implementations
             elapsedTime.Start();
 
             ResultDto<ProfissionalResponseDto> returnValue = new();
+            string selectQuery = null;
 
             try
             {
-                string selectQuery = $@"SELECT pf.Id, ps.Nome, rp.Descricao AS RegistroProfissional, pf.Numero, pf.Ativo
-                                        FROM profissional pf
-                                        INNER JOIN pessoa ps ON pf.pessoaId = ps.Id
-                                        INNER JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id;";
+                selectQuery = $@"SELECT pf.Id, ps.Nome, rp.Descricao AS RegistroProfissional, pf.Numero, pf.Ativo
+                                 FROM profissional pf
+                                 INNER JOIN pessoa ps ON pf.pessoaId = ps.Id
+                                 INNER JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id;";
 
                 DataTable result = _profissionalRepository.GetAll(selectQuery);
                 List<ProfissionalResponse> profissionais = result.CreateListFromTable<ProfissionalResponse>();
@@ -99,6 +110,8 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 
             elapsedTime.Stop();
@@ -113,12 +126,13 @@ namespace Ghb.Psicossoma.Services.Implementations
             elapsedTime.Start();
 
             ResultDto<ProfissionalDto> returnValue = new();
+            string? insertQuery = null;
 
             try
             {
                 Profissional profissional = _mapper.Map<ProfissionalDto, Profissional>(dto);
-                string insertQuery = $@"INSERT INTO profissional(Id, PessoaId, RegistroProfissionalId, Numero, Ativo)
-                                        VALUES(null, {profissional.PessoaId}, {profissional.RegistroProfissionalId}, '{profissional.Numero}', {profissional.Ativo});";
+                insertQuery = $@"INSERT INTO profissional(Id, PessoaId, RegistroProfissionalId, Numero, Ativo)
+                                 VALUES(null, {profissional.PessoaId}, {profissional.RegistroProfissionalId}, '{profissional.Numero}', {profissional.Ativo});";
 
                 long newId = _profissionalRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -133,6 +147,8 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
             elapsedTime.Stop();
@@ -140,6 +156,5 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             return returnValue;
         }
-
     }
 }

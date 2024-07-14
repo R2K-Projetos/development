@@ -29,7 +29,7 @@ public class UserController : BaseApiController
     /// <remarks>
     /// Exemplo de requisição
     /// <code>
-    /// POST /user/authenticate
+    /// POST {url}/api/user/authenticate
     /// 
     /// {
     ///     "email": "email@dominio.com",
@@ -66,6 +66,13 @@ public class UserController : BaseApiController
     /// <summary>
     /// Busca os dados de um determinado usuário
     /// </summary>
+    /// <remarks>
+    /// Exemplo de requisição
+    /// <code>
+    /// GET {url}/api/user/get/1
+    /// 
+    /// </code>
+    /// </remarks>
     /// <returns></returns>
     [HttpGet("Get/{id}")]
     [SwaggerOperation(
@@ -97,6 +104,13 @@ public class UserController : BaseApiController
     /// <summary>
     /// Lista todos os usuários cadastrados
     /// </summary>
+    /// <remarks>
+    /// Exemplo de requisição
+    /// <code>
+    /// GET {url}/api/user/getall
+    /// 
+    /// </code>
+    /// </remarks>
     /// <returns></returns>
     [HttpGet("GetAll")]
     [SwaggerOperation(

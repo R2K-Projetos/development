@@ -1,7 +1,12 @@
-﻿using System.Text;
+﻿using Serilog;
+using System.Text;
+using Serilog.Events;
+using Serilog.Filters;
+using Serilog.Exceptions;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Serilog.Sinks;
 
 namespace Ghb.Psicossoma.Api.Configuration
 {
@@ -54,6 +59,36 @@ namespace Ghb.Psicossoma.Api.Configuration
                 List<string> xmlFiles = Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly).ToList();
                 xmlFiles.ForEach(xmlFile => options.IncludeXmlComments(xmlFile));
             });
+        }
+        public static void AddLogger(this WebApplicationBuilder builder, string connectionString, string databaseName)
+        {
+            builder.Host.UseSerilog((context, configuration) => configuration
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Default", LogEventLevel.Information)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .Filter.ByExcluding(Matching.FromSource("Microsoft.AspNetCore.StaticFiles"))
+                .WriteTo.Logger(config =>
+                {
+                    config.Filter.ByExcluding(Matching.WithProperty("DatabaseOnly"));
+                    //config.Filter.ByIncludingOnly(x => x.Level >= LogEventLevel.Verbose);
+                    config.WriteTo.Async(writeTo => {
+                        writeTo.Console(
+                            //restrictedToMinimumLevel: LogEventLevel.Verbose,
+                            outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Username} {Message:lj} {NewLine}{Exception}"
+                        );
+                    });
+                })
+                .WriteTo.Logger(config =>
+                {
+                    config.Filter.ByExcluding(Matching.WithProperty("ConsoleOnly"));
+                    config.Filter.ByIncludingOnly(x => x.Level >= LogEventLevel.Warning);
+                    config.WriteTo.Async(writeTo =>{ writeTo.MySQL(connectionString, "Logs"); });
+                })
+            );
         }
 
         public static void AddAuthentication(this WebApplicationBuilder builder)

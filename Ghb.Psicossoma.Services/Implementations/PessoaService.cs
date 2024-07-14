@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using System.Data;
+using Serilog.Context;
 using System.Diagnostics;
 using Ghb.Psicossoma.Services.Dtos;
+using Microsoft.Extensions.Logging;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Microsoft.Extensions.Configuration;
@@ -15,11 +17,16 @@ namespace Ghb.Psicossoma.Services.Implementations
     {
         private readonly IPessoaRepository _pessoaRepository;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<PessoaService> _logger;
 
-        public PessoaService(IPessoaRepository pessoaRepository, IMapper mapper, IConfiguration configuration) : base(pessoaRepository, mapper)
+        public PessoaService(IPessoaRepository pessoaRepository,
+                             ILogger<PessoaService> logger,
+                             IMapper mapper,
+                             IConfiguration configuration) : base(pessoaRepository, mapper)
         {
             _pessoaRepository = pessoaRepository;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public override ResultDto<PessoaDto> Get(string id)
@@ -28,12 +35,13 @@ namespace Ghb.Psicossoma.Services.Implementations
             elapsedTime.Start();
 
             ResultDto<PessoaDto> returnValue = new();
+            string? selectQuery = null;
 
             try
             {
-                string selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
-                                        FROM pessoa
-                                        WHERE id = {id};";
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
+                                 FROM pessoa
+                                 WHERE id = {id};";
 
                 DataTable result = _pessoaRepository.Get(selectQuery);
                 List<Pessoa> pessoas = result.CreateListFromTable<Pessoa>();
@@ -55,6 +63,8 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 
             elapsedTime.Stop();
@@ -69,11 +79,12 @@ namespace Ghb.Psicossoma.Services.Implementations
             elapsedTime.Start();
 
             ResultDto<PessoaDto> returnValue = new();
+            string selectQuery = null;
 
             try
             {
-                string selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
-                                        FROM pessoa;";
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
+                                 FROM pessoa;";
 
                 DataTable result = _pessoaRepository.GetAll(selectQuery);
                 List<Pessoa> pessoas = result.CreateListFromTable<Pessoa>();
@@ -95,6 +106,8 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 
             elapsedTime.Stop();
@@ -109,12 +122,13 @@ namespace Ghb.Psicossoma.Services.Implementations
             elapsedTime.Start();
 
             ResultDto<PessoaDto> returnValue = new();
+            string? insertQuery = null;
 
             try
             {
                 var pessoa = _mapper.Map<PessoaDto, Pessoa>(dto);
-                string insertQuery = $@"INSERT INTO pessoa(Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo)
-                                        VALUES(null, '{pessoa.Nome}', '{pessoa.NomeReduzido}', '{pessoa.Cpf}', '{pessoa.Sexo}', '{pessoa.Email.ToLower()}', '{pessoa.DataNascimento:yyyy-MM-dd}', {pessoa.Ativo});";
+                insertQuery = $@"INSERT INTO pessoa(Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo)
+                                 VALUES(null, '{pessoa.Nome}', '{pessoa.NomeReduzido}', '{pessoa.Cpf}', '{pessoa.Sexo}', '{pessoa.Email.ToLower()}', '{pessoa.DataNascimento:yyyy-MM-dd}', {pessoa.Ativo});";
 
                 long newId = _pessoaRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -129,6 +143,8 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
             elapsedTime.Stop();

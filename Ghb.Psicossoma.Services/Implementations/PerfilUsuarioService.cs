@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using System.Data;
+using Serilog.Context;
 using System.Diagnostics;
 using Ghb.Psicossoma.Services.Dtos;
+using Microsoft.Extensions.Logging;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Microsoft.Extensions.Configuration;
@@ -15,11 +17,16 @@ namespace Ghb.Psicossoma.Services.Implementations
     {
         private readonly IPerfilUsuarioRepository _perfilUsuarioRepository;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<PerfilUsuarioService> _logger;
 
-        public PerfilUsuarioService(IPerfilUsuarioRepository perfilUsuarioRepository, IMapper mapper, IConfiguration configuration) : base(perfilUsuarioRepository, mapper)
+        public PerfilUsuarioService(IPerfilUsuarioRepository perfilUsuarioRepository,
+                                    ILogger<PerfilUsuarioService> logger,
+                                    IMapper mapper,
+                                    IConfiguration configuration) : base(perfilUsuarioRepository, mapper)
         {
             _perfilUsuarioRepository = perfilUsuarioRepository;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public override ResultDto<PerfilUsuarioDto> GetAll()
@@ -28,10 +35,11 @@ namespace Ghb.Psicossoma.Services.Implementations
             elapsedTime.Start();
 
             ResultDto<PerfilUsuarioDto> returnValue = new();
+            string? selectQuery = null;
 
             try
             {
-                string selectQuery = $@"SELECT Id, Descricao FROM perfilUsuario;";
+                selectQuery = $@"SELECT Id, Descricao FROM perfilUsuario;";
 
                 DataTable result = _perfilUsuarioRepository.GetAll(selectQuery);
                 List<PerfilUsuario> status = result.CreateListFromTable<PerfilUsuario>();
@@ -53,6 +61,8 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 
             elapsedTime.Stop();

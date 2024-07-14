@@ -2,6 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 using Ghb.Psicossoma.Services.Dtos;
+using Microsoft.Extensions.Logging;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Microsoft.Extensions.Configuration;
@@ -15,11 +16,16 @@ namespace Ghb.Psicossoma.Services.Implementations
     {
         private readonly IStatusRepository _statusRepository;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<StatusService> _logger;
 
-        public StatusService(IStatusRepository statusRepository, IMapper mapper, IConfiguration configuration) : base(statusRepository, mapper)
+        public StatusService(IStatusRepository statusRepository,
+                             ILogger<StatusService> logger,
+                             IMapper mapper,
+                             IConfiguration configuration) : base(statusRepository, mapper)
         {
             _statusRepository = statusRepository;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public override ResultDto<StatusDto> GetAll()
@@ -53,6 +59,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 
             elapsedTime.Stop();
@@ -60,6 +67,5 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             return returnValue;
         }
-
     }
 }

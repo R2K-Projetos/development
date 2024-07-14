@@ -2,6 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 using Ghb.Psicossoma.Services.Dtos;
+using Microsoft.Extensions.Logging;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Microsoft.Extensions.Configuration;
@@ -15,11 +16,16 @@ namespace Ghb.Psicossoma.Services.Implementations
     {
         private readonly IRegistroProfissionalRepository _registroProfissionalRepository;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<RegistroProfissionalService> _logger;
 
-        public RegistroProfissionalService(IRegistroProfissionalRepository registroProfissionalRepository, IMapper mapper, IConfiguration configuration) : base(registroProfissionalRepository, mapper)
+        public RegistroProfissionalService(IRegistroProfissionalRepository registroProfissionalRepository,
+                                           ILogger<RegistroProfissionalService> logger,
+                                           IMapper mapper,
+                                           IConfiguration configuration) : base(registroProfissionalRepository, mapper)
         {
             _registroProfissionalRepository = registroProfissionalRepository;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public override ResultDto<RegistroProfissionalDto> GetAll()
@@ -53,6 +59,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 
             elapsedTime.Stop();

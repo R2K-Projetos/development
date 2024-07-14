@@ -4,6 +4,7 @@ using Newtonsoft.Json.Serialization;
 using Ghb.Psicossoma.Crosscutting.IoC;
 using Ghb.Psicossoma.Api.Configuration;
 using Ghb.Psicossoma.Repositories.Context;
+using Ghb.Psicossoma.SharedAbstractions.Repositories.Abstractions;
 
 #if DEBUG
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions() { EnvironmentName = "Debug" });
@@ -13,6 +14,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions() { Environ
 
 
 IConfigurationSection contextDatabaseSettings = builder.Configuration.GetSection(nameof(ContextDatabaseSettings));
+string connectionString = contextDatabaseSettings.GetSection("ConnectionString").Value ?? "WithoutConnection";
+string databaseName = contextDatabaseSettings.GetSection("Database").Value ?? "WithoutDatabase";
 
 string environmentNameArg = builder.Environment.EnvironmentName;
 string apiVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version ?? "0.0";
@@ -33,6 +36,7 @@ builder.Services
 
 builder.AddAuthentication();
 builder.AddSwagger(apiVersion, apiName, apiDescription);
+builder.AddLogger(connectionString, databaseName);
 builder.Services.InitializeContainerIoC(contextDatabaseSettings);
 
 var app = builder.Build();

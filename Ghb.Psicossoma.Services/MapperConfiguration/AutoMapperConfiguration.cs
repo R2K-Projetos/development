@@ -8,6 +8,7 @@ public class AutoMapperConfiguration : Profile
 {
     public AutoMapperConfiguration()
     {
+        //Retornos espelhados (idênticos às entidades) 
         CreateMap<User, UserDto>().ReverseMap();
         CreateMap<Pessoa, PessoaDto>().ReverseMap();
         CreateMap<Status, StatusDto>().ReverseMap();
@@ -15,6 +16,9 @@ public class AutoMapperConfiguration : Profile
         CreateMap<Especialidade, EspecialidadeDto>().ReverseMap();
         CreateMap<PerfilUsuario, PerfilUsuarioDto>().ReverseMap();
         CreateMap<RegistroProfissional, RegistroProfissionalDto>().ReverseMap();
+        CreateMap<Endereco, EnderecoDto>().ReverseMap();
+
+        //Retornos específicos
         CreateMap<UserResponse, UserResponseDto>().ReverseMap();
         CreateMap<ProfissionalResponse, ProfissionalResponseDto>().ReverseMap();
     }

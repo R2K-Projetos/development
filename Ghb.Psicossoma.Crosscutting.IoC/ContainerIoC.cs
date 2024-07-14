@@ -8,7 +8,6 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.MapperConfiguration;
 using Ghb.Psicossoma.SharedAbstractions.Repositories.Abstractions;
-using Ghb.Psicossoma.Services.Dtos;
 
 
 namespace Ghb.Psicossoma.Crosscutting.IoC;
@@ -36,6 +35,7 @@ public static class ContainerIoC
         services.AddScoped<IEspecialidadeService, EspecialidadeService>();
         services.AddScoped<IPerfilUsuarioService, PerfilUsuarioService>();
         services.AddScoped<IRegistroProfissionalService, RegistroProfissionalService>();
+        services.AddScoped<IEnderecoService, EnderecoService>();
     }
 
     private static void ResolveRepositories(this IServiceCollection services)
@@ -47,6 +47,7 @@ public static class ContainerIoC
         services.AddScoped<IEspecialidadeRepository, EspecialidadeRepository>();
         services.AddScoped<IPerfilUsuarioRepository, PerfilUsuarioRepository>();
         services.AddScoped<IRegistroProfissionalRepository, RegistroProfissionalRepository>();
+        services.AddScoped<IEnderecoRepository, EnderecoRepository>();
     }
 
     private static void ResolveMiddlewares(this IServiceCollection services)

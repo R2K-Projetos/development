@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using System.Text;
 using System.Data;
+using Serilog.Context;
 using System.Diagnostics;
 using System.Security.Claims;
 using Ghb.Psicossoma.Services.Dtos;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Ghb.Psicossoma.Domains.Entities;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,16 +22,21 @@ public class UserService : BaseService<UserDto, User>, IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<UserService> _logger;
 
     private readonly int keySize;
     private readonly int iterations;
     private readonly byte[] salt;
     private readonly HashAlgorithmName hashAlgorithm;
 
-    public UserService(IUserRepository userRepository, IMapper mapper, IConfiguration configuration) : base(userRepository, mapper)
+    public UserService(IUserRepository userRepository,
+                       ILogger<UserService> logger,
+                       IMapper mapper,
+                       IConfiguration configuration) : base(userRepository, mapper)
     {
         _userRepository = userRepository;
         _configuration = configuration;
+        _logger = logger;
 
         keySize = 64;
         iterations = 350000;
@@ -45,34 +52,43 @@ public class UserService : BaseService<UserDto, User>, IUserService
                                 INNER JOIN usuario u ON p.id = u.pessoaId
                                 WHERE p.email = '{email}';";
 
-        DataTable userResult = _userRepository.Get(filterQuery);
-
-        if (userResult?.Rows.Count > 0)
+        try
         {
-            DataRow? userRow = userResult.AsEnumerable().FirstOrDefault();
+            DataTable userResult = _userRepository.Get(filterQuery);
 
-            if (VerifyPassword(password, userRow.Field<string>("senha")))
+            if (userResult?.Rows.Count > 0)
             {
-                (double tokenTtl, string token) = GenerateToken(userRow.Field<int>("id").ToString(), email, userRow.Field<string>("nome").ToString());
+                DataRow? userRow = userResult.AsEnumerable().FirstOrDefault();
 
-                result.WasExecuted = true;
-                result.ResponseCode = 200;
-                result.Message = "Login efetuado com sucesso!";
-                result.Items = result.Items.Concat(
-                    new AuthenticationDto[] {
-                        new() {
-                            Id = userRow.Field<int>("Id"),
-                            Email = email,
-                            Token = token,
-                            TokenExpiration = DateTime.Now.AddHours(tokenTtl),
-                        }
-                    });
+                if (VerifyPassword(password, userRow.Field<string>("senha")))
+                {
+                    (double tokenTtl, string token) = GenerateToken(userRow.Field<int>("id").ToString(), email, userRow.Field<string>("nome").ToString());
 
-                return result;
+                    result.WasExecuted = true;
+                    result.ResponseCode = 200;
+                    result.Message = "Login efetuado com sucesso!";
+                    result.Items = result.Items.Concat(
+                        new AuthenticationDto[] {
+                            new() {
+                                Id = userRow.Field<int>("Id"),
+                                Email = email,
+                                Token = token,
+                                TokenExpiration = DateTime.Now.AddHours(tokenTtl),
+                            }
+                        });
+
+                    return result;
+                }
             }
-        }
 
-        result.BindError(404, "Usuário e/ou senha inválidos");
+            result.BindError(404, "Usuário e/ou senha inválidos");
+        }
+        catch (Exception ex)
+        {
+            result.BindError(500, ex.GetErrorMessage());
+            LogContext.PushProperty("Query", filterQuery);
+            _logger.LogError(ex, "Erro na autenticação do usuário");
+        }
 
         return result;
     }
@@ -113,6 +129,7 @@ public class UserService : BaseService<UserDto, User>, IUserService
         catch (Exception ex)
         {
             returnValue.BindError(500, ex.GetErrorMessage());
+            _logger.LogError(ex, "Erro na recuperação dos dados");
         }
 
         elapsedTime.Stop();
@@ -156,6 +173,7 @@ public class UserService : BaseService<UserDto, User>, IUserService
         catch (Exception ex)
         {
             returnValue.BindError(500, ex.GetErrorMessage());
+            _logger.LogError(ex, "Erro na recuperação dos dados");
         }
 
         elapsedTime.Stop();
@@ -192,6 +210,7 @@ public class UserService : BaseService<UserDto, User>, IUserService
         catch (Exception ex)
         {
             returnValue.BindError(500, ex.GetErrorMessage());
+            _logger.LogError(ex, "Erro na gravação do dado");
         }
 
         elapsedTime.Stop();
