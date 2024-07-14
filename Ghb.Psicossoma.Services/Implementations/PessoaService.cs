@@ -27,42 +27,29 @@ namespace Ghb.Psicossoma.Services.Implementations
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            var returnValue = new ResultDto<PessoaDto>();
+            ResultDto<PessoaDto> returnValue = new();
 
             try
             {
-                string selectQuery = $@"SELECT id, nome, nomeReduzido, cpf, sexo, email, datanascimento, registroativo
+                string selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
                                         FROM pessoa
                                         WHERE id = {id};";
 
                 DataTable result = _pessoaRepository.Get(selectQuery);
+                List<Pessoa> pessoas = result.CreateListFromTable<Pessoa>();
 
-                if (result?.Rows.Count > 0)
+                if (pessoas?.Count > 0)
                 {
-                    List<Pessoa> pessoaList = new List<Pessoa>();
-                    pessoaList = (from DataRow dr in result.Rows
-                                  select new Pessoa()
-                                  {
-                                      Id = Convert.ToInt32(dr["id"]),
-                                      Cpf = dr["cpf"].ToString(),
-                                      DataNascimento = Convert.ToDateTime(dr["datanascimento"]),
-                                      Email = dr["email"].ToString(),
-                                      Nome = dr["nome"].ToString(),
-                                      NomeReduzido = dr["nomereduzido"].ToString(),
-                                      RegistroAtivo = Convert.ToBoolean(dr["registroativo"]),
-                                      Sexo = dr["sexo"].ToString()
-                                  }).ToList();
-
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = pessoaList.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Pessoa>, IEnumerable<PessoaDto>>(pessoaList ?? Enumerable.Empty<Pessoa>());
+                    returnValue.TotalItems = pessoas.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Pessoa>, IEnumerable<PessoaDto>>(pessoas ?? Enumerable.Empty<Pessoa>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
                 else
                 {
-                    returnValue.BindError(404, $"{_entityName.ToUpper()}_EMPTY" ?? "Não foram encontrados dados para exibição");
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
                 }
             }
             catch (Exception ex)
@@ -81,41 +68,28 @@ namespace Ghb.Psicossoma.Services.Implementations
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            var returnValue = new ResultDto<PessoaDto>();
+            ResultDto<PessoaDto> returnValue = new();
 
             try
             {
-                string selectQuery = $@"SELECT id, nome, nomeReduzido, cpf, sexo, email, datanascimento, registroativo
+                string selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
                                         FROM pessoa;";
 
                 DataTable result = _pessoaRepository.GetAll(selectQuery);
+                List<Pessoa> pessoas = result.CreateListFromTable<Pessoa>();
 
-                if (result?.Rows.Count > 0)
+                if(pessoas?.Count > 0)
                 {
-                    List<Pessoa> pessoaList = new List<Pessoa>();
-                    pessoaList = (from DataRow dr in result.Rows
-                                   select new Pessoa()
-                                   {
-                                       Id = Convert.ToInt32(dr["id"]),
-                                       Cpf = dr["cpf"].ToString(),
-                                       DataNascimento = Convert.ToDateTime(dr["datanascimento"]),
-                                       Email = dr["email"].ToString(),
-                                       Nome = dr["nome"].ToString(),
-                                       NomeReduzido = dr["nomereduzido"].ToString(),
-                                       RegistroAtivo = Convert.ToBoolean(dr["registroativo"]),
-                                       Sexo = dr["sexo"].ToString()
-                                   }).ToList();
-
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = pessoaList.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Pessoa>, IEnumerable<PessoaDto>>(pessoaList ?? Enumerable.Empty<Pessoa>());
+                    returnValue.TotalItems = pessoas.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Pessoa>, IEnumerable<PessoaDto>>(pessoas ?? Enumerable.Empty<Pessoa>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
                 else
                 {
-                    returnValue.BindError(404, $"{_entityName.ToUpper()}_EMPTY" ?? "Não foram encontrados dados para exibição");
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
                 }
             }
             catch (Exception ex)
@@ -134,13 +108,13 @@ namespace Ghb.Psicossoma.Services.Implementations
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            var returnValue = new ResultDto<PessoaDto>();
+            ResultDto<PessoaDto> returnValue = new();
 
             try
             {
                 var pessoa = _mapper.Map<PessoaDto, Pessoa>(dto);
-                string insertQuery = $@"INSERT INTO pessoa(id, nome, nomeReduzido, cpf, sexo, email, datanascimento, registroativo)
-                                        VALUES(null, {pessoa.Nome}, '{pessoa.NomeReduzido}', '{pessoa.Cpf}', '{pessoa.Sexo}', '{pessoa.Email.ToLower()}', '{pessoa.DataNascimento:yyyy-MM-dd}', {pessoa.RegistroAtivo});";
+                string insertQuery = $@"INSERT INTO pessoa(Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo)
+                                        VALUES(null, '{pessoa.Nome}', '{pessoa.NomeReduzido}', '{pessoa.Cpf}', '{pessoa.Sexo}', '{pessoa.Email.ToLower()}', '{pessoa.DataNascimento:yyyy-MM-dd}', {pessoa.Ativo});";
 
                 long newId = _pessoaRepository.Insert(insertQuery);
                 if (newId > 0)

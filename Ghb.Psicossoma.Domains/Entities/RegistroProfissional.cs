@@ -2,7 +2,7 @@
 
 namespace Ghb.Psicossoma.Domains.Entities
 {
-    public class Status : BaseEntity
+    public class RegistroProfissional : BaseEntity
     {
         public string Descricao { get; set; } = string.Empty;
     }

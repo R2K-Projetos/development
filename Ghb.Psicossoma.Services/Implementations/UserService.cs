@@ -77,6 +77,93 @@ public class UserService : BaseService<UserDto, User>, IUserService
         return result;
     }
 
+    ResultDto<UserResponseDto> IUserService.Get(string id)
+    {
+        Stopwatch elapsedTime = new();
+        elapsedTime.Start();
+
+        ResultDto<UserResponseDto> returnValue = new();
+
+        try
+        {
+            string selectQuery = $@"SELECT us.Id, ps.Nome, ps.Email, pfu.Descricao AS Perfil, st.Descricao AS Status, us.Ativo
+                                    FROM usuario us
+                                    INNER JOIN pessoa ps ON us.PessoaId = ps.Id
+                                    INNER JOIN status st ON us.statusId = st.id
+                                    INNER JOIN perfilUsuario pfu ON us.PerfilUsuarioId = pfu.Id
+                                    WHERE us.Id = {id};";
+
+            DataTable result = _userRepository.Get(selectQuery);
+            List<UserResponse> users = result.CreateListFromTable<UserResponse>();
+
+            if (users?.Count > 0)
+            {
+                returnValue.CurrentPage = 1;
+                returnValue.PageSize = -1;
+                returnValue.TotalItems = users.Count;
+                returnValue.Items = _mapper.Map<IEnumerable<UserResponse>, IEnumerable<UserResponseDto>>(users ?? Enumerable.Empty<UserResponse>());
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            else
+            {
+                returnValue.BindError(404, "Não foram encontrados dados para exibição");
+            }
+        }
+        catch (Exception ex)
+        {
+            returnValue.BindError(500, ex.GetErrorMessage());
+        }
+
+        elapsedTime.Stop();
+        returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+        return returnValue;
+    }
+
+    ResultDto<UserResponseDto> IUserService.GetAll()
+    {
+        Stopwatch elapsedTime = new();
+        elapsedTime.Start();
+
+        ResultDto<UserResponseDto> returnValue = new();
+
+        try
+        {
+            string selectQuery = $@"SELECT us.Id, ps.Nome, ps.Email, pfu.Descricao AS Perfil, st.Descricao AS Status, us.Ativo
+                                    FROM usuario us
+                                    INNER JOIN pessoa ps ON us.PessoaId = ps.Id
+                                    INNER JOIN status st ON us.statusId = st.id
+                                    INNER JOIN perfilUsuario pfu ON us.PerfilUsuarioId = pfu.Id;";
+
+            DataTable result = _userRepository.GetAll(selectQuery);
+            List<UserResponse> users = result.CreateListFromTable<UserResponse>();
+
+            if (users?.Count > 0)
+            {
+                returnValue.CurrentPage = 1;
+                returnValue.PageSize = -1;
+                returnValue.TotalItems = users.Count;
+                returnValue.Items = _mapper.Map<IEnumerable<UserResponse>, IEnumerable<UserResponseDto>>(users ?? Enumerable.Empty<UserResponse>());
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            else
+            {
+                returnValue.BindError(404, "Não foram encontrados dados para exibição");
+            }
+        }
+        catch (Exception ex)
+        {
+            returnValue.BindError(500, ex.GetErrorMessage());
+        }
+
+        elapsedTime.Stop();
+        returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+        return returnValue;
+    }
+
     public override ResultDto<UserDto> Insert(UserDto dto)
     {
         Stopwatch elapsedTime = new();
@@ -87,7 +174,7 @@ public class UserService : BaseService<UserDto, User>, IUserService
         try
         {
             var f = _mapper.Map<UserDto, User>(dto);
-            string insertQuery = $@"INSERT INTO usuario(id, pessoaId, perfilUsuarioId, statusId, senha, ativo) 
+            string insertQuery = $@"INSERT INTO usuario(Id, PessoaId, PerfilUsuarioId, StatusId, Senha, Ativo) 
                                     VALUES(null, {f.PessoaId}, {f.PerfilUsuarioId}, {f.StatusId}, '{f.Senha}', {f.Ativo});";
 
             long newId =_userRepository.Insert(insertQuery);

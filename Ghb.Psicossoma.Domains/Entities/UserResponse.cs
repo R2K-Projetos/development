@@ -2,19 +2,15 @@
 
 namespace Ghb.Psicossoma.Domains.Entities
 {
-    public class Pessoa : BaseEntity
+    public class UserResponse : BaseEntity
     {
         public string Nome { get; set; } = string.Empty;
 
-        public string NomeReduzido { get; set; } = string.Empty;
-
-        public string Cpf { get; set; } = string.Empty;
-
-        public string Sexo { get; set; } = string.Empty;
-
         public string Email { get; set; } = string.Empty;
 
-        public DateTime DataNascimento { get; set; }
+        public string Perfil { get; set; } = string.Empty;
+
+        public string Status { get; set; } = string.Empty;
 
         public bool Ativo { get; set; }
     }

@@ -64,6 +64,68 @@ public class UserController : BaseApiController
     }
 
     /// <summary>
+    /// Busca os dados de um determinado usuário
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("Get/{id}")]
+    [SwaggerOperation(
+    Summary = "Busca os dados de um determinado usuário",
+    Description = "Busca os dados de um determinado usuário",
+    OperationId = "User.Get",
+    Tags = new[] { "User" })]
+    [ProducesResponseType(typeof(ResultDto<UserResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto<UserResponseDto>), StatusCodes.Status500InternalServerError)]
+    public ActionResult<UserResponseDto> Get(int id)
+    {
+        ResultDto<UserResponseDto> result = new();
+
+        try
+        {
+            result = _userService.Get(id.ToString());
+
+            if (!result.HasError)
+                result.Message = "Usuário localizado com sucesso!";
+        }
+        catch (Exception ex)
+        {
+            result.BindError(500, "Erro na localização de usuário", ex);
+        }
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Lista todos os usuários cadastrados
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("GetAll")]
+    [SwaggerOperation(
+    Summary = "Lista todos os usuários cadastrados",
+    Description = "Lista todos os usuários cadastrados",
+    OperationId = "User.GetAll",
+    Tags = new[] { "User" })]
+    [ProducesResponseType(typeof(ResultDto<UserResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto<UserResponseDto>), StatusCodes.Status500InternalServerError)]
+    public ActionResult<UserResponseDto> GetAll()
+    {
+        ResultDto<UserResponseDto> result = new();
+
+        try
+        {
+            result = _userService.GetAll();
+
+            if (!result.HasError)
+                result.Message = "Usuários listados com sucesso!";
+        }
+        catch (Exception ex)
+        {
+            result.BindError(500, "Erro na listagem de usuários", ex);
+        }
+
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Cria um novo usuário
     /// </summary>
     /// <param name="userInfo">Json contendo os dados do novo usuário></param>

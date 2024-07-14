@@ -8,6 +8,10 @@ namespace Ghb.Psicossoma.Services.Abstractions
     {
         ResultDto<AuthenticationDto> Login(string email, string password);
 
+        new ResultDto<UserResponseDto> Get(string id);
+
+        new ResultDto<UserResponseDto> GetAll();
+
         string HashPasswordToString(string password);
 
         byte[] HashPassword(string password);

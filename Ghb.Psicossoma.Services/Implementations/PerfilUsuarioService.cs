@@ -11,37 +11,37 @@ using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class StatusService : BaseService<StatusDto, Status>, IStatusService
+    public class PerfilUsuarioService : BaseService<PerfilUsuarioDto, PerfilUsuario>, IPerfilUsuarioService
     {
-        private readonly IStatusRepository _statusRepository;
+        private readonly IPerfilUsuarioRepository _perfilUsuarioRepository;
         private readonly IConfiguration _configuration;
 
-        public StatusService(IStatusRepository statusRepository, IMapper mapper, IConfiguration configuration) : base(statusRepository, mapper)
+        public PerfilUsuarioService(IPerfilUsuarioRepository perfilUsuarioRepository, IMapper mapper, IConfiguration configuration) : base(perfilUsuarioRepository, mapper)
         {
-            _statusRepository = statusRepository;
+            _perfilUsuarioRepository = perfilUsuarioRepository;
             _configuration = configuration;
         }
 
-        public override ResultDto<StatusDto> GetAll()
+        public override ResultDto<PerfilUsuarioDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<StatusDto> returnValue = new();
+            ResultDto<PerfilUsuarioDto> returnValue = new();
 
             try
             {
-                string selectQuery = $@"SELECT Id, Descricao FROM status;";
+                string selectQuery = $@"SELECT Id, Descricao FROM perfilUsuario;";
 
-                DataTable result = _statusRepository.GetAll(selectQuery);
-                List<Status> status = result.CreateListFromTable<Status>();
+                DataTable result = _perfilUsuarioRepository.GetAll(selectQuery);
+                List<PerfilUsuario> status = result.CreateListFromTable<PerfilUsuario>();
 
                 if (status?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = status.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Status>, IEnumerable<StatusDto>>(status ?? Enumerable.Empty<Status>());
+                    returnValue.Items = _mapper.Map<IEnumerable<PerfilUsuario>, IEnumerable<PerfilUsuarioDto>>(status ?? Enumerable.Empty<PerfilUsuario>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -60,6 +60,5 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             return returnValue;
         }
-
     }
 }

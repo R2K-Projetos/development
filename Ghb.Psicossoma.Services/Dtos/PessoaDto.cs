@@ -16,6 +16,6 @@ namespace Ghb.Psicossoma.Services.Dtos
 
         public DateTime DataNascimento { get; set; }
 
-        public bool RegistroAtivo { get; set; }
+        public bool Ativo { get; set; }
     }
 }
