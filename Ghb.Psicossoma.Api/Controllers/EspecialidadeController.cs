@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Ghb.Psicossoma.Services.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
 using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
-using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace Ghb.Psicossoma.Api.Controllers
 {

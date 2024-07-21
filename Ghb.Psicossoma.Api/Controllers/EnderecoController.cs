@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Ghb.Psicossoma.Services.Implementations;
 
 namespace Ghb.Psicossoma.Api.Controllers
 {
@@ -17,9 +16,9 @@ namespace Ghb.Psicossoma.Api.Controllers
         private readonly IEnderecoService _enderecoService;
         private readonly IConfiguration _configuration;
 
-        public EnderecoController(IEnderecoService especialidadeService, IConfiguration configuration)
+        public EnderecoController(IEnderecoService enderecoService, IConfiguration configuration)
         {
-            _enderecoService = especialidadeService;
+            _enderecoService = enderecoService;
             _configuration = configuration;
         }
 
@@ -44,7 +43,7 @@ namespace Ghb.Psicossoma.Api.Controllers
                 result = _enderecoService.Get(id.ToString());
 
                 if (!result.HasError)
-                    result.Message = "Endereço localizada com sucesso!";
+                    result.Message = "Endereço localizado com sucesso!";
             }
             catch (Exception ex)
             {
@@ -84,7 +83,5 @@ namespace Ghb.Psicossoma.Api.Controllers
 
             return Ok(result);
         }
-
-
     }
 }

@@ -36,6 +36,12 @@ public static class ContainerIoC
         services.AddScoped<IPerfilUsuarioService, PerfilUsuarioService>();
         services.AddScoped<IRegistroProfissionalService, RegistroProfissionalService>();
         services.AddScoped<IEnderecoService, EnderecoService>();
+        services.AddScoped<IPacienteService, PacienteService>();
+        services.AddScoped<IProdutoConvenioService, ProdutoConvenioService>();
+        services.AddScoped<IPlanoConvenioService, PlanoConvenioService>();
+        services.AddScoped<IPlanoSaudeService, PlanoSaudeService>();
+        services.AddScoped<ICidService, CidService>();
+        services.AddScoped<IConvenioService, ConvenioService>();
     }
 
     private static void ResolveRepositories(this IServiceCollection services)
@@ -48,6 +54,10 @@ public static class ContainerIoC
         services.AddScoped<IPerfilUsuarioRepository, PerfilUsuarioRepository>();
         services.AddScoped<IRegistroProfissionalRepository, RegistroProfissionalRepository>();
         services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+        services.AddScoped<IPacienteRepository, PacienteRepository>();
+        services.AddScoped<IProdutoConvenioRepository, ProdutoConvenioRepository>();
+        services.AddScoped<IPlanoConvenioRepository, PlanoConvenioRepository>();
+        services.AddScoped<IConvenioRepository, ConvenioRepository>();
     }
 
     private static void ResolveMiddlewares(this IServiceCollection services)
