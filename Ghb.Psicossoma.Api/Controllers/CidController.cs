@@ -43,11 +43,11 @@ namespace Ghb.Psicossoma.Api.Controllers
                 result = _cidService.Get(id.ToString());
 
                 if (!result.HasError)
-                    result.Message = "Endereço localizada com sucesso!";
+                    result.Message = "Cid localizado com sucesso!";
             }
             catch (Exception ex)
             {
-                result.BindError(500, "Erro na localização de endereço", ex);
+                result.BindError(500, "Erro na localização de Cid", ex);
             }
 
             return Ok(result);

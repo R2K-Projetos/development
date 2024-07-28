@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
+using System.Data;
+using Serilog.Context;
+using System.Diagnostics;
 using Ghb.Psicossoma.Services.Dtos;
 using Microsoft.Extensions.Logging;
 using Ghb.Psicossoma.Domains.Entities;
+using Ghb.Psicossoma.Library.Extensions;
 using Microsoft.Extensions.Configuration;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Ghb.Psicossoma.Library.Extensions;
-using Ghb.Psicossoma.Repositories.Implementations;
-using Serilog.Context;
-using System.Data;
-using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
