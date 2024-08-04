@@ -191,17 +191,15 @@ public class UserService : BaseService<UserDto, User>, IUserService
 
         try
         {
-            var f = _mapper.Map<UserDto, User>(dto);
+            User? mapped = _mapper.Map<UserDto, User>(dto);
             string insertQuery = $@"INSERT INTO usuario(Id, PessoaId, PerfilUsuarioId, StatusId, Senha, Ativo) 
-                                    VALUES(null, {f.PessoaId}, {f.PerfilUsuarioId}, {f.StatusId}, '{f.Senha}', {f.Ativo});";
+                                    VALUES(null, {mapped.PessoaId}, {mapped.PerfilUsuarioId}, {mapped.StatusId}, '{mapped.Senha}', {mapped.Ativo});";
 
             long newId =_userRepository.Insert(insertQuery);
             if (newId > 0)
-            {
-                f.Id = (int)newId;
-            }
+                mapped.Id = (int)newId;
 
-            var item = _mapper.Map<User, UserDto>(f);
+            UserDto? item = _mapper.Map<User, UserDto>(mapped);
 
             returnValue.Items = returnValue.Items.Concat(new[] { item });
             returnValue.WasExecuted = true;
@@ -218,6 +216,36 @@ public class UserService : BaseService<UserDto, User>, IUserService
 
         return returnValue;
     }
+
+    public override ResultDto<UserDto> Deactivate(string id)
+    {
+        Stopwatch elapsedTime = new();
+        elapsedTime.Start();
+
+        ResultDto<UserDto> returnValue = new();
+
+        try
+        {
+            string updateQuery = $@"UPDATE usuario 
+                                    SET Ativo = 0
+                                    WHERE Id = {Convert.ToInt32(id)};";
+
+            _userRepository.Update(updateQuery);
+            returnValue.WasExecuted = true;
+            returnValue.ResponseCode = 200;
+        }
+        catch (Exception ex)
+        {
+            returnValue.BindError(500, ex.GetErrorMessage());
+            _logger.LogError(ex, "Erro na atualização do dado");
+        }
+
+        elapsedTime.Stop();
+        returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+        return returnValue;
+    }
+
 
     public string HashPasswordToString(string password)
     {

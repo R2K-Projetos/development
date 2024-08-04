@@ -34,6 +34,8 @@ public interface IBaseRepository<TDocument> : IDisposable where TDocument : IBas
 
     List<TDocument> Get(List<object> filters, int page, int pageSize, bool basicFilter, bool caseInsentive = false);
 
+    long Insert(string insertQuery);
+
     void Remove(string id);
 
     long Remove(List<string> selectedIds);
@@ -41,6 +43,8 @@ public interface IBaseRepository<TDocument> : IDisposable where TDocument : IBas
     long RemoveAll();
 
     void Update(string id, TDocument model);
+
+    void Update(string id);
 
     void Update(List<object> filters, Dictionary<string, object?> updateValues);
 
@@ -75,7 +79,5 @@ public interface IBaseRepository<TDocument> : IDisposable where TDocument : IBas
     Task UpdateAsync(List<object> filters, Dictionary<string, object?> updateValues);
 
     #endregion
-
-    long Insert(string insertQuery);
 
 }

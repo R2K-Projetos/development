@@ -25,11 +25,15 @@ public interface IBaseService<Dto> : IDisposable where Dto : BaseDto
 
     bool Exists(Dictionary<string, object> filterDefinition);
 
+    ResultDto<Dto> Deactivate(string id);
+
     ResultDto<Dto> Insert(Dto dto);
 
     ResultDto<Dto> Update(Dto dto);
 
     ResultDto<Dto> Update(string id, Dto model);
+
+    ResultDto<Dto> Update(string query);
 
     void Remove(string id);
 

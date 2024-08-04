@@ -260,6 +260,30 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return newId;
     }
 
+    public void Update(string updateQuery)
+    {
+        MySqlConnection? cn = null;
+
+        try
+        {
+            using (cn = new(_settings.ConnectionString))
+            {
+                cn.Open();
+
+                using MySqlCommand cmd = new(updateQuery, cn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+        finally
+        {
+            cn.Close();
+        }
+    }
+
     #endregion
 
     #region "  IDisposable Support  "

@@ -173,4 +173,36 @@ public class UserController : BaseApiController
 
         return Ok(result);
     }
+
+    /// <summary>
+    /// Desativa um usuário
+    /// </summary>
+    /// <param name="userId">O identificador do usuário para desativação></param>
+    /// <returns></returns>
+    [HttpPost("Deactivate")]
+    [SwaggerOperation(
+    Summary = "Desativa um usuário",
+    Description = "Desativa um usuário",
+    OperationId = "User.Deactivate",
+    Tags = new[] { "User" })]
+    [ProducesResponseType(typeof(ResultDto<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResultDto<UserDto>), StatusCodes.Status500InternalServerError)]
+    public ActionResult<UserDto> Deactivate([FromBody] string userId)
+    {
+        ResultDto<UserDto> result = new();
+
+        try
+        {
+            result = _userService.Deactivate(userId);
+
+            if (!result.HasError)
+                result.Message = "Usuário desativado com sucesso!";
+        }
+        catch (Exception ex)
+        {
+            result.BindError(500, "Erro na desativação do usuário", ex);
+        }
+
+        return Ok(result);
+    }
 }

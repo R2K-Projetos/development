@@ -27,6 +27,10 @@ public class BaseService<Dto, TDocument> : IBaseService<Dto> where Dto : BaseDto
     {
         return _repository.EntityExists(entityName);
     }
+    public virtual ResultDto<Dto> Deactivate(string id)
+    {
+        throw new NotImplementedException();
+    }
 
     public virtual void DropEntity(string entityName)
     {
@@ -228,6 +232,11 @@ public class BaseService<Dto, TDocument> : IBaseService<Dto> where Dto : BaseDto
     }
 
     public virtual ResultDto<Dto> Update(Dto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual ResultDto<Dto> Update(string query)
     {
         throw new NotImplementedException();
     }
