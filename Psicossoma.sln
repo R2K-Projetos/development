@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Api", "Ghb.P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{5AB203A6-3DEE-4F12-AA76-1AB14E423547}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ghb.Psicossoma.Library", "Ghb.Psicossoma.Library\Ghb.Psicossoma.Library.csproj", "{7B389246-1C51-4040-9DC9-7BDB3289FC1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Library", "Ghb.Psicossoma.Library\Ghb.Psicossoma.Library.csproj", "{7B389246-1C51-4040-9DC9-7BDB3289FC1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ghb.Psicossoma.Cache", "Ghb.Psicossoma.Cache\Ghb.Psicossoma.Cache.csproj", "{8EE8C76E-8E41-4DA9-BA01-81BE59D76487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{7B389246-1C51-4040-9DC9-7BDB3289FC1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B389246-1C51-4040-9DC9-7BDB3289FC1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B389246-1C51-4040-9DC9-7BDB3289FC1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EE8C76E-8E41-4DA9-BA01-81BE59D76487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EE8C76E-8E41-4DA9-BA01-81BE59D76487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EE8C76E-8E41-4DA9-BA01-81BE59D76487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EE8C76E-8E41-4DA9-BA01-81BE59D76487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{4A870F53-6B9C-4FF9-88A1-18D3CA7AD9BC} = {5AB203A6-3DEE-4F12-AA76-1AB14E423547}
 		{396712E6-15D8-4DBD-BD5B-32E97763FA33} = {5AB203A6-3DEE-4F12-AA76-1AB14E423547}
 		{7B389246-1C51-4040-9DC9-7BDB3289FC1C} = {5EB55281-09DA-4267-9E0D-4A7E6B007FAA}
+		{8EE8C76E-8E41-4DA9-BA01-81BE59D76487} = {5EB55281-09DA-4267-9E0D-4A7E6B007FAA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D30DE565-6C24-420B-A5A8-F615923BD3E5}

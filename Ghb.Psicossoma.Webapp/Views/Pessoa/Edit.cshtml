@@ -1,0 +1,71 @@
+﻿@using Ghb.Psicossoma.Webapp.Models.Enums;
+
+@model PessoaViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@using (Html.BeginForm("Edit", "Pessoa", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Pessoa</legend>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(model => model.Id)
+
+        @if (ViewBag.Message is not null)
+        {
+            <p style="border: 1px solid red">
+                @ViewBag.Message
+            </p>
+        }
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(model => model.Nome)</td>
+                <td>@Html.TextBoxFor(model => model.Nome, new { @maxlength = "100" })</td>
+                <td>@Html.ValidationMessageFor(model => model.Nome)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.NomeReduzido)</td>
+                <td>@Html.TextBoxFor(model => model.NomeReduzido, new { @maxlength = "40" })</td>
+                <td>@Html.ValidationMessageFor(model => model.NomeReduzido)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Sexo)</td>
+                <td>
+                    @Html.DropDownList("Sexo", Model.OpcoesSexo)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Sexo)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Cpf)</td>
+                <td>@Html.TextBoxFor(model => model.Cpf, new { @maxlength = "20" })</td>
+                <td>@Html.ValidationMessageFor(model => model.Cpf)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.DataNascimento)</td>
+                <td>@Html.TextBoxFor(model => model.DataNascimento, "{0:yyyy-MM-dd}", new { @value = Model.DataNascimento, @type = "date" })</td>
+                <td>@Html.ValidationMessageFor(model => model.DataNascimento)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Email)</td>
+                <td>@Html.TextBoxFor(model => model.Email, new { @maxlength = "80" })</td>
+                <td>@Html.ValidationMessageFor(model => model.Email)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Ativo)</td>
+                <td>@Html.CheckBoxFor(model => model.Ativo)</td>
+                <td>@Html.ValidationMessageFor(model => model.Ativo)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Alterar" /></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

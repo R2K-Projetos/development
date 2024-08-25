@@ -1,3 +1,6 @@
+using Ghb.Psicossoma.Cache;
+using Microsoft.AspNetCore.Mvc.Razor;
+
 namespace Ghb.Psicossoma.Webapp;
 
 public class Program
@@ -7,7 +10,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+        builder.Services.AddScoped<CacheService>();
 
         var app = builder.Build();
 
@@ -28,7 +32,7 @@ public class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Account}/{action=Login}");
 
         app.Run();
     }

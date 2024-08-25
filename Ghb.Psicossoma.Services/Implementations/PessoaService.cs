@@ -39,7 +39,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo
                                  FROM pessoa
                                  WHERE id = {id};";
 
@@ -83,7 +83,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo
                                  FROM pessoa;";
 
                 DataTable result = _pessoaRepository.GetAll(selectQuery);
@@ -144,6 +144,41 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<PessoaDto> Update(PessoaDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<PessoaDto> returnValue = new();
+            string? updateQuery = null;
+
+            try
+            {
+                var pessoa = _mapper.Map<PessoaDto, Pessoa>(dto);
+                updateQuery = $@"UPDATE pessoa 
+                                 SET Nome = '{pessoa.Nome}', NomeReduzido = '{pessoa.NomeReduzido}',CPF = '{pessoa.Cpf}', Sexo = '{pessoa.Sexo}', Email = '{pessoa.Email.ToLower()}', DataNascimento = '{pessoa.DataNascimento:yyyy-MM-dd}', Ativo = {pessoa.Ativo}
+                                 WHERE id = {pessoa.Id};";
+
+                _pessoaRepository.Update(updateQuery);
+                var item = _mapper.Map<Pessoa, PessoaDto>(pessoa);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", updateQuery);
                 _logger.LogError(ex, "Erro na gravação dos dados");
             }
 

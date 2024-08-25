@@ -117,5 +117,37 @@ namespace Ghb.Psicossoma.Api.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Atualiza os dados de uma pessoa
+        /// </summary>
+        /// <param name="pessoaInfo">Json contendo os dados da pessoa></param>
+        /// <returns></returns>
+        [HttpPost("Update")]
+        [SwaggerOperation(
+        Summary = "Atualiza os dados de uma pessoa",
+        Description = "Atualiza os dados de uma pessoa",
+        OperationId = "Pessoa.Update",
+        Tags = new[] { "Pessoa" })]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<PessoaDto> Update([FromBody] PessoaDto pessoaInfo)
+        {
+            ResultDto<PessoaDto> result = new();
+
+            try
+            {
+                result = _pessoaService.Update(pessoaInfo);
+
+                if (!result.HasError)
+                    result.Message = "Pessoa alterada com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na alteração de pessoa", ex);
+            }
+
+            return Ok(result);
+        }
     }
 }

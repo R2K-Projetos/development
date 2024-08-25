@@ -1,0 +1,45 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@using (Html.BeginForm("Create", "User", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Novo Usuário</legend>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        @if (ViewBag.Message is not null)
+        {
+            <p style="border: 1px solid red">
+                @ViewBag.Message
+            </p>
+        }
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(a => a.Nome)</td>
+                <td>@Html.TextBoxFor(a => a.Nome)</td>
+                <td>@Html.ValidationMessageFor(a => a.Nome)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(a => a.Email)</td>
+                <td>@Html.TextBoxFor(a => a.Email)</td>
+                <td>@Html.ValidationMessageFor(a => a.Email)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(a => a.Ativo)</td>
+                <td>@Html.CheckBoxFor(a => a.Ativo)</td>
+                <td>@Html.ValidationMessageFor(a => a.Ativo)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Novo" /></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
