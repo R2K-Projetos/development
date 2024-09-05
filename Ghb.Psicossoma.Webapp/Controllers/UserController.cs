@@ -12,7 +12,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
-        private readonly string baseAddress = "https://localhost:7188/api";
+        private readonly string baseAddress = "https://localhost:7020/api";
 
         public UserController(CacheService cacheService)
         {

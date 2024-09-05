@@ -39,6 +39,8 @@ builder.AddSwagger(apiVersion, apiName, apiDescription);
 builder.AddLogger(connectionString, databaseName);
 builder.Services.InitializeContainerIoC(contextDatabaseSettings);
 
+builder.WebHost.UseUrls("http://localhost:7020", "https://localhost:5217");
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment()
