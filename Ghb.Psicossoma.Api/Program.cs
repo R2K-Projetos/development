@@ -12,7 +12,6 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions() { Environ
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions() { EnvironmentName = "homol" });
 #endif
 
-
 IConfigurationSection contextDatabaseSettings = builder.Configuration.GetSection(nameof(ContextDatabaseSettings));
 string connectionString = contextDatabaseSettings.GetSection("ConnectionString").Value ?? "WithoutConnection";
 string databaseName = contextDatabaseSettings.GetSection("Database").Value ?? "WithoutDatabase";
@@ -38,8 +37,6 @@ builder.AddAuthentication();
 builder.AddSwagger(apiVersion, apiName, apiDescription);
 builder.AddLogger(connectionString, databaseName);
 builder.Services.InitializeContainerIoC(contextDatabaseSettings);
-
-builder.WebHost.UseUrls("http://localhost:7020", "https://localhost:5217");
 
 var app = builder.Build();
 

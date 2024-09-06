@@ -8,7 +8,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7020/api";
+        private readonly string baseAddress = "https://localhost:7188/api";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
