@@ -4,8 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Psicossoma.Webapp</title>
+    <link href="~/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
@@ -37,16 +39,16 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink_1">
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="Profissional" asp-action="Index">Listagem</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Profissional" asp-action="Index">Listagem</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="Profissional" asp-action="Create">Cadastro</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Profissional" asp-action="Create">Cadastro</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="Profissional" asp-action="Especialidades">Especialidades</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Profissional" asp-action="Especialidades">Especialidades</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="Profissional" asp-action="Agenda">Agenda</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Profissional" asp-action="Agenda">Agenda</a>
                                 </li>
                             </ul>
                         </li>
@@ -56,13 +58,13 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink_2">
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Listagem</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Listagem</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="Funcionalidades">Funcionalidades</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Funcionalidades">Funcionalidades</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="FuncionalidadesPerfil">Funcionalidades por Perfil</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="FuncionalidadesPerfil">Funcionalidades por Perfil</a>
                                 </li>
                             </ul>
                         </li>
@@ -72,16 +74,16 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink_3">
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="CID" asp-action="Index">CID</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="CID" asp-action="Index">CID</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="Convenio" asp-action="Index">Convênio</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Convenio" asp-action="Index">Convênio</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="Especialidade" asp-action="Index">Especialidade</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Especialidade" asp-action="Index">Especialidade</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" asp-area="" asp-controller="GrupoGuia" asp-action="Index">Grupo Guia</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="GrupoGuia" asp-action="Index">Grupo Guia</a>
                                 </li>
                             </ul>
                         </li>
@@ -112,8 +114,8 @@
             @RenderBody()
         </main>
     </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top border-secondary footer fixed-bottom">
+        <div class="text-muted bg-light ps-3 py-1">
             &copy; 2024 - Psicossoma.App
         </div>
     </footer>

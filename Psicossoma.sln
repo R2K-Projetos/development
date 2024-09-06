@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Library", "Ghb.Psicossoma.Library\Ghb.Psicossoma.Library.csproj", "{7B389246-1C51-4040-9DC9-7BDB3289FC1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ghb.Psicossoma.Cache", "Ghb.Psicossoma.Cache\Ghb.Psicossoma.Cache.csproj", "{8EE8C76E-8E41-4DA9-BA01-81BE59D76487}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ghb.Psicossoma.Cache", "Ghb.Psicossoma.Cache\Ghb.Psicossoma.Cache.csproj", "{8EE8C76E-8E41-4DA9-BA01-81BE59D76487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -37,7 +37,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             if (message.IsSuccessStatusCode && response?.HasError == false)
             {
                 _cacheService.GetCacheEntry("token", response.Items.FirstOrDefault()?.Token!);
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "Home");
             }
 
             return BadRequest(response?.Message);

@@ -26,6 +26,8 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            //ViewData["CurrentFilter"] = Nome;
+
             List<UserViewModel>? users = new();
             HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/user/getall").Result;
 
@@ -34,6 +36,8 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 string? data = message.Content.ReadAsStringAsync().Result;
                 ResultModel<UserViewModel>? model = JsonConvert.DeserializeObject<ResultModel<UserViewModel>>(data);
                 users = model?.Items.ToList();
+
+                ViewBag.TotalEncontrado = users.Count;
             }
 
             return View(users);
