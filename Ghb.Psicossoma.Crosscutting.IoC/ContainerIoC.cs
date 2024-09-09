@@ -60,6 +60,7 @@ public static class ContainerIoC
         services.AddScoped<IPacienteRepository, PacienteRepository>();
         services.AddScoped<IProdutoConvenioRepository, ProdutoConvenioRepository>();
         services.AddScoped<IPlanoConvenioRepository, PlanoConvenioRepository>();
+        services.AddScoped<ICidRepository, CidRepository>();
         services.AddScoped<IConvenioRepository, ConvenioRepository>();
         services.AddScoped<IProntuarioRepository, ProntuarioRepository>();
         services.AddScoped<IProntuarioHistoricoRepository, ProntuarioHistoricoRepository>();

@@ -36,6 +36,8 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 string? data = message.Content.ReadAsStringAsync().Result;
                 ResultModel<PessoaViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PessoaViewModel>>(data);
                 pessoas = model?.Items.ToList();
+
+                ViewBag.TotalEncontrado = pessoas.Count;
             }
 
             return View(pessoas);

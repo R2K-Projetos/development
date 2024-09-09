@@ -84,7 +84,6 @@ namespace Ghb.Psicossoma.Api.Controllers
             return Ok(result);
         }
 
-
         /// <summary>
         /// Cria uma nova pessoa
         /// </summary>

@@ -80,19 +80,34 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT pac.Id, ps.Nome, ps.Email, pac.Ativo
-                                        FROM paciente pac
-                                        INNER JOIN pessoa ps ON pac.PessoaId = ps.Id;";
+                string selectQuery = $@"select pc.Id
+                                               ,p.IdPessoa
+                                               ,p.Nome
+                                               ,p.NomeReduzido
+                                               ,p.cpf
+                                               ,p.sexo
+                                               ,p.email
+                                               ,p.DataNascimento
+                                               ,p.Ativo
+                                               ,pu.Descricao as Perfil
+                                               ,st.Descricao as StatusUsuario
+                                          from paciente pc
+                                         INNER JOIN pessoa p on p.Id = pc.pessoaId
+                                          LEFT JOIN usuario u on u.PessoaId = p.Id
+                                          LEFT JOIN perfilusuario pu on pu.Id = u.PerfilUsuarioId
+                                          LEFT JOIN status st on st.Id = u.StatusId
+                                         where 1 = 1
+                                         order by p.Nome;";
 
                 DataTable result = _pacienteRepository.GetAll(selectQuery);
-                List<PacienteResponse> users = result.CreateListFromTable<PacienteResponse>();
+                List<PacienteResponse> pacientes = result.CreateListFromTable<PacienteResponse>();
 
-                if (users?.Count > 0)
+                if (pacientes?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = users.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<PacienteResponse>, IEnumerable<PacienteResponseDto>>(users ?? Enumerable.Empty<PacienteResponse>());
+                    returnValue.TotalItems = pacientes.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<PacienteResponse>, IEnumerable<PacienteResponseDto>>(pacientes ?? Enumerable.Empty<PacienteResponse>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }

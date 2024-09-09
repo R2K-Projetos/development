@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ghb.Psicossoma.Services.Dtos;
-using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
@@ -16,9 +16,9 @@ namespace Ghb.Psicossoma.Api.Controllers
         private readonly ICidService _cidService;
         private readonly IConfiguration _configuration;
 
-        public CidController(ICidService especialidadeService, IConfiguration configuration)
+        public CidController(ICidService cidService, IConfiguration configuration)
         {
-            _cidService = especialidadeService;
+            _cidService = cidService;
             _configuration = configuration;
         }
 
@@ -48,37 +48,6 @@ namespace Ghb.Psicossoma.Api.Controllers
             catch (Exception ex)
             {
                 result.BindError(500, "Erro na localização de Cid", ex);
-            }
-
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Busca os dados de um determinado cid, pelo código
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetByCode")]
-        [SwaggerOperation(
-        Summary = "Busca os dados de um determinado cid, pelo código",
-        Description = "Busca os dados de um determinado cid, pelo código",
-        OperationId = "Cid.GetByCode",
-        Tags = new[] { "Cid" })]
-        [ProducesResponseType(typeof(ResultDto<CidDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<CidDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<CidDto> GetByCode(string code)
-        {
-            ResultDto<CidDto> result = new();
-
-            try
-            {
-                result = _cidService.GetByCode(code);
-
-                if (!result.HasError)
-                    result.Message = "Cid localizado com sucesso!";
-            }
-            catch (Exception ex)
-            {
-                result.BindError(500, "Erro na localização de cid", ex);
             }
 
             return Ok(result);
@@ -115,5 +84,35 @@ namespace Ghb.Psicossoma.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Busca os dados de um determinado cid, pelo código
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetByCode")]
+        [SwaggerOperation(
+        Summary = "Busca os dados de um determinado cid, pelo código",
+        Description = "Busca os dados de um determinado cid, pelo código",
+        OperationId = "Cid.GetByCode",
+        Tags = new[] { "Cid" })]
+        [ProducesResponseType(typeof(ResultDto<CidDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<CidDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<CidDto> GetByCode(string code)
+        {
+            ResultDto<CidDto> result = new();
+
+            try
+            {
+                result = _cidService.GetByCode(code);
+
+                if (!result.HasError)
+                    result.Message = "Cid localizado com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na localização de cid", ex);
+            }
+
+            return Ok(result);
+        }
     }
 }

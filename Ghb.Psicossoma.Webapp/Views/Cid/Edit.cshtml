@@ -1,0 +1,46 @@
+﻿@model Ghb.Psicossoma.Webapp.Models.CidViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@using (Html.BeginForm("Edit", "Cid", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Pessoa</legend>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(model => model.Id)
+
+        @if (ViewBag.Message is not null)
+        {
+            <p style="border: 1px solid red">
+                @ViewBag.Message
+            </p>
+        }
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(model => model.Codigo)</td>
+                <td>@Html.TextBoxFor(model => model.Codigo, new { @maxlength = "10" })</td>
+                <td>@Html.ValidationMessageFor(model => model.Codigo)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Descricao)</td>
+                <td>@Html.TextBoxFor(model => model.Descricao, new { @maxlength = "200" })</td>
+                <td>@Html.ValidationMessageFor(model => model.Descricao)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Alterar" /></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
