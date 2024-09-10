@@ -84,8 +84,27 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, PlanoSaudeId, PlanoConvenioId, ProdutoConvenioId, Identificacao, Acomodacao, Cns, Cobertura, Empresa, Ativo
-                                 FROM convenio;";
+                selectQuery = $@"select c.Id
+                                        ,c.PlanoSaudeId
+                                        ,c.PlanoConvenioId
+                                        ,c.ProdutoConvenioId
+                                        ,c.Identificacao
+                                        ,c.Acomodacao
+                                        ,c.Cns
+                                        ,c.Cobertura
+                                        ,c.Empresa
+                                        ,c.Ativo
+                                        ,pls.Descricao as PlanoSaude
+                                        ,plc.Descricao as PlanoConvenio
+                                        ,pc.Descricao as ProdutoConvenio
+                                   FROM convenio c
+                                  inner join planosaude pls on pls.Id = c.PlanoSaudeId
+                                   left join planoconvenio plc on plc.Id = c.PlanoConvenioId
+                                   left join produtoconvenio pc on pc.Id = c.ProdutoConvenioId
+                                  where 1 = 1
+                                  order by pls.Descricao
+                                           plc.Descricao
+                                           pc.Descricao";
 
                 DataTable result = _convenioRepository.GetAll(selectQuery);
                 List<Convenio> convenios = result.CreateListFromTable<Convenio>();

@@ -70,5 +70,51 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             return returnValue;
         }
+
+
+        public ResultDto<ProdutoConvenioDto> GetByDescription(string content)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<ProdutoConvenioDto> returnValue = new();
+            string? selectQuery = null;
+
+            try
+            {
+                selectQuery = $@"SELECT Id, Descricao
+                                 FROM produtoConvenio
+                                 WHERE Descricao LIKE '%{content}%'
+                                 LIMIT 5;";
+
+                DataTable result = _produtoConvenioRepository.Get(selectQuery);
+                List<ProdutoConvenio> produtos = result.CreateListFromTable<ProdutoConvenio>();
+
+                if (produtos?.Count > 0)
+                {
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = produtos.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<ProdutoConvenio>, IEnumerable<ProdutoConvenioDto>>(produtos ?? Enumerable.Empty<ProdutoConvenio>());
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
     }
 }

@@ -32,5 +32,27 @@ namespace Ghb.Psicossoma.Cache
 
             return resultText;
         }
+
+        public object? GetGenericCacheEntry(string key, object value)
+        {
+            object? resultText;
+
+            if (!_memoryCache.TryGetValue(key, out object? cachedText))
+            {
+                resultText = value;
+                _memoryCache.Set(key, value, _cacheEntryOptions);
+            }
+            else
+            {
+                resultText = cachedText!;
+            }
+
+            return resultText;
+        }
+
+        public void SetGenericCacheEntry(string key, object? value)
+        {
+            _memoryCache.Set(key, value, _cacheEntryOptions);
+        }
     }
 }

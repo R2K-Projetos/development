@@ -54,6 +54,37 @@ namespace Ghb.Psicossoma.Api.Controllers
         }
 
         /// <summary>
+        /// Busca os dados de uma determinada pessoa, por nome
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetByName")]
+        [SwaggerOperation(
+        Summary = "Busca os dados de uma determinada pessoa, por nome",
+        Description = "Busca os dados de uma determinada pessoa, por nome",
+        OperationId = "Pessoa.GetByName",
+        Tags = new[] { "Pessoa" })]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PessoaDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<PessoaDto> GetByName(string name)
+        {
+            ResultDto<PessoaDto> result = new();
+
+            try
+            {
+                result = _pessoaService.GetByName(name);
+
+                if (!result.HasError)
+                    result.Message = "Pessoa localizada com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na localização de pessoa", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Lista todas as pessoas cadastradas
         /// </summary>
         /// <returns></returns>

@@ -54,5 +54,36 @@ namespace Ghb.Psicossoma.Api.Controllers
             return Ok(result);
         }
 
+
+        /// <summary>
+        /// Lista produtos cadastrados com determinada descrição
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetByDescription")]
+        [SwaggerOperation(
+        Summary = "Lista produtos cadastrados com determinada descrição",
+        Description = "Lista produtos cadastrados com determinada descrição",
+        OperationId = "ProdutoConvenio.GetByDescription",
+        Tags = new[] { "ProdutoConvenio" })]
+        [ProducesResponseType(typeof(ResultDto<ProdutoConvenioDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<ProdutoConvenioDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<ProdutoConvenioDto> GetByDescription(string description)
+        {
+            ResultDto<ProdutoConvenioDto> result = new();
+
+            try
+            {
+                result = _produtoConvenioService.GetByDescription(description);
+
+                if (!result.HasError)
+                    result.Message = "Produtos listados com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na listagem de produtos", ex);
+            }
+
+            return Ok(result);
+        }
     }
 }

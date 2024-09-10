@@ -65,6 +65,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return View(pessoa);
         }
+       
         public ActionResult Edit(int id)
         {
             PessoaViewModel? pessoaFound = null;
@@ -107,6 +108,37 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             };
 
             return sexo;
+        }
+
+        public List<PessoaViewModel> GetByName(string name)
+        {
+            List<PessoaViewModel>? pessoas = new();
+            var f = _cacheService.GetGenericCacheEntry("pessoas", null);
+
+            if (f is not null)
+            {
+                List<PessoaViewModel> pessoasCache = (List<PessoaViewModel>)f;
+                pessoas = pessoasCache
+                          .Where(p => p.Nome.Contains(name, StringComparison.OrdinalIgnoreCase))
+                          .ToList();
+            }
+            else
+            {
+                HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/pessoa/getall").Result;
+
+                if (message.IsSuccessStatusCode)
+                {
+                    string? data = message.Content.ReadAsStringAsync().Result;
+                    ResultModel<PessoaViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PessoaViewModel>>(data);
+                    List<PessoaViewModel>? pessoasCache = model?.Items.ToList();
+                    _cacheService.SetGenericCacheEntry("pessoas", pessoasCache);
+                    pessoas = pessoasCache
+                              .Where(p => p.Nome.Contains(name, StringComparison.OrdinalIgnoreCase))
+                              .ToList();
+                }
+            }
+
+            return pessoas;
         }
     }
 }

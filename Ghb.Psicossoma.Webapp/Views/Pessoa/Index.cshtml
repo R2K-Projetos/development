@@ -1,58 +1,121 @@
 ﻿@model IEnumerable<PessoaViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pessoas";
+
+    var colorAtivo = "";
 }
+<div class="row justify-content-center">
+    <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+        <form asp-action="Index" method="get">
+            <input type="hidden" name="pageSize" id="pageSize" value="10" />
+            <div class="row g-2 mt-3 bg-degradGray rounded ps-2 pe-2 pb-2">
+                <div class="col-12 pb-2 border-bottom border-secondary">
+                    <div class="row">
+                        <div class="col-1 text-start" style="width: 2.2em;"></div>
+                        <div class="col-10 text-center pt-1">Consulta: @ViewData["Title"]</div>
+                        <div class="col-1 text-end align-top" style="width: 2.2em;"></div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label for="Nome" class="form-label">Nome:</label>
+                    <input type="text" name="Nome" id="Nome" maxlength="50" value="@ViewData["CurrentFilter"]" class="form-control form-control-sm" />
+                </div>
+                <div class="col-6">
+                    <label for="nomePessoa" class="form-label">Nome Reduzido<span id="spanPessoa" class="ps-2"></span></label>
+                    <input list="datalistPessoa" name="nomePessoa" id="nomePessoa" onkeypress="StartListaEntidade('Pessoa', '', 1);" onchange="SelectItemListEntidade('Pessoa', '', 1);" class="form-control form-control-sm" />
+                    <div id="divDataListPessoa"></div>
+                    <input type="hidden" name="hdnCodPessoaAutocomplete" id="hdnCodPessoaAutocomplete" />
+                </div>
+                <div class="col-4 text-start">
+                    <div class="tooltipW3">
+                        <button asp-action="Create" class="btn btn-outline-secondary btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                            </svg>
+                        </button>
+                        <span class="tooltipW3text">Novo Pessoa</span>
+                    </div>
+                </div>
+                <div class="col-4 text-center">
+                    <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
+                </div>
+                <div class="col-4 text-end">
+                    <div class="pt-2 ComboPaginacao">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    @if (ViewBag.TotalEncontrado > 0)
+    {
+        <div class="pt-2">
+            <table class="table table-md table-light table-striped table-fit table-hover caption-top border border-tables">
+                <caption class="totalListagem">Total encontrado: <b>@ViewBag.TotalEncontrado</b></caption>
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.NomeReduzido)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Cpf)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Sexo)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Email)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.DataNascimento)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Ativo)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="OpenEdit('@item.Id');">
+                            <td scope="row">
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Nome)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.NomeReduzido)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Cpf)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Sexo)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td class="text-start">
+                                @item.DataNascimento.ToShortDateString()
+                            </td>
+                            <td class="text-center">
+                                @if (item.Ativo)
+                                    colorAtivo = "green";
+                                else
+                                    colorAtivo = "lightGray";
 
-<h1>Index</h1>
-
-<p><a asp-action="Create">Nova Pessoa</a></p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Id)</th>
-            <th>@Html.DisplayNameFor(model => model.Nome)</th>
-            <th>@Html.DisplayNameFor(model => model.NomeReduzido)</th>
-            <th>@Html.DisplayNameFor(model => model.Sexo)</th>
-            <th>@Html.DisplayNameFor(model => model.Email)</th>
-            <th>@Html.DisplayNameFor(model => model.Cpf)</th>
-            <th>@Html.DisplayNameFor(model => model.DataNascimento)</th>
-            <th>@Html.DisplayNameFor(model => model.Ativo)</th>
-        </tr>
-        <tr>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeReduzido)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sexo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cpf)
-                </td>
-                <td align="right">
-                    @item.DataNascimento.ToShortDateString()
-                </td>
-                <td>
-                    @Html.CheckBoxFor(modelItem => item.Ativo)
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", new { id = item.Id })
-                </td>
-            </tr>
-        }
-        </tr>
-    </thead>
-</table>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="@colorAtivo" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                </svg>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" class="pt-1"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <partial name="~/Views/Shared/_CardSemResultado.html" />
+    }
+</div>
+@section Scripts {
+    <script src="~/js/autoCompleteGenerico.js" asp-append-version="true"></script>
+}
