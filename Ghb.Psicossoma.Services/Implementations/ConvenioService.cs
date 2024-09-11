@@ -29,7 +29,6 @@ namespace Ghb.Psicossoma.Services.Implementations
             _logger = logger;
         }
 
-
         public override ResultDto<ConvenioDto> Get(string id)
         {
             Stopwatch elapsedTime = new();
@@ -74,12 +73,12 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ConvenioDto> GetAll()
+        ResultDto<ConvenioResponseDto> IConvenioService.GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ConvenioDto> returnValue = new();
+            ResultDto<ConvenioResponseDto> returnValue = new();
             string? selectQuery = null;
 
             try
@@ -103,18 +102,18 @@ namespace Ghb.Psicossoma.Services.Implementations
                                    left join produtoconvenio pc on pc.Id = c.ProdutoConvenioId
                                   where 1 = 1
                                   order by pls.Descricao
-                                           plc.Descricao
-                                           pc.Descricao";
+                                          ,plc.Descricao
+                                          ,pc.Descricao";
 
                 DataTable result = _convenioRepository.GetAll(selectQuery);
-                List<Convenio> convenios = result.CreateListFromTable<Convenio>();
+                List<ConvenioResponse> convenios = result.CreateListFromTable<ConvenioResponse>();
 
                 if (convenios?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = convenios.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Convenio>, IEnumerable<ConvenioDto>>(convenios ?? Enumerable.Empty<Convenio>());
+                    returnValue.Items = _mapper.Map<IEnumerable<ConvenioResponse>, IEnumerable<ConvenioResponseDto>>(convenios ?? Enumerable.Empty<ConvenioResponse>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }

@@ -31,5 +31,6 @@ public class AutoMapperConfiguration : Profile
         CreateMap<UserResponse, UserResponseDto>().ReverseMap();
         CreateMap<ProfissionalResponse, ProfissionalResponseDto>().ReverseMap();
         CreateMap<PacienteResponse, PacienteResponseDto>().ReverseMap();
+        CreateMap<ConvenioResponse, ConvenioResponseDto>().ReverseMap();
     }
 }

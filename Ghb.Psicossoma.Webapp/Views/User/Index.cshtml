@@ -13,13 +13,7 @@
         <form asp-action="Index" method="get">
             <input type="hidden" name="pageSize" id="pageSize" value="10" />
             <div class="row g-2 mt-3 bg-degradGray rounded ps-2 pe-2 pb-2">
-                <div class="col-12 pb-2 border-bottom border-secondary">
-                    <div class="row">
-                        <div class="col-1 text-start" style="width: 2.2em;"></div>
-                        <div class="col-10 text-center pt-1">Consulta: @ViewData["Title"]</div>
-                        <div class="col-1 text-end align-top" style="width: 2.2em;"></div>
-                    </div>
-                </div>
+                <partial name="~/Views/Shared/_headerFormFiltro.cshtml" />
                 <div class="col-12">
                     <label for="Nome" class="form-label">Nome:</label>
                     <input type="text" name="Nome" id="Nome" maxlength="50" value="@ViewData["CurrentFilter"]" class="form-control form-control-sm" />

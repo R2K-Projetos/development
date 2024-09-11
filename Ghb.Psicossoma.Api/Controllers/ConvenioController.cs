@@ -65,9 +65,9 @@ namespace Ghb.Psicossoma.Api.Controllers
         Tags = new[] { "Convenio" })]
         [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<ConvenioDto> GetAll()
+        public ActionResult<ConvenioResponseDto> GetAll()
         {
-            ResultDto<ConvenioDto> result = new();
+            ResultDto<ConvenioResponseDto> result = new();
 
             try
             {
