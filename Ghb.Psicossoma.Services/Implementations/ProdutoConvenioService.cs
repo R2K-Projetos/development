@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using System.Data;
-using Serilog.Context;
-using System.Diagnostics;
-using Ghb.Psicossoma.Services.Dtos;
-using Microsoft.Extensions.Logging;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
-using Microsoft.Extensions.Configuration;
-using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.Services.Abstractions;
+using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog.Context;
+using System.Data;
+using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
@@ -71,8 +71,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-
-        public ResultDto<ProdutoConvenioDto> GetByDescription(string content)
+        public ResultDto<ProdutoConvenioDto> GetByName(string nome)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
@@ -83,9 +82,9 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 selectQuery = $@"SELECT Id, Descricao
-                                 FROM produtoConvenio
-                                 WHERE Descricao LIKE '%{content}%'
-                                 LIMIT 5;";
+                                   FROM produtoConvenio
+                                  WHERE Descricao LIKE '{nome}%'
+                                  LIMIT 5;";
 
                 DataTable result = _produtoConvenioRepository.Get(selectQuery);
                 List<ProdutoConvenio> produtos = result.CreateListFromTable<ProdutoConvenio>();

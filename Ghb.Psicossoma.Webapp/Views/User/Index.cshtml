@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<UserViewModel>
 
 @{
-    ViewData["Title"] = "Usuários";
+    var controllerName = "User";
+    ViewData["Title"] = "Consulta: Usuários";
 
     var colorAtivo = "";
 }
@@ -13,7 +14,7 @@
         <form asp-action="Index" method="get">
             <input type="hidden" name="pageSize" id="pageSize" value="10" />
             <div class="row g-2 mt-3 bg-degradGray rounded ps-2 pe-2 pb-2">
-                <partial name="~/Views/Shared/_headerFormFiltro.cshtml" />
+                <partial name="~/Views/Shared/_headerForm.cshtml" />
                 <div class="col-12">
                     <label for="Nome" class="form-label">Nome:</label>
                     <input type="text" name="Nome" id="Nome" maxlength="50" value="@ViewData["CurrentFilter"]" class="form-control form-control-sm" />
@@ -54,10 +55,10 @@
                         <th scope="col">@Html.DisplayNameFor(model => model.Ativo)</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="linkLinha">
                     @foreach (var item in Model)
                     {
-                        <tr onclick="OpenEdit('@item.Id');">
+                        <tr onclick="OpenEdit('@controllerName', 'Edit', '@item.Id');">
                             <td scope="row">
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>
@@ -99,6 +100,3 @@
         <partial name="~/Views/Shared/_CardSemResultado.html" />
     }
 </div>
-@section Scripts {
-    <script src="~/js/user.index.js" asp-append-version="true"></script>
-}

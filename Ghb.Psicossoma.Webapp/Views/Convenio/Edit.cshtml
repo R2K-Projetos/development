@@ -1,0 +1,85 @@
+﻿@model ConvenioViewModel
+
+@{
+    ViewData["Title"] = "Editar: Convênio";
+
+    var statusAtivo = "";
+    if (@Model.Ativo)
+    {
+        statusAtivo = "checked";
+    }
+}
+<div class="container">
+    <div class="row justify-content-center py-1">
+        <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-9 col-sm-10 col-xs-12">
+            <form asp-controller="Convenio" asp-action="Edit" method="post">
+                @Html.HiddenFor(model => model.Id)
+                <div class="card">
+                    <div class="card-body shadow">
+                        <div class="row">
+                            <partial name="~/Views/Shared/_headerForm.cshtml" /> 
+                            <div class="col-4">
+                                <label for="nomePlanoSaude" class="form-label">@Html.LabelFor(model => model.PlanoSaude)<span id="spanPlanoSaude" class="ps-2"></span></label>
+                                <input list="datalistPlanoSaude" name="nomePlanoSaude" id="nomePlanoSaude" onkeypress="StartListaEntidade('PlanoSaude', 1);" onchange="SelectItemListEntidade('PlanoSaude', 1);" class="form-control form-control-sm" />
+                                <div id="divDataListPlanoSaude"></div>
+                                <input type="hidden" name="hdnCodPlanoSaudeAutocomplete" id="hdnCodPlanoSaudeAutocomplete" />
+                            </div>
+                            <div class="col-4">
+                                <label for="nomePlanoConvenio" class="form-label">@Html.LabelFor(model => model.PlanoConvenio)<span id="spanPlanoConvenio" class="ps-2"></span></label>
+                                <input list="datalistPlanoConvenio" name="nomePlanoConvenio" id="nomePlanoConvenio" onkeypress="StartListaEntidade('PlanoConvenio', 1);" onchange="SelectItemListEntidade('PlanoConvenio', 1);" class="form-control form-control-sm" />
+                                <div id="divDataListPlanoConvenio"></div>
+                                <input type="hidden" name="hdnCodPlanoConvenioAutocomplete" id="hdnCodPlanoConvenioAutocomplete" />
+                            </div>
+                            <div class="col-4">
+                                <label for="nomeProdutoConvenio" class="form-label">@Html.LabelFor(model => model.ProdutoConvenio)<span id="spanProdutoConvenio" class="ps-2"></span></label>
+                                <input list="datalistProdutoConvenio" name="nomeProdutoConvenio" id="nomeProdutoConvenio" onkeypress="StartListaEntidade('ProdutoConvenio', 1);" onchange="SelectItemListEntidade('ProdutoConvenio', 1);" class="form-control form-control-sm" />
+                                <div id="divDataListProdutoConvenio"></div>
+                                <input type="hidden" name="hdnCodProdutoConvenioAutocomplete" id="hdnCodProdutoConvenioAutocomplete" />
+                            </div>
+                            <div class="col-4">
+                                <label for="Identificacao" class="form-label">@Html.LabelFor(model => model.Identificacao)</label>
+                                <input type="text" name="Identificacao" id="Identificacao" class="form-control form-control-sm" maxlength="30" value="@Model.Identificacao" />
+                            </div>
+                            <div class="col-4">
+                                <label for="Acomodacao" class="form-label">@Html.LabelFor(model => model.Acomodacao)</label>
+                                <input type="text" name="Acomodacao" id="Acomodacao" class="form-control form-control-sm" maxlength="20" value="@Model.Acomodacao" />
+                            </div>
+                            <div class="col-4">
+                                <label for="Cns" class="form-label">@Html.LabelFor(model => model.Cns)</label>
+                                <input type="text" name="Cns" id="Cns" class="form-control form-control-sm" maxlength="30" value="@Model.Cns" />
+                            </div>
+                            <div class="col-4">
+                                <label for="Cobertura" class="form-label">@Html.LabelFor(model => model.Cobertura)</label>
+                                <input type="text" name="Cobertura" id="Cobertura" class="form-control form-control-sm" maxlength="80" value="@Model.Cobertura" />
+                            </div>
+                            <div class="col-4">
+                                <label for="Empresa" class="form-label">@Html.LabelFor(model => model.Empresa)</label>
+                                <input type="text" name="Empresa" id="Empresa" class="form-control form-control-sm" maxlength="40" value="@Model.Empresa" />
+                            </div>
+                            <div class="col-2">
+                                <div class="pb-3">
+                                    <label class="form-check-label" for="chkbAtivo">@Html.LabelFor(model => model.Ativo)</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" name="chkAtivo" id="chkAtivo" @statusAtivo />
+                                </div>
+                            </div>
+                            <div class="cod-12 border-bottom border-secondary pb-2"></div>
+                            <div class="col-12 text-center pt-2">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="validar();">Atualizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/autoCompleteGenerico.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        SetValuesAutoComplete('PlanoSaude', '@Model.PlanoSaude', '@Model.PlanoSaudeId');
+        SetValuesAutoComplete('PlanoConvenio', '@Model.PlanoConvenio', '@Model.PlanoConvenioId');
+        SetValuesAutoComplete('ProdutoConvenio', '@Model.ProdutoConvenio', '@Model.ProdutoConvenioId');
+    </script>
+}

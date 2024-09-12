@@ -32,11 +32,11 @@ namespace Ghb.Psicossoma.Api.Controllers
         Description = "Busca os dados de um determinado convênio",
         OperationId = "Convenio.Get",
         Tags = new[] { "Convenio" })]
-        [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<ConvenioDto> Get(int id)
+        [ProducesResponseType(typeof(ResultDto<ConvenioResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<ConvenioResponseDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<ConvenioResponseDto> Get(int id)
         {
-            ResultDto<ConvenioDto> result = new();
+            ResultDto<ConvenioResponseDto> result = new();
 
             try
             {
@@ -63,8 +63,8 @@ namespace Ghb.Psicossoma.Api.Controllers
         Description = "Lista todos os convênios cadastrados",
         OperationId = "Convenio.GetAll",
         Tags = new[] { "Convenio" })]
-        [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ResultDto<ConvenioResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<ConvenioResponseDto>), StatusCodes.Status500InternalServerError)]
         public ActionResult<ConvenioResponseDto> GetAll()
         {
             ResultDto<ConvenioResponseDto> result = new();

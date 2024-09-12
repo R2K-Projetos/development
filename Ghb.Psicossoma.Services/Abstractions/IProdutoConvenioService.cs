@@ -6,6 +6,6 @@ namespace Ghb.Psicossoma.Services.Abstractions
 {
     public interface IProdutoConvenioService : IBaseService<ProdutoConvenioDto>
     {
-        ResultDto<ProdutoConvenioDto> GetByDescription(string content);
+        ResultDto<ProdutoConvenioDto> GetByName(string name);
     }
 }

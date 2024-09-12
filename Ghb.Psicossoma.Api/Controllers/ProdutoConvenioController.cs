@@ -59,21 +59,21 @@ namespace Ghb.Psicossoma.Api.Controllers
         /// Lista produtos cadastrados com determinada descrição
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetByDescription")]
+        [HttpGet("GetByName")]
         [SwaggerOperation(
         Summary = "Lista produtos cadastrados com determinada descrição",
         Description = "Lista produtos cadastrados com determinada descrição",
-        OperationId = "ProdutoConvenio.GetByDescription",
+        OperationId = "ProdutoConvenio.GetByName",
         Tags = new[] { "ProdutoConvenio" })]
         [ProducesResponseType(typeof(ResultDto<ProdutoConvenioDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultDto<ProdutoConvenioDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<ProdutoConvenioDto> GetByDescription(string description)
+        public ActionResult<ProdutoConvenioDto> GetByName(string name)
         {
             ResultDto<ProdutoConvenioDto> result = new();
 
             try
             {
-                result = _produtoConvenioService.GetByDescription(description);
+                result = _produtoConvenioService.GetByName(name);
 
                 if (!result.HasError)
                     result.Message = "Produtos listados com sucesso!";

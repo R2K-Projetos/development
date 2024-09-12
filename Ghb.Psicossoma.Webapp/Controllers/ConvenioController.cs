@@ -40,5 +40,20 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }
             return View(convenios);
         }
+
+        public ActionResult Edit(int id)
+        {
+            ConvenioViewModel? convenioFound = null;
+            string convenioFind = $"{baseAddress}/convenio/get/{id}";
+            HttpResponseMessage message = _httpClient.GetAsync(convenioFind).Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<ConvenioViewModel>? model = JsonConvert.DeserializeObject<ResultModel<ConvenioViewModel>>(content);
+                convenioFound = model!.Items.FirstOrDefault()!;
+            }
+            return View(convenioFound);
+        }
     }
 }

@@ -34,8 +34,7 @@
                 </div>
                 <div class="col-4 text-end">
                     <div class="pt-2 ComboPaginacao">
-                        @* &nbsp; *@
-                        @Html.ActionLink("Editar", "Edit", 1)
+                        &nbsp;
                     </div>
                 </div>
             </div>
@@ -53,10 +52,10 @@
                         <th scope="col">@Html.DisplayNameFor(model => model.Descricao)</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="linkLinha">
                     @foreach (var item in Model)
                     {
-                        <tr onclick="OpenEdit('@item.Id');">
+                        <tr onclick="OpenEdit('Cid', 'Edit', '@item.Id');">
                             <td scope="row">
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>

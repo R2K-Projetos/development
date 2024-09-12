@@ -1,31 +1,33 @@
-﻿function StartListaEntidade(sEntidade, bNovoCadastro) {
+﻿function StartListaEntidade(entidade, bNovoCadastro) {
     $(document).ready(function () {
 
-        let idInput = '#nome' + sEntidade;
+        let idInput = '#nome' + entidade;
         let idSpan = '';
         if (parseInt(bNovoCadastro) == 1) {
-            idSpan = '#span' + sEntidade;
+            idSpan = '#span' + entidade;
         }
-        let idDataList = '#divDataList' + sEntidade;
+        let idDataList = '#divDataList' + entidade;
         $(idInput).keyup(function () {
 
             let input = document.querySelector(idInput);
             let texto = input.value;
-            //alert(''
-            //    + 'idInput: ' + idInput + '\n'
-            //    + 'idSpan: ' + idSpan + '\n'
-            //    + 'idDataList: ' + idDataList + '\n'
-            //);
+            alert(''
+                + 'entidade: ' + entidade + '\n'
+                + 'bNovoCadastro: ' + bNovoCadastro + '\n'
+                + 'idInput: ' + idInput + '\n'
+                + 'idSpan: ' + idSpan + '\n'
+                + 'idDataList: ' + idDataList + '\n'
+            );
 
             $.ajax({
                 type: 'GET',
-                url: '/' + sEntidade + '/GetByName',
+                url: '/' + entidade + '/GetByName',
                 data: { name: texto },
                 dataType: 'json',
                 success: function (data) {
                     let id = '';
                     let nome = '';
-                    let montagemDataList = '<datalist id="datalist' + sEntidade + '">';
+                    let montagemDataList = '<datalist id="datalist' + entidade + '">';
 
                     var obj = data;
                     obj.forEach(function (item, index) {
@@ -35,7 +37,7 @@
                         montagemDataList += '<option data-value="' + id + '" value="' + nome + '">';
                     });
                     montagemDataList += '</datalist>';
-                    //alert(montagemDataList);
+                    alert(montagemDataList);
 
                     if (parseInt(bNovoCadastro) == 1) {
                         $(idSpan).hide();
@@ -50,26 +52,26 @@
         });
     });
 }
-function SelectItemListEntidade(sEntidade, bNovoCadastro) {
+function SelectItemListEntidade(entidade, bNovoCadastro) {
 
-    let idInput = '#nome' + sEntidade;
-    let idSpan = '#span' + sEntidade;
+    let idInput = '#nome' + entidade;
+    let idSpan = '#span' + entidade;
 
-    let idDataList = '#divDataList' + sEntidade;
-    let idHdnCodigo = '#hdnCod' + sEntidade + 'Autocomplete';
+    let idDataList = '#divDataList' + entidade;
+    let idHdnCodigo = '#hdnCod' + entidade + 'Autocomplete';
 
     let textValue = $(idInput).val();
     let id = $(idDataList + ' [value="' + textValue + '"]').data('value');
     if (textValue != '' && id == undefined || id == '') {
         id = 0;
     }
-    //alert(''
-    //    + 'sEntidade: ' + sEntidade + '\n'
-    //    + 'idInput: ' + idInput + '\n'
-    //    + 'idDataList: ' + idDataList + '\n'
-    //    + 'idHdnCodigo: ' + idHdnCodigo + '\n'
-    //    + 'id: ' + id + '\n'
-    //);
+    alert(''
+        + 'entidade: ' + entidade + '\n'
+        + 'idInput: ' + idInput + '\n'
+        + 'idDataList: ' + idDataList + '\n'
+        + 'idHdnCodigo: ' + idHdnCodigo + '\n'
+        + 'id: ' + id + '\n'
+    );
     $(idHdnCodigo).val(id);
     $(idDataList).hide();
     if (parseInt(bNovoCadastro) == 1) {
@@ -79,25 +81,20 @@ function SelectItemListEntidade(sEntidade, bNovoCadastro) {
         }
     }
 }
-function SetValuesAutoComplete(sEntidade, nomeTexto, Id) {
+function SetValuesAutoComplete(entidade, nome, Id) {
 
-    if (nomeTexto != '' && Id != '') {
-        let idInput = '#nome' + sEntidade;
-        let idHdnCodigo = '#hdnCod' + sEntidade + 'Autocomplete';
+    if (nome != '' && Id != '') {
+        let idInput = '#nome' + entidade;
+        let idHdnCodigo = '#hdnCod' + entidade + 'Autocomplete';
 
-        let textoFinal = nomeTexto;
-        if (nomeTexto.indexOf('-#-') > 0) {
-            textoFinal = nomeTexto.replace(/\-#-/g, '\'');
-        }
         //alert(''
-        //    + 'sEntidade: ' + sEntidade + '\n'
-        //    + 'nomeTexto: ' + nomeTexto + '\n'
-        //    + 'textoFinal: ' + textoFinal + '\n'
+        //    + 'entidade: ' + entidade + '\n'
+        //    + 'nome: ' + nome + '\n'
         //    + 'Id: ' + Id + '\n'
         //    + 'idInput: ' + idInput + '\n'
         //    + 'idHdnCodigo: ' + idHdnCodigo + '\n'
         //);
-        $(idInput).val(textoFinal);
+        $(idInput).val(nome);
         $(idHdnCodigo).val(Id);
     }
 }

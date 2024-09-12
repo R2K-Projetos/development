@@ -181,6 +181,10 @@ body {
     color: #f00 !important;
 }*/
 
+table tbody.linkLinha tr > td {
+    cursor: pointer;
+}
+
 /*==== Paginacao ====*/
 .ComboPaginacao {
     font-size: 0.9em;
@@ -544,7 +548,7 @@ table.table-fit {
 }
 
 /*====== Botoes ======*/
-.btn-primary {
+/*.btn-primary {
     color: #fff;
     background-image: linear-gradient(to bottom, #eb3487, #751555);
     border-color: #5e0842;
@@ -614,7 +618,7 @@ table.table-fit {
         color: #fff;
         background-color: #212529;
         border-color: #212529;
-    }
+    }*/
 
 .divIcons {
     display: inline-block;
