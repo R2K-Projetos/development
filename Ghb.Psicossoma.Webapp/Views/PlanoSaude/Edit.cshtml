@@ -1,22 +1,18 @@
-﻿@model CidViewModel
+﻿@model PlanoSaudeViewModel
 
 @{
-    ViewData["Title"] = "Editar: CID";
+    ViewData["Title"] = "Editar: Plano de Saúde";
 }
 <div class="container">
     <div class="row justify-content-center py-1">
         <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8 col-sm-10 col-xs-12">
-            <form id="formEdit" asp-controller="Cid" asp-action="Edit" method="post">
+            <form id="formEdit" asp-controller="PlanoSaude" asp-action="Edit" method="post">
                 @Html.HiddenFor(model => model.Id)
                 <div class="card">
                     <div class="card-body shadow">
                         <div class="row">
                             <partial name="~/Views/Shared/_headerForm.cshtml" />
-                            <div class="col-4">
-                                <label for="Codigo" class="form-label">@Html.LabelFor(model => model.Codigo)</label>
-                                <input type="text" name="Codigo" id="Codigo" class="form-control form-control-sm" maxlength="20" value="@Model.Codigo" />
-                            </div>
-                            <div class="col-8">
+                            <div class="col-12">
                                 <label for="Descricao" class="form-label">@Html.LabelFor(model => model.Descricao)</label>
                                 <input type="text" name="Descricao" id="Descricao" class="form-control form-control-sm" maxlength="20" value="@Model.Descricao" />
                             </div>
@@ -45,15 +41,10 @@
         $(document).ready(function () {
             $("#formEdit").validate({
                 rules: {
-                    Codigo: {
-                        required: true,
-                        minlength: 2,
-                        maxLength: 10
-                    },
                     Descricao: {
                         required: true,
                         minlength: 2,
-                        maxLength: 200
+                        maxLength: 40
                     }
                 },
                 errorElement: "span",

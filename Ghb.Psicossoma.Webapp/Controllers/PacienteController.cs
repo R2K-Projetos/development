@@ -1,6 +1,6 @@
 ﻿using Ghb.Psicossoma.Cache;
-using Ghb.Psicossoma.Webapp.Models.ResultModel;
 using Ghb.Psicossoma.Webapp.Models;
+using Ghb.Psicossoma.Webapp.Models.ResultModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;

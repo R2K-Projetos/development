@@ -37,10 +37,23 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT pac.Id, ps.Nome, ps.Email, pac.Ativo
-                                        FROM paciente pac
-                                        INNER JOIN pessoa ps ON pac.PessoaId = ps.Id
-                                        WHERE pac.Id = {id};";
+                string selectQuery = $@"select pc.Id
+                                               ,p.Id as PessoaId
+                                               ,p.Nome
+                                               ,p.NomeReduzido
+                                               ,p.Cpf
+                                               ,p.Sexo
+                                               ,p.Email
+                                               ,p.DataNascimento
+                                               ,p.Ativo
+                                               ,pu.Descricao as PerfilUsuario
+                                               ,st.Descricao as StatuslUsuario
+                                          from paciente pc
+                                         INNER JOIN pessoa p on p.Id = pc.pessoaId
+                                          LEFT JOIN usuario u on u.PessoaId = p.Id
+                                          LEFT JOIN perfilusuario pu on pu.Id = u.PerfilUsuarioId
+                                          LEFT JOIN status st on st.Id = u.StatusId
+                                         WHERE pc.Id = {id};";
 
                 DataTable result = _pacienteRepository.Get(selectQuery);
                 List<PacienteResponse> users = result.CreateListFromTable<PacienteResponse>();
@@ -81,16 +94,16 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 string selectQuery = $@"select pc.Id
-                                               ,p.IdPessoa
+                                               ,p.Id as PessoaId
                                                ,p.Nome
                                                ,p.NomeReduzido
-                                               ,p.cpf
-                                               ,p.sexo
-                                               ,p.email
+                                               ,p.Cpf
+                                               ,p.Sexo
+                                               ,p.Email
                                                ,p.DataNascimento
                                                ,p.Ativo
-                                               ,pu.Descricao as Perfil
-                                               ,st.Descricao as StatusUsuario
+                                               ,pu.Descricao as PerfilUsuario
+                                               ,st.Descricao as StatuslUsuario
                                           from paciente pc
                                          INNER JOIN pessoa p on p.Id = pc.pessoaId
                                           LEFT JOIN usuario u on u.PessoaId = p.Id

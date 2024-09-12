@@ -1,4 +1,104 @@
 ﻿@model IEnumerable<PacienteViewModel>
 
 @{
+    var controllerName = "Paciente";
+    ViewData["Title"] = "Consulta: Paciente";
+
+    var colorAtivo = "";
 }
+<div class="row justify-content-center">
+    <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8 col-sm-12 col-xs-12">
+        <form asp-action="Index" method="get">
+            <input type="hidden" name="pageSize" id="pageSize" value="10" />
+            <div class="row g-2 bg-light border border-secondary mt-3 rounded ps-2 pe-2 pb-2">
+                <partial name="~/Views/Shared/_headerForm.cshtml" />
+                <div class="col-12">
+                    <label for="Nome" class="form-label">Plano de Saúde</label>
+                    <input name="Nome" id="Nome" class="form-control form-control-sm" />
+                </div>
+                <div class="col-4">
+                    &nbsp;
+                </div>
+                <div class="col-4 text-center">
+                    <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
+                </div>
+                <div class="col-4">
+                    <div class="pt-2 ComboPaginacao">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    @if (ViewBag.TotalEncontrado > 0)
+    {
+        <div class="pt-2">
+            <table class="table table-md table-light table-striped table-fit table-hover caption-top border border-tables">
+                <caption class="totalListagem">Total encontrado: <b>@ViewBag.TotalEncontrado</b></caption>
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Cpf)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Sexo)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Email)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.DataNascimento)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.PerfilUsuario)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.StatuslUsuario)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Ativo)</th>
+                    </tr>
+                </thead>
+                <tbody class="linkLinha">
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="OpenEdit('@controllerName', 'Edit', '@item.Id');">
+                            <td scope="row">
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Nome)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Cpf)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Sexo)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.DataNascimento)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.PerfilUsuario)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.StatuslUsuario)
+                            </td>
+                            <td class="text-center">
+                                @if (item.Ativo)
+                                    colorAtivo = "green";
+                                else
+                                    colorAtivo = "lightGray";
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="@colorAtivo" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                </svg>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9" class="pt-1"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <partial name="~/Views/Shared/_CardSemResultado.html" />
+    }
+</div>

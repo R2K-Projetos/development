@@ -20,8 +20,10 @@ namespace Ghb.Psicossoma.Webapp.Models
         [Display(Name = "CNS")]
         [StringLength(30)]
         public string Cns { get; set; } = string.Empty;
+
         [StringLength(80)]
         public string Cobertura { get; set; } = string.Empty;
+
         [StringLength(40)]
         public string Empresa { get; set; } = string.Empty;
         public bool Ativo { get; set; }

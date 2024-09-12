@@ -1,0 +1,67 @@
+﻿@model IEnumerable<GrupoGuiaViewModel>
+
+@{
+    var controllerName = "GrupoGuia";
+    ViewData["Title"] = "Consulta: Grupo Guia";
+}
+<div class="row justify-content-center">
+    <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8 col-sm-12 col-xs-12">
+        <form asp-action="Index" method="get">
+            <input type="hidden" name="pageSize" id="pageSize" value="10" />
+            <div class="row g-2 mt-3 bg-degradGray rounded ps-2 pe-2 pb-2">
+                <partial name="~/Views/Shared/_headerForm.cshtml" />
+                <div class="col-12">
+                    <label for="Descricao" class="form-label">Nome</label>
+                    <input name="Descricao" id="Descricao" class="form-control form-control-sm" />
+                </div>
+                <div class="col-4">
+                    &nbsp;
+                </div>
+                <div class="col-4 text-center">
+                    <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
+                </div>
+                <div class="col-4">
+                    <div class="pt-2 ComboPaginacao">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    @if (ViewBag.TotalEncontrado > 0)
+    {
+        <div class="pt-2">
+            <table class="table table-md table-light table-striped table-fit table-hover caption-top border border-tables">
+                <caption class="totalListagem">Total encontrado: <b>@ViewBag.TotalEncontrado</b></caption>
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
+                    </tr>
+                </thead>
+                <tbody class="linkLinha">
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="OpenEdit('@controllerName', 'Edit', '@item.Id');">
+                            <td scope="row">
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Nome)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="pt-1"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <partial name="~/Views/Shared/_CardSemResultado.html" />
+    }
+</div>

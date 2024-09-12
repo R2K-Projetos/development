@@ -1,10 +1,9 @@
-﻿using Newtonsoft.Json;
-using Ghb.Psicossoma.Cache;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Mvc;
+﻿using Ghb.Psicossoma.Cache;
 using Ghb.Psicossoma.Webapp.Models;
 using Ghb.Psicossoma.Webapp.Models.ResultModel;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
@@ -28,18 +27,18 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<CidViewModel>? listCid = new();
+            List<CidViewModel>? cidList = new();
             HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/cid/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string? data = message.Content.ReadAsStringAsync().Result;
                 ResultModel<CidViewModel>? model = JsonConvert.DeserializeObject<ResultModel<CidViewModel>>(data);
-                listCid = model?.Items.ToList();
+                cidList = model?.Items.ToList();
 
-                ViewBag.TotalEncontrado = listCid.Count;
+                ViewBag.TotalEncontrado = cidList.Count;
             }
-            return View(listCid);
+            return View(cidList);
         }
 
         public IActionResult Create()
@@ -61,6 +60,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return View(cid);
         }
+
         public ActionResult Edit(int id)
         {
             CidViewModel? cidFound = null;
