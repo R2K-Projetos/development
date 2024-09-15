@@ -57,7 +57,17 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             ResultModel<UserViewModel>? response = JsonConvert.DeserializeObject<ResultModel<UserViewModel>>(content);
 
             if (message.IsSuccessStatusCode)
-                result = response?.Items.FirstOrDefault()!;
+            {
+                if (!response?.HasError ?? false)
+                {
+                    result = response?.Items.FirstOrDefault()!;
+                }
+                else
+                {
+                    //TODO: Determinar como serão exibidas mensagens de erro ao usuário
+                    //Aqui, como não há associação com Pessoa, a API retorna erro, na propriedade message.
+                }
+            }
 
             return View(result);
         }

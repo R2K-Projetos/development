@@ -10,6 +10,7 @@ namespace Ghb.Psicossoma.Webapp.Models
         public string Nome { get; set; } = string.Empty;
 
         [Required]
+        [EmailAddress(ErrorMessage = "Endereço de email inválido")]
         public string Email { get; set; } = string.Empty;
 
         [Required]
