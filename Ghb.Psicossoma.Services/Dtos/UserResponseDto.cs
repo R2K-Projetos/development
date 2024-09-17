@@ -4,7 +4,6 @@ namespace Ghb.Psicossoma.Services.Dtos
 {
     public class UserResponseDto : BaseDto
     {
-
         public string Nome { get; set; } = string.Empty;
 
         public string Email { get; set; } = string.Empty;

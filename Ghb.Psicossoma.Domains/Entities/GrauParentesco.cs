@@ -2,7 +2,7 @@
 
 namespace Ghb.Psicossoma.Domains.Entities
 {
-    public class Especialidade : BaseEntity
+    public class GrauParentesco : BaseEntity
     {
         public string Nome { get; set; } = string.Empty;
     }

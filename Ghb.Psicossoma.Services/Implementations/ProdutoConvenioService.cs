@@ -39,7 +39,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Descricao FROM produtoConvenio;";
+                selectQuery = $@"SELECT Id, Nome FROM produtoConvenio;";
 
                 DataTable result = _produtoConvenioRepository.GetAll(selectQuery);
                 List<ProdutoConvenio> produtos = result.CreateListFromTable<ProdutoConvenio>();
@@ -81,7 +81,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Descricao
+                selectQuery = $@"SELECT Id, Nome
                                    FROM produtoConvenio
                                   WHERE Descricao LIKE '{nome}%'
                                   LIMIT 5;";

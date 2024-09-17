@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using System.Data;
-using System.Diagnostics;
-using Ghb.Psicossoma.Services.Dtos;
-using Microsoft.Extensions.Logging;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
-using Microsoft.Extensions.Configuration;
-using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.Services.Abstractions;
+using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Data;
+using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
@@ -37,7 +37,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT Id, Descricao FROM registroProfissional;";
+                string selectQuery = $@"SELECT Id, Nome FROM registroProfissional;";
 
                 DataTable result = _registroProfissionalRepository.GetAll(selectQuery);
                 List<RegistroProfissional> status = result.CreateListFromTable<RegistroProfissional>();

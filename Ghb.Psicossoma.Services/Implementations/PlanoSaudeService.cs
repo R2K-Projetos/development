@@ -39,7 +39,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Descricao 
+                selectQuery = $@"SELECT Id, Nome 
                                    FROM planoSaude
                                   WHERE id = {id};";
 
@@ -83,7 +83,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Descricao FROM planoSaude;";
+                selectQuery = $@"SELECT Id, Nome FROM planoSaude;";
 
                 DataTable result = _planoSaudeRepository.GetAll(selectQuery);
                 List<PlanoSaude> itens = result.CreateListFromTable<PlanoSaude>();

@@ -2,7 +2,7 @@
 
 namespace Ghb.Psicossoma.Services.Dtos
 {
-    public class PlanoSaudeDto :BaseDto
+    public class GrupoGuiaDto : BaseDto
     {
         public string Nome { get; set; } = string.Empty;
     }

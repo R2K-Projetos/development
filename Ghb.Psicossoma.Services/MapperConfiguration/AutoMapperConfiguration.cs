@@ -26,6 +26,8 @@ public class AutoMapperConfiguration : Profile
         CreateMap<Prontuario, ProntuarioDto>().ReverseMap();
         CreateMap<ProntuarioHistorico, ProntuarioHistoricoDto>().ReverseMap();
         CreateMap<Encaminhamento, EncaminhamentoDto>().ReverseMap();
+        CreateMap<Funcionalidade, FuncionalidadeDto>().ReverseMap();
+        CreateMap<GrauParentesco, GrauParentescoDto>().ReverseMap();
 
         //Retornos específicos
         CreateMap<UserResponse, UserResponseDto>().ReverseMap();
