@@ -29,65 +29,6 @@ namespace Ghb.Psicossoma.Services.Implementations
             _logger = logger;
         }
 
-        ResultDto<ConvenioResponseDto> IConvenioService.Get(string id)
-        {
-            Stopwatch elapsedTime = new();
-            elapsedTime.Start();
-
-            ResultDto<ConvenioResponseDto> returnValue = new();
-            string? selectQuery = null;
-
-            try
-            {
-                selectQuery = $@"select c.Id
-                                        ,c.PlanoSaudeId
-                                        ,c.PlanoConvenioId
-                                        ,c.ProdutoConvenioId
-                                        ,c.Identificacao
-                                        ,c.Acomodacao
-                                        ,c.Cns
-                                        ,c.Cobertura
-                                        ,c.Empresa
-                                        ,c.Ativo
-                                        ,pls.Descricao as PlanoSaude
-                                        ,plc.Descricao as PlanoConvenio
-                                        ,pc.Descricao as ProdutoConvenio
-                                   FROM convenio c
-                                  inner join planosaude pls on pls.Id = c.PlanoSaudeId
-                                   left join planoconvenio plc on plc.Id = c.PlanoConvenioId
-                                   left join produtoconvenio pc on pc.Id = c.ProdutoConvenioId
-                                  WHERE c.id = {id};";
-
-                DataTable result = _convenioRepository.Get(selectQuery);
-                List<ConvenioResponse> convenio = result.CreateListFromTable<ConvenioResponse>();
-
-                if (convenio?.Count > 0)
-                {
-                    returnValue.CurrentPage = 1;
-                    returnValue.PageSize = -1;
-                    returnValue.TotalItems = convenio.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<ConvenioResponse>, IEnumerable<ConvenioResponseDto>>(convenio ?? Enumerable.Empty<ConvenioResponse>());
-                    returnValue.WasExecuted = true;
-                    returnValue.ResponseCode = 200;
-                }
-                else
-                {
-                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
-                }
-            }
-            catch (Exception ex)
-            {
-                returnValue.BindError(500, ex.GetErrorMessage());
-                LogContext.PushProperty("Query", selectQuery);
-                _logger.LogError(ex, "Erro na recuperação dos dados");
-            }
-
-            elapsedTime.Stop();
-            returnValue.ElapsedTime = elapsedTime.Elapsed;
-
-            return returnValue;
-        }
-
         ResultDto<ConvenioResponseDto> IConvenioService.GetAll()
         {
             Stopwatch elapsedTime = new();
@@ -129,6 +70,65 @@ namespace Ghb.Psicossoma.Services.Implementations
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = convenios.Count;
                     returnValue.Items = _mapper.Map<IEnumerable<ConvenioResponse>, IEnumerable<ConvenioResponseDto>>(convenios ?? Enumerable.Empty<ConvenioResponse>());
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        ResultDto<ConvenioResponseDto> IConvenioService.Get(string id)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<ConvenioResponseDto> returnValue = new();
+            string? selectQuery = null;
+
+            try
+            {
+                selectQuery = $@"select c.Id
+                                        ,c.PlanoSaudeId
+                                        ,c.PlanoConvenioId
+                                        ,c.ProdutoConvenioId
+                                        ,c.Identificacao
+                                        ,c.Acomodacao
+                                        ,c.Cns
+                                        ,c.Cobertura
+                                        ,c.Empresa
+                                        ,c.Ativo
+                                        ,pls.Descricao as PlanoSaude
+                                        ,plc.Descricao as PlanoConvenio
+                                        ,pc.Descricao as ProdutoConvenio
+                                   FROM convenio c
+                                  inner join planosaude pls on pls.Id = c.PlanoSaudeId
+                                   left join planoconvenio plc on plc.Id = c.PlanoConvenioId
+                                   left join produtoconvenio pc on pc.Id = c.ProdutoConvenioId
+                                  WHERE c.id = {id};";
+
+                DataTable result = _convenioRepository.Get(selectQuery);
+                List<ConvenioResponse> convenio = result.CreateListFromTable<ConvenioResponse>();
+
+                if (convenio?.Count > 0)
+                {
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = convenio.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<ConvenioResponse>, IEnumerable<ConvenioResponseDto>>(convenio ?? Enumerable.Empty<ConvenioResponse>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }

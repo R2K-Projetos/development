@@ -2,13 +2,13 @@
 
 namespace Ghb.Psicossoma.Webapp.Models
 {
-    public class EspecialidadeViewModel
+    public class FuncionalidadeViewModel
     {
         public int Id { get; set; }
 
         [Required]
         [Display(Name = "Nome")]
-        [StringLength(40)]
+        [StringLength(60)]
         public string Nome { get; set; } = string.Empty;
     }
 }

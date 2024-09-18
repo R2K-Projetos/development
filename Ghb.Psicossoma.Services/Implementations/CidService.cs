@@ -2,7 +2,6 @@
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Ghb.Psicossoma.Repositories.Abstractions;
-using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
@@ -43,14 +42,14 @@ namespace Ghb.Psicossoma.Services.Implementations
                 selectQuery = $@"SELECT Id, Codigo, Descricao FROM cid;";
 
                 DataTable result = _cidRepository.GetAll(selectQuery);
-                List<Cid> cids = result.CreateListFromTable<Cid>();
+                List<Cid> list = result.CreateListFromTable<Cid>();
 
-                if (cids?.Count > 0)
+                if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = cids.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Cid>, IEnumerable<CidDto>>(cids ?? Enumerable.Empty<Cid>());
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Cid>, IEnumerable<CidDto>>(list ?? Enumerable.Empty<Cid>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -87,14 +86,14 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  WHERE id = {id};";
 
                 DataTable result = _cidRepository.Get(selectQuery);
-                List<Cid> cids = result.CreateListFromTable<Cid>();
+                List<Cid> item = result.CreateListFromTable<Cid>();
 
-                if (cids?.Count > 0)
+                if (item?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = cids.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Cid>, IEnumerable<CidDto>>(cids ?? Enumerable.Empty<Cid>());
+                    returnValue.TotalItems = item.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Cid>, IEnumerable<CidDto>>(item ?? Enumerable.Empty<Cid>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -126,14 +125,14 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 DataTable result = _cidRepository.GetByCode(code);
-                List<Cid> cids = result.CreateListFromTable<Cid>();
+                List<Cid> list = result.CreateListFromTable<Cid>();
 
-                if (cids?.Count > 0)
+                if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = cids.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Cid>, IEnumerable<CidDto>>(cids ?? Enumerable.Empty<Cid>());
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Cid>, IEnumerable<CidDto>>(list ?? Enumerable.Empty<Cid>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -164,17 +163,17 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                var cid = _mapper.Map<CidDto, Cid>(dto);
+                var entidade = _mapper.Map<CidDto, Cid>(dto);
                 insertQuery = $@"INSERT INTO cid 
                                  (Codigo, Descricao)
                                  VALUES 
-                                 ('{cid.Codigo}', '{cid.Descricao}');";
+                                 ('{entidade.Codigo}', '{entidade.Descricao}');";
 
                 long newId = _cidRepository.Insert(insertQuery);
                 if (newId > 0)
-                    cid.Id = (int)newId;
+                    entidade.Id = (int)newId;
 
-                var item = _mapper.Map<Cid, CidDto>(cid);
+                var item = _mapper.Map<Cid, CidDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;
@@ -203,13 +202,13 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                var cid = _mapper.Map<CidDto, Cid>(dto);
+                var entidade = _mapper.Map<CidDto, Cid>(dto);
                 updateQuery = $@"UPDATE cid 
-                                 SET Codigo = '{cid.Codigo}', Descricao = '{cid.Descricao}'
-                                 WHERE id = {cid.Id};";
+                                 SET Codigo = '{entidade.Codigo}', Descricao = '{entidade.Descricao}'
+                                 WHERE id = {entidade.Id};";
 
                 _cidRepository.Update(updateQuery);
-                var item = _mapper.Map<Cid, CidDto>(cid);
+                var item = _mapper.Map<Cid, CidDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;

@@ -1,20 +1,20 @@
 ﻿using Ghb.Psicossoma.Cache;
-using Ghb.Psicossoma.Webapp.Models;
 using Ghb.Psicossoma.Webapp.Models.ResultModel;
+using Ghb.Psicossoma.Webapp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
-    public class CidController : Controller
+    public class EspecialidadeController : Controller
     {
         private readonly string baseAddress = "https://localhost:7188/api";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
 
-        public CidController(CacheService cacheService, IConfiguration configuration)
+        public EspecialidadeController(CacheService cacheService, IConfiguration configuration)
         {
             _httpClient = new HttpClient();
             _configuration = configuration;
@@ -27,13 +27,13 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<CidViewModel>? list = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/cid/getall").Result;
+            List<EspecialidadeViewModel>? list = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/especialidade/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string? data = message.Content.ReadAsStringAsync().Result;
-                ResultModel<CidViewModel>? model = JsonConvert.DeserializeObject<ResultModel<CidViewModel>>(data);
+                ResultModel<EspecialidadeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(data);
                 list = model?.Items.ToList();
 
                 ViewBag.TotalEncontrado = list.Count;
@@ -43,19 +43,19 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
         public IActionResult Create()
         {
-			CidViewModel model = new();
+            EspecialidadeViewModel model = new();
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(CidViewModel obj)
+        public IActionResult Create(EspecialidadeViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/cid/create", obj).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/especialidade/create", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string content = message.Content.ReadAsStringAsync().Result;
-                ResultModel<CidViewModel>? model = JsonConvert.DeserializeObject<ResultModel<CidViewModel>>(content);
+                ResultModel<EspecialidadeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(content);
             }
 
             return View(obj);
@@ -63,14 +63,14 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
         public ActionResult Edit(int id)
         {
-            CidViewModel? itemFound = null;
-            string itemFind = $"{baseAddress}/cid/get/{id}";
+            EspecialidadeViewModel? itemFound = null;
+            string itemFind = $"{baseAddress}/especialidade/get/{id}";
             HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string content = message.Content.ReadAsStringAsync().Result;
-                ResultModel<CidViewModel>? model = JsonConvert.DeserializeObject<ResultModel<CidViewModel>>(content);
+                ResultModel<EspecialidadeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(content);
                 itemFound = model!.Items.FirstOrDefault()!;
             }
 
@@ -78,14 +78,14 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(CidViewModel obj)
+        public ActionResult Edit(EspecialidadeViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/cid/update", obj).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/especialidade/update", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string content = message.Content.ReadAsStringAsync().Result;
-                ResultModel<CidViewModel>? model = JsonConvert.DeserializeObject<ResultModel<CidViewModel>>(content);
+                ResultModel<EspecialidadeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(content);
             }
 
             return View(obj);

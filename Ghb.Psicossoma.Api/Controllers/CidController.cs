@@ -1,7 +1,6 @@
 ﻿using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
-using Ghb.Psicossoma.Services.Implementations;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

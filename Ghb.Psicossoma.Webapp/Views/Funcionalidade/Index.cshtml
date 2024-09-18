@@ -1,33 +1,38 @@
-﻿@model IEnumerable<EspecialidadeViewModel>
+﻿@model IEnumerable<FuncionalidadeViewModel>
 
 @{
-    var controllerName = "Especialidade";
-    ViewData["Title"] = "Consulta: Especialidade";
+    ViewData["Title"] = "Funcionalidades";
 }
 <div class="row justify-content-center">
-    <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8 col-sm-12 col-xs-12">
+    <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
         <form asp-action="Index" method="get">
             <input type="hidden" name="pageSize" id="pageSize" value="10" />
             <div class="row bg-light border border-secondary rounded g-1 mt-1 p-2">
-                <partial name="~/Views/Shared/_headerForm.cshtml" />
-                <div class="col-12">
-                    <label for="Descricao" class="form-label">Nome</label>
-                    <input name="Descricao" id="Descricao" class="form-control form-control-sm" />
+                <div class="col-12 pb-2 border-bottom border-secondary">
+                    <div class="row">
+                        <div class="col-1 text-start" style="width: 2.2em;"></div>
+                        <div class="col-10 text-center pt-1">Consulta: @ViewData["Title"]</div>
+                        <div class="col-1 text-end align-top" style="width: 2.2em;"></div>
+                    </div>
                 </div>
-                <div class="col-4">
+                <div class="col-12">
+                    <label for="Nome" class="form-label">Código:</label>
+                    <input type="text" name="Nome" id="Nome" maxlength="60" value="@ViewData["CurrentFilter"]" class="form-control form-control-sm" />
+                </div>
+                <div class="col-4 text-start">
                     <div class="tooltipW3">
                         <button asp-action="Create" class="btn btn-outline-secondary btn-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
                             </svg>
                         </button>
-                        <span class="tooltipW3text">Novo Especialidade</span>
+                        <span class="tooltipW3text">Novo CID</span>
                     </div>
                 </div>
                 <div class="col-4 text-center">
                     <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
                 </div>
-                <div class="col-4">
+                <div class="col-4 text-end">
                     <div class="pt-2 ComboPaginacao">
                         &nbsp;
                     </div>
@@ -43,25 +48,29 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Codigo)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Descricao)</th>
                     </tr>
                 </thead>
                 <tbody class="linkLinha">
                     @foreach (var item in Model)
                     {
-                        <tr onclick="OpenEdit('@controllerName', 'Edit', '@item.Id');">
+                        <tr onclick="OpenEdit('Cid', 'Edit', '@item.Id');">
                             <td scope="row">
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>
                             <td class="text-start">
-                                @Html.DisplayFor(modelItem => item.Nome)
+                                @Html.DisplayFor(modelItem => item.Codigo)
+                            </td>
+                            <td class="text-start">
+                                @Html.DisplayFor(modelItem => item.Descricao)
                             </td>
                         </tr>
                     }
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="2" class="pt-1"></td>
+                        <td colspan="3" class="pt-1"></td>
                     </tr>
                 </tfoot>
             </table>
