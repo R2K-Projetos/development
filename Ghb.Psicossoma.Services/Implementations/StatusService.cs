@@ -40,14 +40,14 @@ namespace Ghb.Psicossoma.Services.Implementations
                 string selectQuery = $@"SELECT Id, Descricao FROM status;";
 
                 DataTable result = _statusRepository.GetAll(selectQuery);
-                List<Status> status = result.CreateListFromTable<Status>();
+                List<Status> list = result.CreateListFromTable<Status>();
 
-                if (status?.Count > 0)
+                if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = status.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Status>, IEnumerable<StatusDto>>(status ?? Enumerable.Empty<Status>());
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Status>, IEnumerable<StatusDto>>(list ?? Enumerable.Empty<Status>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }

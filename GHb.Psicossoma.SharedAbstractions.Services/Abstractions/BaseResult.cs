@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Ghb.Psicossoma.SharedAbstractions.Services.Abstractions;
+﻿namespace Ghb.Psicossoma.SharedAbstractions.Services.Abstractions;
 
 /// <summary>
 /// Objeto mantenedor de resultado padrão para as chamadas das APIs do projeto

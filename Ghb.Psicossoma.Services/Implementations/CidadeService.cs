@@ -12,42 +12,42 @@ using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class RegistroProfissionalService : BaseService<RegistroProfissionalDto, RegistroProfissional>, IRegistroProfissionalService
+    public class CidadeService : BaseService<CidadeDto, Cidade>, ICidadeService
     {
-        private readonly IRegistroProfissionalRepository _registroProfissionalRepository;
+        private readonly ICidadeRepository _cidadeRepository;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<RegistroProfissionalService> _logger;
+        private readonly ILogger<CidadeService> _logger;
 
-        public RegistroProfissionalService(IRegistroProfissionalRepository registroProfissionalRepository,
-                                           ILogger<RegistroProfissionalService> logger,
-                                           IMapper mapper,
-                                           IConfiguration configuration) : base(registroProfissionalRepository, mapper)
+        public CidadeService(ICidadeRepository cidadeRepository,
+                             ILogger<CidadeService> logger,
+                             IMapper mapper,
+                             IConfiguration configuration) : base(cidadeRepository, mapper)
         {
-            _registroProfissionalRepository = registroProfissionalRepository;
+            _cidadeRepository = cidadeRepository;
             _configuration = configuration;
             _logger = logger;
         }
 
-        public override ResultDto<RegistroProfissionalDto> GetAll()
+        public override ResultDto<CidadeDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<RegistroProfissionalDto> returnValue = new();
+            ResultDto<CidadeDto> returnValue = new();
 
             try
             {
-                string selectQuery = $@"SELECT Id, Nome FROM registroProfissional;";
+                string selectQuery = $@"SELECT Id, UFId, Nome FROM cidade;";
 
-                DataTable result = _registroProfissionalRepository.GetAll(selectQuery);
-                List<RegistroProfissional> list = result.CreateListFromTable<RegistroProfissional>();
+                DataTable result = _cidadeRepository.GetAll(selectQuery);
+                List<Cidade> list = result.CreateListFromTable<Cidade>();
 
                 if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<RegistroProfissional>, IEnumerable<RegistroProfissionalDto>>(list ?? Enumerable.Empty<RegistroProfissional>());
+                    returnValue.Items = _mapper.Map<IEnumerable<Cidade>, IEnumerable<CidadeDto>>(list ?? Enumerable.Empty<Cidade>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -67,6 +67,5 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             return returnValue;
         }
-
     }
 }

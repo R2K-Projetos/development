@@ -29,6 +29,48 @@ namespace Ghb.Psicossoma.Services.Implementations
             _logger = logger;
         }
 
+        public override ResultDto<PlanoSaudeDto> GetAll()
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<PlanoSaudeDto> returnValue = new();
+            string? selectQuery = null;
+
+            try
+            {
+                selectQuery = $@"SELECT Id, Nome FROM planoSaude;";
+
+                DataTable result = _planoSaudeRepository.GetAll(selectQuery);
+                List<PlanoSaude> list = result.CreateListFromTable<PlanoSaude>();
+
+                if (list?.Count > 0)
+                {
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<PlanoSaude>, IEnumerable<PlanoSaudeDto>>(list ?? Enumerable.Empty<PlanoSaude>());
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
         public override ResultDto<PlanoSaudeDto> Get(string id)
         {
             Stopwatch elapsedTime = new();
@@ -52,48 +94,6 @@ namespace Ghb.Psicossoma.Services.Implementations
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = item.Count;
                     returnValue.Items = _mapper.Map<IEnumerable<PlanoSaude>, IEnumerable<PlanoSaudeDto>>(item ?? Enumerable.Empty<PlanoSaude>());
-                    returnValue.WasExecuted = true;
-                    returnValue.ResponseCode = 200;
-                }
-                else
-                {
-                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
-                }
-            }
-            catch (Exception ex)
-            {
-                returnValue.BindError(500, ex.GetErrorMessage());
-                LogContext.PushProperty("Query", selectQuery);
-                _logger.LogError(ex, "Erro na recuperação dos dados");
-            }
-
-            elapsedTime.Stop();
-            returnValue.ElapsedTime = elapsedTime.Elapsed;
-
-            return returnValue;
-        }
-
-        public override ResultDto<PlanoSaudeDto> GetAll()
-        {
-            Stopwatch elapsedTime = new();
-            elapsedTime.Start();
-
-            ResultDto<PlanoSaudeDto> returnValue = new();
-            string? selectQuery = null;
-
-            try
-            {
-                selectQuery = $@"SELECT Id, Nome FROM planoSaude;";
-
-                DataTable result = _planoSaudeRepository.GetAll(selectQuery);
-                List<PlanoSaude> itens = result.CreateListFromTable<PlanoSaude>();
-
-                if (itens?.Count > 0)
-                {
-                    returnValue.CurrentPage = 1;
-                    returnValue.PageSize = -1;
-                    returnValue.TotalItems = itens.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<PlanoSaude>, IEnumerable<PlanoSaudeDto>>(itens ?? Enumerable.Empty<PlanoSaude>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }

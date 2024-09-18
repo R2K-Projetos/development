@@ -12,42 +12,42 @@ using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class RegistroProfissionalService : BaseService<RegistroProfissionalDto, RegistroProfissional>, IRegistroProfissionalService
+    public class GrupoGuiaService : BaseService<GrupoGuiaDto, GrupoGuia>, IGrupoGuiaService
     {
-        private readonly IRegistroProfissionalRepository _registroProfissionalRepository;
+        private readonly IGrupoGuiaRepository _grupoGuiaRepository;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<RegistroProfissionalService> _logger;
+        private readonly ILogger<GrupoGuiaService> _logger;
 
-        public RegistroProfissionalService(IRegistroProfissionalRepository registroProfissionalRepository,
-                                           ILogger<RegistroProfissionalService> logger,
-                                           IMapper mapper,
-                                           IConfiguration configuration) : base(registroProfissionalRepository, mapper)
+        public GrupoGuiaService(IGrupoGuiaRepository grupoGuiaRepository,
+                             ILogger<GrupoGuiaService> logger,
+                             IMapper mapper,
+                             IConfiguration configuration) : base(grupoGuiaRepository, mapper)
         {
-            _registroProfissionalRepository = registroProfissionalRepository;
+            _grupoGuiaRepository = grupoGuiaRepository;
             _configuration = configuration;
             _logger = logger;
         }
 
-        public override ResultDto<RegistroProfissionalDto> GetAll()
+        public override ResultDto<GrupoGuiaDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<RegistroProfissionalDto> returnValue = new();
+            ResultDto<GrupoGuiaDto> returnValue = new();
 
             try
             {
-                string selectQuery = $@"SELECT Id, Nome FROM registroProfissional;";
+                string selectQuery = $@"SELECT Id, Nome FROM grupoguia;";
 
-                DataTable result = _registroProfissionalRepository.GetAll(selectQuery);
-                List<RegistroProfissional> list = result.CreateListFromTable<RegistroProfissional>();
+                DataTable result = _grupoGuiaRepository.GetAll(selectQuery);
+                List<GrupoGuia> list = result.CreateListFromTable<GrupoGuia>();
 
                 if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<RegistroProfissional>, IEnumerable<RegistroProfissionalDto>>(list ?? Enumerable.Empty<RegistroProfissional>());
+                    returnValue.Items = _mapper.Map<IEnumerable<GrupoGuia>, IEnumerable<GrupoGuiaDto>>(list ?? Enumerable.Empty<GrupoGuia>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -67,6 +67,5 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             return returnValue;
         }
-
     }
 }

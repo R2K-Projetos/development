@@ -42,14 +42,14 @@ namespace Ghb.Psicossoma.Services.Implementations
                 selectQuery = $@"SELECT Id, Nome FROM produtoConvenio;";
 
                 DataTable result = _produtoConvenioRepository.GetAll(selectQuery);
-                List<ProdutoConvenio> produtos = result.CreateListFromTable<ProdutoConvenio>();
+                List<ProdutoConvenio> list = result.CreateListFromTable<ProdutoConvenio>();
 
-                if (produtos?.Count > 0)
+                if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = produtos.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<ProdutoConvenio>, IEnumerable<ProdutoConvenioDto>>(produtos ?? Enumerable.Empty<ProdutoConvenio>());
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<ProdutoConvenio>, IEnumerable<ProdutoConvenioDto>>(list ?? Enumerable.Empty<ProdutoConvenio>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
