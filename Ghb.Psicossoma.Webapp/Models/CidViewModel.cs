@@ -12,7 +12,7 @@ namespace Ghb.Psicossoma.Webapp.Models
         public string Codigo { get; set; } = string.Empty;
 
         [Required]
-        [Display(Name = "Código")]
+        [Display(Name = "Descrição")]
         [StringLength(200)]
         public string Descricao { get; set; } = string.Empty;
     }

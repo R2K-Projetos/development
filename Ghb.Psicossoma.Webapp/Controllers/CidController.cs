@@ -27,18 +27,18 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<CidViewModel>? cidList = new();
+            List<CidViewModel>? list = new();
             HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/cid/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string? data = message.Content.ReadAsStringAsync().Result;
                 ResultModel<CidViewModel>? model = JsonConvert.DeserializeObject<ResultModel<CidViewModel>>(data);
-                cidList = model?.Items.ToList();
+                list = model?.Items.ToList();
 
-                ViewBag.TotalEncontrado = cidList.Count;
+                ViewBag.TotalEncontrado = list.Count;
             }
-            return View(cidList);
+            return View(list);
         }
 
         public IActionResult Create()
@@ -63,18 +63,18 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
         public ActionResult Edit(int id)
         {
-            CidViewModel? cidFound = null;
-            string cidFind = $"{baseAddress}/cid/get/{id}";
-            HttpResponseMessage message = _httpClient.GetAsync(cidFind).Result;
+            CidViewModel? itemFound = null;
+            string itemFind = $"{baseAddress}/cid/get/{id}";
+            HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string content = message.Content.ReadAsStringAsync().Result;
                 ResultModel<CidViewModel>? model = JsonConvert.DeserializeObject<ResultModel<CidViewModel>>(content);
-                cidFound = model!.Items.FirstOrDefault()!;
+                itemFound = model!.Items.FirstOrDefault()!;
             }
 
-            return View(cidFound);
+            return View(itemFound);
         }
 
         [HttpPost]
@@ -90,6 +90,5 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return View(cid);
         }
-
     }
 }

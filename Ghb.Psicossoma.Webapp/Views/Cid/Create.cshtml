@@ -1,38 +1,81 @@
-﻿@model Ghb.Psicossoma.Webapp.Models.CidViewModel
+﻿@model CidViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Cadastro: CID";
 }
-
-<h1>Create</h1>
-
-<h4>CidViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Codigo" class="control-label"></label>
-                <input asp-for="Codigo" class="form-control" />
-                <span asp-validation-for="Codigo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container">
+    <div class="row justify-content-center py-1">
+        <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8 col-sm-10 col-xs-12">
+            <form id="formEntidade" asp-controller="Cid" asp-action="Create" method="post">
+                <div class="card">
+                    <div class="card-body shadow">
+                        <div class="row">
+                            <partial name="~/Views/Shared/_headerForm.cshtml" />
+                            <div class="col-6">
+                                <label for="Codigo" class="form-label">@Html.LabelFor(model => model.Codigo)</label>
+                                <input type="text" name="Codigo" id="Codigo" class="form-control form-control-sm" maxlength="20" />
+                            </div>
+                            <div class="col-12">
+                                <label for="Descricao" class="form-label">@Html.LabelFor(model => model.Descricao)</label>
+                                <textarea name="Descricao" id="Descricao" class="form-control form-control-sm" maxlength="200" rows="1" cols="1" style="height: 110px;"></textarea>
+                            </div>
+                            <div class="cod-12 border-bottom border-secondary pb-2"></div>
+                            <div class="col-12 text-center pt-2">
+                                <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>
+    <script type="text/javascript">
+        //$.validator.setDefaults({
+        //    submitHandler: function () {
+        //alert("submitted!");
+        //return false;
+        //    }
+        //});
+
+        $(document).ready(function () {
+            $("#formEntidade").validate({
+                rules: {
+                    Codigo: {
+                        required: true,
+                        minlength: 2,
+                        maxLength: 10
+                    },
+                    Descricao: {
+                        required: true,
+                        minlength: 2,
+                        maxLength: 200
+                    }
+                },
+                errorElement: "span",
+                errorPlacement: function (error, element) {
+                    let customError = $([
+                        '<span class="invalid-feedback mt-0 mb-2 d-block text-start">',
+                        '  <span class="error-box mb-0 d-block"></span>',
+                        '</span>'
+                    ].join(""));
+
+                    error.addClass("form-error-message");
+                    error.appendTo(customError.find('.error-box'));
+                    customError.insertBefore(element);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).closest('.invalid-feedback').toggle();
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                    $(element).closest('.invalid-feedback').toggle();
+                }
+            });
+        });
+    </script>
 }

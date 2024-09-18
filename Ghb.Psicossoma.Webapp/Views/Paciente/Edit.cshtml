@@ -1,24 +1,37 @@
-﻿@model CidViewModel
+﻿@model PacienteViewModel
 
 @{
-    ViewData["Title"] = "Editar: CID";
+    ViewData["Title"] = "Editar: Paciente";
 }
 <div class="container">
     <div class="row justify-content-center py-1">
         <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8 col-sm-10 col-xs-12">
-            <form id="formEntidade" asp-controller="Cid" asp-action="Edit" method="post">
+            <form id="formEdit" asp-controller="Paciente" asp-action="Edit" method="post">
                 @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.PessoaId)
                 <div class="card">
                     <div class="card-body shadow">
                         <div class="row">
                             <partial name="~/Views/Shared/_headerForm.cshtml" />
                             <div class="col-4">
-                                <label for="Codigo" class="form-label">@Html.LabelFor(model => model.Codigo)</label>
-                                <input type="text" name="Codigo" id="Codigo" class="form-control form-control-sm" maxlength="20" value="@Model.Codigo" />
+                                <label for="Nome" class="form-label">@Html.LabelFor(model => model.Nome)</label>
+                                <input type="text" name="Nome" id="Nome" class="form-control form-control-sm" maxlength="100" value="@Model.Nome" />
                             </div>
-                            <div class="col-8">
-                                <label for="Descricao" class="form-label">@Html.LabelFor(model => model.Descricao)</label>
-                                <textarea name="Descricao" id="Descricao" class="form-control form-control-sm" maxlength="200" rows="1" cols="1" style="height: 110px;">@Model.Descricao</textarea>
+                            <div class="col-4">
+                                <label for="NomeReduzido" class="form-label">@Html.LabelFor(model => model.NomeReduzido)</label>
+                                <input type="text" name="NomeReduzido" id="NomeReduzido" class="form-control form-control-sm" maxlength="40" value="@Model.NomeReduzido" />
+                            </div>
+                            <div class="col-4">
+                                <label for="Cpf" class="form-label">@Html.LabelFor(model => model.Cpf)</label>
+                                <input type="text" name="Cpf" id="Cpf" class="form-control form-control-sm" value="@Model.Cpf" />
+                            </div>
+                            <div class="col-4">
+                                <label for="Email" class="form-label">@Html.LabelFor(model => model.Email)</label>
+                                <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="@Model.Email" />
+                            </div>
+                            <div class="col-4">
+                                <label for="DataNascimento" class="form-label">@Html.LabelFor(model => model.DataNascimento)</label>
+                                <input type="date" name="DataNascimento" id="DataNascimento" class="form-control form-control-sm" value="@Model.DataNascimento" />
                             </div>
                             <div class="cod-12 border-bottom border-secondary pb-2"></div>
                             <div class="col-12 text-center pt-2">
@@ -43,17 +56,27 @@
         //});
 
         $(document).ready(function () {
-            $("#formEntidade").validate({
+            $("#formEdit").validate({
                 rules: {
-                    Codigo: {
+                    Nome: {
                         required: true,
                         minlength: 2,
-                        maxLength: 10
+                        maxLength: 100
                     },
-                    Descricao: {
+                    NomeReduzido: {
                         required: true,
                         minlength: 2,
-                        maxLength: 200
+                        maxLength: 40
+                    },
+                    Cpf: {
+                        required: true,
+                        minlength: 14,
+                        maxLength: 14
+                    },
+                    Email: {
+                        required: true,
+                        email: true,
+                        maxLength: 80
                     }
                 },
                 errorElement: "span",

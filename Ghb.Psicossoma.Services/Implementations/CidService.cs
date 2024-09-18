@@ -2,6 +2,7 @@
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
@@ -145,6 +146,80 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
                 _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<CidDto> Insert(CidDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<CidDto> returnValue = new();
+            string? insertQuery = null;
+
+            try
+            {
+                var cid = _mapper.Map<CidDto, Cid>(dto);
+                insertQuery = $@"INSERT INTO cid 
+                                 (Codigo, Descricao)
+                                 VALUES 
+                                 ('{cid.Codigo}', '{cid.Descricao}');";
+
+                long newId = _cidRepository.Insert(insertQuery);
+                if (newId > 0)
+                    cid.Id = (int)newId;
+
+                var item = _mapper.Map<Cid, CidDto>(cid);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<CidDto> Update(CidDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<CidDto> returnValue = new();
+            string? updateQuery = null;
+
+            try
+            {
+                var cid = _mapper.Map<CidDto, Cid>(dto);
+                updateQuery = $@"UPDATE cid 
+                                 SET Codigo = '{cid.Codigo}', Descricao = '{cid.Descricao}'
+                                 WHERE id = {cid.Id};";
+
+                _cidRepository.Update(updateQuery);
+                var item = _mapper.Map<Cid, CidDto>(cid);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", updateQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
             elapsedTime.Stop();
