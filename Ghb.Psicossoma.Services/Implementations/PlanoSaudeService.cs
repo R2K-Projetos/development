@@ -39,7 +39,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome FROM planoSaude;";
+                selectQuery = $@"SELECT Id, Nome FROM planoSaude order by Nome;";
 
                 DataTable result = _planoSaudeRepository.GetAll(selectQuery);
                 List<PlanoSaude> list = result.CreateListFromTable<PlanoSaude>();
@@ -107,6 +107,80 @@ namespace Ghb.Psicossoma.Services.Implementations
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", selectQuery);
                 _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<PlanoSaudeDto> Insert(PlanoSaudeDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<PlanoSaudeDto> returnValue = new();
+            string? insertQuery = null;
+
+            try
+            {
+                var entidade = _mapper.Map<PlanoSaudeDto, PlanoSaude>(dto);
+                insertQuery = $@"INSERT INTO planosaude 
+                                 (Nome)
+                                 VALUES 
+                                 ('{entidade.Nome}');";
+
+                long newId = _planoSaudeRepository.Insert(insertQuery);
+                if (newId > 0)
+                    entidade.Id = (int)newId;
+
+                var item = _mapper.Map<PlanoSaude, PlanoSaudeDto>(entidade);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<PlanoSaudeDto> Update(PlanoSaudeDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<PlanoSaudeDto> returnValue = new();
+            string? updateQuery = null;
+
+            try
+            {
+                var entidade = _mapper.Map<PlanoSaudeDto, PlanoSaude>(dto);
+                updateQuery = $@"UPDATE planosaude 
+                                 SET Nome = '{entidade.Nome}'
+                                 WHERE id = {entidade.Id};";
+
+                _planoSaudeRepository.Update(updateQuery);
+                var item = _mapper.Map<PlanoSaude, PlanoSaudeDto>(entidade);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", updateQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
             elapsedTime.Stop();

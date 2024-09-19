@@ -1,7 +1,6 @@
 ﻿using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
-using Ghb.Psicossoma.Services.Implementations;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -80,6 +79,71 @@ namespace Ghb.Psicossoma.Api.Controllers
             catch (Exception ex)
             {
                 result.BindError(500, "Erro na localização de Plano de Saúde", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Cria um novo cid
+        /// </summary>
+        /// <param name="obj">Json contendo os dados da nova cid></param>
+        /// <returns></returns>
+        [HttpPost("Create")]
+        [SwaggerOperation(
+        Summary = "Cria um novo Plano de saúde",
+        Description = "Cria um novo Plano de saúde",
+        OperationId = "PlanoSaude.Create",
+        Tags = new[] { "PlanoSaude" })]
+        [ProducesResponseType(typeof(ResultDto<PlanoSaudeDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PlanoSaudeDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<PlanoSaudeDto> Create([FromBody] PlanoSaudeDto obj)
+        {
+            ResultDto<PlanoSaudeDto> result = new();
+
+            try
+            {
+                obj.Id = 0;
+                result = _planoSaudeService.Insert(obj);
+
+                if (!result.HasError)
+                    result.Message = "Plano de saúde criado com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na criação do Plano de saúde", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Atualiza os dados de um PlanoSaude
+        /// </summary>
+        /// <param name="obj">Json contendo os dados da cid></param>
+        /// <returns></returns>
+        [HttpPost("Update")]
+        [SwaggerOperation(
+        Summary = "Atualiza os dados de um Plano de saúde",
+        Description = "Atualiza os dados de um Plano de saúde",
+        OperationId = "PlanoSaude.Update",
+        Tags = new[] { "PlanoSaude" })]
+        [ProducesResponseType(typeof(ResultDto<PlanoSaudeDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PlanoSaudeDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<PlanoSaudeDto> Update([FromBody] PlanoSaudeDto obj)
+        {
+            ResultDto<PlanoSaudeDto> result = new();
+
+            try
+            {
+                result = _planoSaudeService.Update(obj);
+
+                if (!result.HasError)
+                    result.Message = "Plano de saúde alterado com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na alteração do Plano de saúde", ex);
             }
 
             return Ok(result);

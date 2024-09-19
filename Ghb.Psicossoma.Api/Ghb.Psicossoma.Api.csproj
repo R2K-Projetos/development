@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ghb.Psicossoma.Cache\Ghb.Psicossoma.Cache.csproj" />
     <ProjectReference Include="..\Ghb.Psicossoma.Crosscutting.IoC\Ghb.Psicossoma.Crosscutting.IoC.csproj" />
     <ProjectReference Include="..\Ghb.Psicossoma.Services\Ghb.Psicossoma.Services.csproj" />
   </ItemGroup>

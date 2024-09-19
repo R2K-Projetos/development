@@ -1,25 +1,21 @@
-﻿@model CidViewModel
+﻿@model FuncionalidadeViewModel
 
 @{
-    var controllerName = "Cid";
-    ViewData["Title"] = "Editar: CID";
+    var controllerName = "Funcionalidade";
+    ViewData["Title"] = "Editar: Funcionalidade";
 }
 <div class="container">
     <div class="row justify-content-center py-1">
         <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8 col-sm-10 col-xs-12">
-            <form id="formEntidade" asp-controller="Cid" asp-action="Edit" method="post">
+            <form id="formEntidade" asp-controller="Funcionalidade" asp-action="Edit" method="post">
                 @Html.HiddenFor(model => model.Id)
                 <div class="card">
                     <div class="card-body shadow">
                         <div class="row">
                             <partial name="~/Views/Shared/_headerForm.cshtml" />
-                            <div class="col-6">
-                                <label for="Codigo" class="form-label">@Html.LabelFor(model => model.Codigo)</label>
-                                <input type="text" name="Codigo" id="Codigo" class="form-control form-control-sm" maxlength="20" value="@Model.Codigo" />
-                            </div>
                             <div class="col-12">
-                                <label for="Descricao" class="form-label">@Html.LabelFor(model => model.Descricao)</label>
-                                <textarea name="Descricao" id="Descricao" class="form-control form-control-sm" maxlength="200" rows="1" cols="1" style="height: 110px;">@Model.Descricao</textarea>
+                                <label for="Nome" class="form-label">@Html.LabelFor(model => model.Nome)</label>
+                                <input type="text" name="Nome" id="Nome" class="form-control form-control-sm" value="@Model.Nome" />
                             </div>
                             <div class="cod-12 border-bottom border-secondary pb-2"></div>
                             <div class="col-2 text-start pt-2">
@@ -50,49 +46,9 @@
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>
+    <script src="~/js/funcionalidade.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        //$.validator.setDefaults({
-        //    submitHandler: function () {
-        //alert("submitted!");
-        //return false;
-        //    }
-        //});
-
-        $(document).ready(function () {
-            $("#formEntidade").validate({
-                rules: {
-                    Codigo: {
-                        required: true,
-                        minlength: 2,
-                        maxLength: 10
-                    },
-                    Descricao: {
-                        required: true,
-                        minlength: 2,
-                        maxLength: 200
-                    }
-                },
-                errorElement: "span",
-                errorPlacement: function (error, element) {
-                    let customError = $([
-                        '<span class="invalid-feedback mt-0 mb-2 d-block text-start">',
-                        '  <span class="error-box mb-0 d-block"></span>',
-                        '</span>'
-                    ].join(""));
-
-                    error.addClass("form-error-message");
-                    error.appendTo(customError.find('.error-box'));
-                    customError.insertBefore(element);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).closest('.invalid-feedback').toggle();
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                    $(element).closest('.invalid-feedback').toggle();
-                }
-            });
-        });
+        //=== OnLoad ===
+        document.getElementById('Nome').focus();
     </script>
 }

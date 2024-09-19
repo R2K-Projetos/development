@@ -23,13 +23,13 @@ namespace Ghb.Psicossoma.Api.Controllers
         }
 
         /// <summary>
-        /// Lista todos os cids cadastrados
+        /// Lista todas as Funcionalidades cadastradas
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetAll")]
         [SwaggerOperation(
-        Summary = "Lista todas as funcionalidade cadastradas",
-        Description = "Lista todas as funcionalidade cadastradas",
+        Summary = "Lista todas as Funcionalidades",
+        Description = "Lista todas as Funcionalidades",
         OperationId = "Funcionalidade.GetAll",
         Tags = new[] { "Funcionalidade" })]
         [ProducesResponseType(typeof(ResultDto<FuncionalidadeDto>), StatusCodes.Status200OK)]
@@ -43,24 +43,24 @@ namespace Ghb.Psicossoma.Api.Controllers
                 result = _funcionalidadeService.GetAll();
 
                 if (!result.HasError)
-                    result.Message = "Funcionalidades listados com sucesso!";
+                    result.Message = "Funcionalidades listadas com sucesso!";
             }
             catch (Exception ex)
             {
-                result.BindError(500, "Erro na listagem de funcionalidades", ex);
+                result.BindError(500, "Erro na listagem de Funcionalidades", ex);
             }
 
             return Ok(result);
         }
 
         /// <summary>
-        /// Busca os dados de uma determinada Funcionalidade
+        /// Busca os dados de um determinado Plano de Saúde
         /// </summary>
         /// <returns></returns>
         [HttpGet("Get/{id}")]
         [SwaggerOperation(
-        Summary = "Busca os dados de uma determinada Funcionalidade",
-        Description = "Busca os dados de uma determinada Funcionalidade",
+        Summary = "Busca os dados de uma determinada funcionalidade",
+        Description = "Busca os dados de uma determinada funcionalidade",
         OperationId = "Funcionalidade.Get",
         Tags = new[] { "Funcionalidade" })]
         [ProducesResponseType(typeof(ResultDto<FuncionalidadeDto>), StatusCodes.Status200OK)]
@@ -74,25 +74,25 @@ namespace Ghb.Psicossoma.Api.Controllers
                 result = _funcionalidadeService.Get(id.ToString());
 
                 if (!result.HasError)
-                    result.Message = "Funcionalidade localizada com sucesso!";
+                    result.Message = "Funcionalidade localizado com sucesso!";
             }
             catch (Exception ex)
             {
-                result.BindError(500, "Erro na localização da FuncionalidadeDto", ex);
+                result.BindError(500, "Erro na localização da Funcionalidade", ex);
             }
 
             return Ok(result);
         }
 
         /// <summary>
-        /// Cria uma nova Funcionalidade
+        /// Cria um novo cid
         /// </summary>
-        /// <param name="obj">Json contendo os dados da nova Funcionalidade></param>
+        /// <param name="obj">Json contendo os dados da nova cid></param>
         /// <returns></returns>
         [HttpPost("Create")]
         [SwaggerOperation(
-        Summary = "Cria uma nova Funcionalidade",
-        Description = "Cria uma nova Funcionalidade",
+        Summary = "Cria uma nova funcionalidade",
+        Description = "Cria uma nova funcionalidade",
         OperationId = "Funcionalidade.Create",
         Tags = new[] { "Funcionalidade" })]
         [ProducesResponseType(typeof(ResultDto<FuncionalidadeDto>), StatusCodes.Status200OK)]
@@ -107,7 +107,7 @@ namespace Ghb.Psicossoma.Api.Controllers
                 result = _funcionalidadeService.Insert(obj);
 
                 if (!result.HasError)
-                    result.Message = "Funcionalidade criada com sucesso!";
+                    result.Message = "Funcionalidade criado com sucesso!";
             }
             catch (Exception ex)
             {
@@ -118,14 +118,14 @@ namespace Ghb.Psicossoma.Api.Controllers
         }
 
         /// <summary>
-        /// Atualiza os dados de uma funcionalidade
+        /// Atualiza os dados de um Funcionalidade
         /// </summary>
-        /// <param name="obj">Json contendo os dados de uma funcionalidade></param>
+        /// <param name="obj">Json contendo os dados da cid></param>
         /// <returns></returns>
         [HttpPost("Update")]
         [SwaggerOperation(
-        Summary = "Atualiza os dados de uma funcionalidade",
-        Description = "Atualiza os dados de uma funcionalidade",
+        Summary = "Atualiza os dados de uma Funcionalidade",
+        Description = "Atualiza os dados de uma Funcionalidade",
         OperationId = "Funcionalidade.Update",
         Tags = new[] { "Funcionalidade" })]
         [ProducesResponseType(typeof(ResultDto<FuncionalidadeDto>), StatusCodes.Status200OK)]
@@ -139,11 +139,11 @@ namespace Ghb.Psicossoma.Api.Controllers
                 result = _funcionalidadeService.Update(obj);
 
                 if (!result.HasError)
-                    result.Message = "Funcionalidade alterada com sucesso!";
+                    result.Message = "Funcionalidade alterado com sucesso!";
             }
             catch (Exception ex)
             {
-                result.BindError(500, "Erro na alteração da Funcionalidade", ex);
+                result.BindError(500, "Erro na alteração do Funcionalidade", ex);
             }
 
             return Ok(result);

@@ -9,7 +9,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class PlanoSaudeController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7188/api";
+        private readonly string baseAddress = "https://localhost:7188/api/planosaude";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
@@ -27,77 +27,75 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<PlanoSaudeViewModel>? planoSaudeList = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/planosaude/getall").Result;
+            List<PlanoSaudeViewModel>? list = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string? data = message.Content.ReadAsStringAsync().Result;
                 ResultModel<PlanoSaudeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PlanoSaudeViewModel>>(data);
-                planoSaudeList = model?.Items.ToList();
+                list = model?.Items.ToList();
 
-                ViewBag.TotalEncontrado = planoSaudeList.Count;
+                ViewBag.TotalEncontrado = list.Count;
             }
-            return View(planoSaudeList);
+            return View(list);
         }
 
         public ActionResult Create()
         {
-            return View();
+            PlanoSaudeViewModel model = new();
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(PlanoSaudeViewModel obj)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        public ActionResult Edit(int id)
-        {
-            PlanoSaudeViewModel? planoSaudeFound = null;
-            string planoSaudeFind = $"{baseAddress}/planosaude/get/{id}";
-            HttpResponseMessage message = _httpClient.GetAsync(planoSaudeFind).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/create", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string content = message.Content.ReadAsStringAsync().Result;
                 ResultModel<PlanoSaudeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PlanoSaudeViewModel>>(content);
-                planoSaudeFound = model!.Items.FirstOrDefault()!;
             }
 
-            return View(planoSaudeFound);
+            return View(obj);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            PlanoSaudeViewModel? itemFound = null;
+            string itemFind = $"{baseAddress}/get/{id}";
+            HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<PlanoSaudeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PlanoSaudeViewModel>>(content);
+                itemFound = model!.Items.FirstOrDefault()!;
+            }
+
+            return View(itemFound);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(PlanoSaudeViewModel obj)
         {
-            try
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/update", obj).Result;
+
+            if (message.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(Index));
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<PlanoSaudeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PlanoSaudeViewModel>>(content);
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(obj);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {

@@ -11,16 +11,23 @@
             <div class="row bg-light border border-secondary rounded g-1 mt-1 p-2">
                 <partial name="~/Views/Shared/_headerForm.cshtml" />
                 <div class="col-12">
-                    <label for="Descricao" class="form-label">Nome</label>
-                    <input name="Descricao" id="Descricao" class="form-control form-control-sm" />
+                    <label for="Nome" class="form-label">Nome</label>
+                    <input name="Nome" id="Nome" value="@ViewData["CurrentFilter"]" class="form-control form-control-sm" />
                 </div>
-                <div class="col-4">
-                    &nbsp;
+                <div class="col-2 text-start">
+                    <div class="tooltipW3">
+                        <button asp-action="Create" class="btn btn-outline-secondary btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                            </svg>
+                        </button>
+                        <span class="tooltipW3text">Novo Plano de Saúde</span>
+                    </div>
                 </div>
-                <div class="col-4 text-center">
+                <div class="col-8 text-center">
                     <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
                 </div>
-                <div class="col-4">
+                <div class="col-2">
                     <div class="pt-2 ComboPaginacao">
                         &nbsp;
                     </div>
@@ -36,7 +43,7 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">@Html.DisplayNameFor(model => model.Descricao)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
                     </tr>
                 </thead>
                 <tbody class="linkLinha">
@@ -47,7 +54,7 @@
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>
                             <td class="text-start">
-                                @Html.DisplayFor(modelItem => item.Descricao)
+                                @Html.DisplayFor(modelItem => item.Nome)
                             </td>
                         </tr>
                     }
