@@ -9,33 +9,35 @@
         <form asp-action="Index" method="get">
             <input type="hidden" name="pageSize" id="pageSize" value="10" />
             <div class="row bg-light border border-secondary rounded g-1 mt-1 p-2">
-                <div class="col-12 pb-2 border-bottom border-secondary">
+                <partial name="~/Views/Shared/_headerForm.cshtml" />
+                <div class="col-12 pb-1">
                     <div class="row">
-                        <div class="col-1 text-start" style="width: 2.2em;"></div>
-                        <div class="col-10 text-center pt-1">Consulta: @ViewData["Title"]</div>
-                        <div class="col-1 text-end align-top" style="width: 2.2em;"></div>
+                        <div class="col-12">
+                            <label for="Codigo" class="form-label">Código:</label>
+                            <input type="text" name="Codigo" id="Codigo" maxlength="50" value="@ViewData["CurrentFilter"]" class="form-control form-control-sm" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-12">
-                    <label for="Codigo" class="form-label">Código:</label>
-                    <input type="text" name="Codigo" id="Codigo" maxlength="50" value="@ViewData["CurrentFilter"]" class="form-control form-control-sm" />
-                </div>
-                <div class="col-4 text-start">
-                    <div class="tooltipW3">
-                        <button asp-action="Create" class="btn btn-outline-secondary btn-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-                            </svg>
-                        </button>
-                        <span class="tooltipW3text">Novo CID</span>
-                    </div>
-                </div>
-                <div class="col-4 text-center">
-                    <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
-                </div>
-                <div class="col-4 text-end">
-                    <div class="pt-2 ComboPaginacao">
-                        &nbsp;
+                <div class="col-12 border-top border-dark-subtle pt-2">
+                    <div class="row">
+                        <div class="col-4 text-start">
+                            <div class="tooltipW3">
+                                <button asp-action="Create" class="btn btn-outline-secondary btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                    </svg>
+                                </button>
+                                <span class="tooltipW3text">Novo CID</span>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="pt-2 ComboPaginacao">
+                                &nbsp;
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

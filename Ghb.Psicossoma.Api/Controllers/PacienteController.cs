@@ -23,6 +23,37 @@ namespace Ghb.Psicossoma.Api.Controllers
         }
 
         /// <summary>
+        /// Lista todas os pacientes cadastrados
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAll")]
+        [SwaggerOperation(
+        Summary = "Lista todas os pacientes cadastrados",
+        Description = "Lista todas os pacientes cadastrados",
+        OperationId = "Paciente.GetAll",
+        Tags = new[] { "Paciente" })]
+        [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<PacienteResponseDto> GetAll()
+        {
+            ResultDto<PacienteResponseDto> result = new();
+
+            try
+            {
+                result = _pacienteService.GetAll();
+
+                if (!result.HasError)
+                    result.Message = "Pacientes listados com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na listagem de pacientes", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Busca os dados de um determinado paciente
         /// </summary>
         /// <returns></returns>
@@ -54,35 +85,68 @@ namespace Ghb.Psicossoma.Api.Controllers
         }
 
         /// <summary>
-        /// Lista todas os pacientes cadastrados
+        /// Cria um novo Paciente
         /// </summary>
+        /// <param name="obj">Json contendo os dados do novo paciente></param>
         /// <returns></returns>
-        [HttpGet("GetAll")]
+        [HttpPost("Create")]
         [SwaggerOperation(
-        Summary = "Lista todas os pacientes cadastrados",
-        Description = "Lista todas os pacientes cadastrados",
-        OperationId = "Paciente.GetAll",
+        Summary = "Cria um novo paciente",
+        Description = "Cria um novo paciente",
+        OperationId = "Paciente.Create",
         Tags = new[] { "Paciente" })]
         [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<PacienteResponseDto> GetAll()
+        public ActionResult<PacienteResponseDto> Create([FromBody] PacienteResponseDto obj)
         {
             ResultDto<PacienteResponseDto> result = new();
 
             try
             {
-                result = _pacienteService.GetAll();
+                //obj.Id = 0;
+                //result = _pacienteService.Insert(obj);
 
-                if (!result.HasError)
-                    result.Message = "Pacientes listados com sucesso!";
+                //if (!result.HasError)
+                    result.Message = "Paciente criado com sucesso!";
             }
             catch (Exception ex)
             {
-                result.BindError(500, "Erro na listagem de pacientes", ex);
+                result.BindError(500, "Erro na criação do Paciente", ex);
             }
 
             return Ok(result);
         }
 
+        /// <summary>
+        /// Atualiza os dados de um Cid
+        /// </summary>
+        /// <param name="obj">Json contendo os dados da cid></param>
+        /// <returns></returns>
+        [HttpPost("Update")]
+        [SwaggerOperation(
+        Summary = "Atualiza os dados de um Paciente",
+        Description = "Atualiza os dados de um Paciente",
+        OperationId = "Paciente.Update",
+        Tags = new[] { "Paciente" })]
+        [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<PacienteResponseDto> Update([FromBody] PacienteResponseDto obj)
+        {
+            ResultDto<PacienteResponseDto> result = new();
+
+            try
+            {
+                //result = _pacienteService.Update(obj);
+
+                //if (!result.HasError)
+                    result.Message = "Paciente alterado com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na alteração do Paciente", ex);
+            }
+
+            return Ok(result);
+        }
     }
 }

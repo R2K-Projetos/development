@@ -41,5 +41,55 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return View(pacientes);
         }
+
+        public IActionResult Create()
+        {
+            PacienteViewModel model = new();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Create(PacienteViewModel obj)
+        {
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/paciente/create", obj).Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
+            }
+
+            return View(obj);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            PacienteViewModel? itemFound = null;
+            string itemFind = $"{baseAddress}/paciente/get/{id}";
+            HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
+                itemFound = model!.Items.FirstOrDefault()!;
+            }
+
+            return View(itemFound);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(PacienteViewModel obj)
+        {
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/paciente/update", obj).Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
+            }
+
+            return View(obj);
+        }
     }
 }
