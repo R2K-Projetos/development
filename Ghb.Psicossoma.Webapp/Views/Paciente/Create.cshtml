@@ -6,7 +6,7 @@
 }
 <div class="container">
     <div class="row justify-content-center py-1">
-        <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+        <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
             <form id="formPaciente" asp-controller="Paciente" asp-action="Create" method="post">
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.PessoaId)
@@ -14,27 +14,210 @@
                     <div class="card-body shadow">
                         <div class="row">
                             <partial name="~/Views/Shared/_headerForm.cshtml" />
-                            <div class="cod-12 pb-2">
-                                <div class="row pt-1">
-                                    <div class="col-12">
-                                        <label for="Nome" class="form-label">@Html.LabelFor(model => model.Nome)</label>
-                                        <input type="text" name="Nome" id="Nome" class="form-control form-control-sm" maxlength="100" value="@Model.Nome" />
+                        </div>
+                        <div class="row pt-1">
+                            <div class="cod-12">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="nav-dadosPrincipais-tab" data-bs-toggle="tab" data-bs-target="#nav-dadosPrincipais" type="button" role="tab" aria-controls="nav-dadosPrincipais" aria-selected="true" onclick="TipoAbaPacienteControl('p')">Dados Principais</button>
                                     </div>
-                                    <div class="col-8">
-                                        <label for="NomeReduzido" class="form-label">@Html.LabelFor(model => model.NomeReduzido)</label>
-                                        <input type="text" name="NomeReduzido" id="NomeReduzido" class="form-control form-control-sm" maxlength="40" value="@Model.NomeReduzido" />
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="Cpf" class="form-label">@Html.LabelFor(model => model.Cpf)</label>
-                                        <input type="text" name="Cpf" id="Cpf" class="form-control form-control-sm" value="@Model.Cpf" />
-                                    </div>
-                                    <div class="col-8">
-                                        <label for="Email" class="form-label">@Html.LabelFor(model => model.Email)</label>
-                                        <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="@Model.Email" />
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="DataNascimento" class="form-label">@Html.LabelFor(model => model.DataNascimento)</label>
-                                        <input type="date" name="DataNascimento" id="DataNascimento" class="form-control form-control-sm" value="@Model.DataNascimento" />
+                                </nav>
+                                <div class="tab-content mb-3" id="nav-tabContent">
+                                    <!--dadosPrincipais-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom show active" id="nav-dadosPrincipais" role="tabpanel" aria-labelledby="nav-dadosPrincipais-tab">
+                                        <!--Paciente-->
+                                        <div class="accordion p-1" id="accordionPaciente">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePaciente" aria-expanded="true" aria-controls="collapsePaciente">
+                                                        Paciente
+                                                    </button>
+                                                </h2>
+                                                <div id="collapsePaciente" class="accordion-collapse collapse show" data-bs-parent="#accordionPaciente">
+                                                    <div class="accordion-body">
+                                                        <div class="row">
+                                                            <div id="alertaPadrao" class="alert alert-danger print-error-msg" style="display:none">
+                                                                <span></span>
+                                                                <div class="float-end">
+                                                                    <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert();"></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="Nome" class="form-label">@Html.LabelFor(model => model.Nome)</label>
+                                                                <input type="text" name="Nome" id="Nome" class="form-control form-control-sm" maxlength="100" value="@Model.Nome" />
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label for="Cpf" class="form-label">@Html.LabelFor(model => model.Cpf)</label>
+                                                                <input type="text" name="Cpf" id="Cpf" class="form-control form-control-sm" value="@Model.Cpf" />
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label for="cmbSexo" class="form-label">Sexo</label>
+                                                                <select name="cmbSexo" id="cmbSexo" class="form-select form-select-sm">
+                                                                    <option value="">Selecione</option>
+                                                                    <option value="M">Masculino</option>
+                                                                    <option value="F">Feminino</option>
+                                                                    <option value="O">Outro</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <label for="NomeReduzido" class="form-label">@Html.LabelFor(model => model.NomeReduzido)</label>
+                                                                <input type="text" name="NomeReduzido" id="NomeReduzido" class="form-control form-control-sm" maxlength="40" value="@Model.NomeReduzido" />
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label for="DataNascimento" class="form-label">@Html.LabelFor(model => model.DataNascimento)</label>
+                                                                <input type="date" name="DataNascimento" id="DataNascimento" class="form-control form-control-sm" value="@Model.DataNascimento" />
+                                                            </div>
+                                                            <div class="col-9">
+                                                                <label for="Email" class="form-label">@Html.LabelFor(model => model.Email)</label>
+                                                                <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="@Model.Email" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Endereço-->
+                                        <div class="accordion p-1" id="accordionEndereco">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEndereco" aria-expanded="true" aria-controls="collapseEndereco">
+                                                        Endereço
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseEndereco" class="accordion-collapse collapse show" data-bs-parent="#accordionEndereco">
+                                                    <div class="accordion-body">
+                                                        <div id="alertEndereco"></div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="d-inline-block">
+                                                                    CEP:
+                                                                </div>
+                                                                <div class="d-inline-block">
+                                                                    <input type="text" name="txtCEP" id="txtCEP" value="" class="form-control form-control-sm cep" style=" width: 110px;" autocomplete="off" />
+                                                                </div>
+                                                                <div class="d-inline-block">
+                                                                    <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('txtCEP').value);" />
+                                                                </div>
+                                                                <div class="d-inline-block">
+                                                                    <div onclick="abrirBuscaCEP();">
+                                                                        <img src="~/img/iconCorreios.png" alt="Busca de endere�o nos correios" style=" width: auto; height: 18px;" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-9">
+                                                                <label for="txtLogradouro" class="form-label">Logradouro</label>
+                                                                <input type="text" name="txtLogradouro" id="txtLogradouro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label for="txtNumero" class="form-label">Número</label>
+                                                                <input type="text" name="txtNumero" id="txtNumero" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <label for="txtComplemento" class="form-label">Complemento</label>
+                                                                <input type="text" name="txtComplemento" id="txtComplemento" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <label for="txtBairro" class="form-label">Bairro</label>
+                                                                <input type="text" name="txtBairro" id="txtBairro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                                <label for="cmbUF" class="form-label">UF</label>
+                                                                <select name="cmbUF" id="cmbUF" class="form-select form-select-sm">
+                                                                    <option value="0">Selecione</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-9">
+                                                                <label for="cmbCidade" class="form-label">Cidade</label>
+                                                                <select name="cmbCidade" id="cmbCidade" class="form-select form-select-sm">
+                                                                    <option value="0">Selecione a UF</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Telefone-->
+                                        <div class="accordion p-1" id="accordionTelefone">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTelefone" aria-expanded="true" aria-controls="collapseTelefone">
+                                                        Telefone(s)
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseTelefone" class="accordion-collapse collapse show" data-bs-parent="#accordionTelefone">
+                                                    <div class="accordion-body">
+                                                        <div class="table-responsive">
+                                                            <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">Número</th>
+                                                                        <th scope="col">Tipo</th>
+                                                                        <th scope="col">Principal</th>
+                                                                        <th scope="col" class="text-center">&nbsp;</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="table-group-divider">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div id="formTelefone" class="border border-secondary rounded">
+                                                            <input type="hidden" name="hdnTotalTelefonesAdicionados" id="hdnTotalTelefonesAdicionados" value="0" />
+                                                            <div class="card">
+                                                                <div class="card-body shadow">
+                                                                    <div class="card-title border-bottom border-secondary">
+                                                                        <div class="row">
+                                                                            <div class="col-10">
+                                                                                <h5>Cadastro: Telefone</h5>
+                                                                            </div>
+                                                                            <div class="col-2 text-end">
+                                                                                <button type="button" id="closeFormTelefone" class="btn-close" onclick="FormTelefoneControl(0);"></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-text">
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <label for="DDDNum" class="form-label">Número</label>
+                                                                                <input type="text" name="DDDNum" id="DDDNum" class="form-control form-control-sm" maxlength="20" value="" />
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <label for="cmbTipoTelefone" class="form-label">Tipo</label>
+                                                                                <select name="cmbTipoTelefone" id="cmbTipoTelefone" class="form-select form-select-sm">
+                                                                                    <option value="">Selecione</option>
+                                                                                    <option value="1">Celular</option>
+                                                                                    <option value="2">WhatsApp</option>
+                                                                                    <option value="3">Comercial</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col-12 mt-2 pt-2 border-top border-secondary text-center">
+                                                                                <button type="button" class="btn btn-secondary btn-sm" onclick="AddTelefone();">
+                                                                                    Salvar
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div id="btnNovoTelefone" class="text-center pt-1">
+                                                            <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                                </svg>
+                                                                Novo
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -63,59 +246,11 @@
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>
+    <script src="~/js/paciente.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        //$.validator.setDefaults({
-        //    submitHandler: function () {
-        //alert("submitted!");
-        //return false;
-        //    }
-        //});
-
-        $(document).ready(function () {
-            $("#formPaciente").validate({
-                rules: {
-                    Nome: {
-                        required: true,
-                        minlength: 2,
-                        maxLength: 100
-                    },
-                    NomeReduzido: {
-                        required: true,
-                        minlength: 2,
-                        maxLength: 40
-                    },
-                    Cpf: {
-                        required: true,
-                        minlength: 14,
-                        maxLength: 14
-                    },
-                    Email: {
-                        required: true,
-                        email: true,
-                        maxLength: 80
-                    }
-                },
-                errorElement: "span",
-                errorPlacement: function (error, element) {
-                    let customError = $([
-                        '<span class="invalid-feedback mt-0 mb-2 d-block text-start">',
-                        '  <span class="error-box mb-0 d-block"></span>',
-                        '</span>'
-                    ].join(""));
-
-                    error.addClass("form-error-message");
-                    error.appendTo(customError.find('.error-box'));
-                    customError.insertBefore(element);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).closest('.invalid-feedback').toggle();
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                    $(element).closest('.invalid-feedback').toggle();
-                }
-            });
-        });
+        //=== OnLoad ===
+        $('#formTelefone').hide();
+        FormControleRelacionamento('');
+        ControlaViewTableTelefone(false);
     </script>
 }

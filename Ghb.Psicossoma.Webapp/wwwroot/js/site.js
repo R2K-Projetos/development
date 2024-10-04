@@ -18,3 +18,21 @@ function OpenEdit(controller, view, Id) {
     let url = '/' + controller + '/' + view + '?id=' + Id;
     location.href = url;
 }
+//=======================================
+//Retorna value comobox
+// Ex: let valor = RetornaComboSelecionado('comboNome');
+//=======================================
+function RetornaComboSelecionado(sNomeCombo) {
+    return $("[name='" + sNomeCombo + "']").find(":selected").val();
+}
+//=======================================
+//Retorna value comobox
+// Ex: let value = GetTextValueComboBox('comboNome');
+//=======================================
+function GetTextValueComboBox(sNomeCombo) {
+
+    let e = document.getElementById(sNomeCombo);
+    let itemSelecionado = e.options[e.selectedIndex].text;
+
+    return itemSelecionado;
+}
