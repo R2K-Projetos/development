@@ -1,8 +1,11 @@
-﻿namespace Ghb.Psicossoma.Services.Dtos
+﻿using Ghb.Psicossoma.SharedAbstractions.Services.Dtos.Base;
+
+namespace Ghb.Psicossoma.Services.Dtos
 {
-    public class UfDto
+    public class UfDto : BaseDto
     {
-        public string Id { get; set; } = string.Empty;
         public string Nome { get; set; } = string.Empty;
+
+        public string Sigla { get; set; } = string.Empty;
     }
 }

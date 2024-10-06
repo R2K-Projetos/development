@@ -1,10 +1,9 @@
 ﻿using Ghb.Psicossoma.Services.Dtos;
-using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
+using Ghb.Psicossoma.SharedAbstractions.Services.Abstractions.Base;
 
 namespace Ghb.Psicossoma.Services.Abstractions
 {
-    public interface IUfService
+    public interface IUfService : IBaseService<UfDto>
     {
-        //ResultDto<UfDto> GetAll();
     }
 }

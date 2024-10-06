@@ -155,8 +155,8 @@ namespace Ghb.Psicossoma.Api.Controllers
         /// <returns></returns>
         [HttpPost("Update")]
         [SwaggerOperation(
-        Summary = "Atualiza os dados de uma cid",
-        Description = "Atualiza os dados de uma cid",
+        Summary = "Atualiza os dados de um cid",
+        Description = "Atualiza os dados de um cid",
         OperationId = "Cid.Update",
         Tags = new[] { "Cid" })]
         [ProducesResponseType(typeof(ResultDto<CidDto>), StatusCodes.Status200OK)]

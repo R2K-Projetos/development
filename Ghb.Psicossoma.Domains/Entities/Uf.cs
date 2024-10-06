@@ -1,8 +1,10 @@
-﻿namespace Ghb.Psicossoma.Domains.Entities
+﻿using Ghb.Psicossoma.SharedAbstractions.Domains.Entities;
+
+namespace Ghb.Psicossoma.Domains.Entities
 {
-    public class Uf
+    public class Uf : BaseEntity
     {
-        public string Id { get; set; } = string.Empty;
         public string Nome { get; set; } = string.Empty;
+        public string Sigla { get; set; } = string.Empty;
     }
 }

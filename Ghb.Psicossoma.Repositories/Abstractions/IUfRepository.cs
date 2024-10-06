@@ -1,6 +1,9 @@
-﻿namespace Ghb.Psicossoma.Repositories.Abstractions
+﻿using Ghb.Psicossoma.Domains.Entities;
+using Ghb.Psicossoma.SharedAbstractions.Domains.Abstractions.Base;
+
+namespace Ghb.Psicossoma.Repositories.Abstractions
 {
-    public interface IUfRepository
+    public interface IUfRepository : IBaseRepository<Uf>
     {
     }
 }
