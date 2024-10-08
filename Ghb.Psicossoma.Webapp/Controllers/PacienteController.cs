@@ -2,6 +2,7 @@
 using Ghb.Psicossoma.Webapp.Models;
 using Ghb.Psicossoma.Webapp.Models.ResultModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
@@ -45,6 +46,9 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Create()
         {
             PacienteViewModel model = new();
+
+            ViewBag.OpcoesSexo = FillSexoDropDown();
+
             return View(model);
         }
 
@@ -90,6 +94,17 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }
 
             return View(obj);
+        }
+
+        private List<SelectListItem> FillSexoDropDown()
+        {
+            List<SelectListItem> sexo = new()
+            {
+                new() { Text = "[Selecione]", Value = ""},
+                new() { Text = "Masculino", Value = "M"},
+                new() { Text = "Feminino", Value = "F"}
+            };
+            return sexo;
         }
     }
 }

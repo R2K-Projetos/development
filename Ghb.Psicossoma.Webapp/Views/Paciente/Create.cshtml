@@ -3,6 +3,8 @@
 @{
     var controllerName = "Paciente";
     ViewData["Title"] = "Cadastrar: Paciente";
+
+    var opcoesSexoList = ViewBag.OpcoesSexo as List<SelectListItem>;
 }
 <div class="container">
     <div class="row justify-content-center py-1">
@@ -15,203 +17,289 @@
                         <div class="row">
                             <partial name="~/Views/Shared/_headerForm.cshtml" />
                         </div>
-                        <div class="row pt-1">
+                        <div class="row pt-2">
                             <div class="cod-12">
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <button class="nav-link active" id="nav-dadosPrincipais-tab" data-bs-toggle="tab" data-bs-target="#nav-dadosPrincipais" type="button" role="tab" aria-controls="nav-dadosPrincipais" aria-selected="true" onclick="TipoAbaPacienteControl('p')">Dados Principais</button>
+                                        <button class="nav-link" id="nav-endereco-tab" data-bs-toggle="tab" data-bs-target="#nav-endereco" type="button" role="tab" aria-controls="nav-endereco" aria-selected="false" onclick="TipoAbaPacienteControl('p')">Endereço</button>
+                                        <button class="nav-link" id="nav-telefone-tab" data-bs-toggle="tab" data-bs-target="#nav-telefone" type="button" role="tab" aria-controls="nav-endereco" aria-selected="false" onclick="TipoAbaPacienteControl('p')">Telefone</button>
+                                        <button class="nav-link" id="nav-relacionamento-tab" data-bs-toggle="tab" data-bs-target="#nav-relacionamento" type="button" role="tab" aria-controls="nav-relacionamento" aria-selected="false" onclick="TipoAbaPacienteControl('r')">Relacionamento</button>
                                     </div>
                                 </nav>
                                 <div class="tab-content mb-3" id="nav-tabContent">
                                     <!--dadosPrincipais-->
                                     <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom show active" id="nav-dadosPrincipais" role="tabpanel" aria-labelledby="nav-dadosPrincipais-tab">
-                                        <!--Paciente-->
-                                        <div class="accordion p-1" id="accordionPaciente">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePaciente" aria-expanded="true" aria-controls="collapsePaciente">
-                                                        Paciente
-                                                    </button>
-                                                </h2>
-                                                <div id="collapsePaciente" class="accordion-collapse collapse show" data-bs-parent="#accordionPaciente">
-                                                    <div class="accordion-body">
-                                                        <div class="row">
-                                                            <div id="alertaPadrao" class="alert alert-danger print-error-msg" style="display:none">
-                                                                <span></span>
-                                                                <div class="float-end">
-                                                                    <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert();"></button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <label for="Nome" class="form-label">@Html.LabelFor(model => model.Nome)</label>
-                                                                <input type="text" name="Nome" id="Nome" class="form-control form-control-sm" maxlength="100" value="@Model.Nome" />
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <label for="Cpf" class="form-label">@Html.LabelFor(model => model.Cpf)</label>
-                                                                <input type="text" name="Cpf" id="Cpf" class="form-control form-control-sm" value="@Model.Cpf" />
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <label for="cmbSexo" class="form-label">Sexo</label>
-                                                                <select name="cmbSexo" id="cmbSexo" class="form-select form-select-sm">
-                                                                    <option value="">Selecione</option>
-                                                                    <option value="M">Masculino</option>
-                                                                    <option value="F">Feminino</option>
-                                                                    <option value="O">Outro</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <label for="NomeReduzido" class="form-label">@Html.LabelFor(model => model.NomeReduzido)</label>
-                                                                <input type="text" name="NomeReduzido" id="NomeReduzido" class="form-control form-control-sm" maxlength="40" value="@Model.NomeReduzido" />
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <label for="DataNascimento" class="form-label">@Html.LabelFor(model => model.DataNascimento)</label>
-                                                                <input type="date" name="DataNascimento" id="DataNascimento" class="form-control form-control-sm" value="@Model.DataNascimento" />
-                                                            </div>
-                                                            <div class="col-9">
-                                                                <label for="Email" class="form-label">@Html.LabelFor(model => model.Email)</label>
-                                                                <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="@Model.Email" />
-                                                            </div>
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div id="alertaPadrao" class="alert alert-danger print-error-msg" style="display:none">
+                                                        <span></span>
+                                                        <div class="float-end">
+                                                            <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert();"></button>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="Nome" class="form-label">@Html.LabelFor(model => model.Nome)</label>
+                                                        <input type="text" name="Nome" id="Nome" class="form-control form-control-sm" maxlength="100" value="@Model.Nome" />
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label for="Cpf" class="form-label">@Html.LabelFor(model => model.Cpf)</label>
+                                                        <input type="text" name="Cpf" id="Cpf" class="form-control form-control-sm" value="@Model.Cpf" />
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label for="cmbSexo" class="form-label">Sexo</label>
+                                                        <select id="cmbSexo" name="cmbSexo" class="form-select form-select-sm" aria-label="Sexo Opções">
+                                                            <option selected>[Selecione]</option>
+                                                            @foreach (var item in opcoesSexoList)
+                                                            {
+                                                                <option value="@item.Value">@item.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label for="NomeReduzido" class="form-label">@Html.LabelFor(model => model.NomeReduzido)</label>
+                                                        <input type="text" name="NomeReduzido" id="NomeReduzido" class="form-control form-control-sm" maxlength="40" value="@Model.NomeReduzido" />
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label for="DataNascimento" class="form-label">@Html.LabelFor(model => model.DataNascimento)</label>
+                                                        <input type="date" name="DataNascimento" id="DataNascimento" class="form-control form-control-sm" value="@Model.DataNascimento" />
+                                                    </div>
+                                                    <div class="col-9">
+                                                        <label for="Email" class="form-label">@Html.LabelFor(model => model.Email)</label>
+                                                        <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="@Model.Email" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--Endereço-->
-                                        <div class="accordion p-1" id="accordionEndereco">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEndereco" aria-expanded="true" aria-controls="collapseEndereco">
-                                                        Endereço
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseEndereco" class="accordion-collapse collapse show" data-bs-parent="#accordionEndereco">
-                                                    <div class="accordion-body">
-                                                        <div id="alertEndereco"></div>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="d-inline-block">
-                                                                    CEP:
-                                                                </div>
-                                                                <div class="d-inline-block">
-                                                                    <input type="text" name="txtCEP" id="txtCEP" value="" class="form-control form-control-sm cep" style=" width: 110px;" autocomplete="off" />
-                                                                </div>
-                                                                <div class="d-inline-block">
-                                                                    <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('txtCEP').value);" />
-                                                                </div>
-                                                                <div class="d-inline-block">
-                                                                    <div onclick="abrirBuscaCEP();">
-                                                                        <img src="~/img/iconCorreios.png" alt="Busca de endere�o nos correios" style=" width: auto; height: 18px;" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                    </div>
+                                    <!--Endereço-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-endereco" role="tabpanel" aria-labelledby="nav-endereco-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="d-inline-block">
+                                                            CEP:
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-9">
-                                                                <label for="txtLogradouro" class="form-label">Logradouro</label>
-                                                                <input type="text" name="txtLogradouro" id="txtLogradouro" value="" class="form-control form-control-sm" autocomplete="off" />
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <label for="txtNumero" class="form-label">Número</label>
-                                                                <input type="text" name="txtNumero" id="txtNumero" value="" class="form-control form-control-sm" autocomplete="off" />
-                                                            </div>
+                                                        <div class="d-inline-block">
+                                                            <input type="text" name="txtCEP" id="txtCEP" value="" class="form-control form-control-sm cep" style=" width: 110px;" autocomplete="off" />
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <label for="txtComplemento" class="form-label">Complemento</label>
-                                                                <input type="text" name="txtComplemento" id="txtComplemento" value="" class="form-control form-control-sm" autocomplete="off" />
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <label for="txtBairro" class="form-label">Bairro</label>
-                                                                <input type="text" name="txtBairro" id="txtBairro" value="" class="form-control form-control-sm" autocomplete="off" />
-                                                            </div>
+                                                        <div class="d-inline-block">
+                                                            <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('txtCEP').value);" />
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-3">
-                                                                <label for="cmbUF" class="form-label">UF</label>
-                                                                <select name="cmbUF" id="cmbUF" class="form-select form-select-sm">
-                                                                    <option value="0">Selecione</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-9">
-                                                                <label for="cmbCidade" class="form-label">Cidade</label>
-                                                                <select name="cmbCidade" id="cmbCidade" class="form-select form-select-sm">
-                                                                    <option value="0">Selecione a UF</option>
-                                                                </select>
+                                                        <div class="d-inline-block">
+                                                            <div onclick="abrirBuscaCEP();">
+                                                                <img src="~/img/iconCorreios.png" alt="Busca de endere�o nos correios" style=" width: auto; height: 18px;" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <label for="txtLogradouro" class="form-label">Logradouro</label>
+                                                        <input type="text" name="txtLogradouro" id="txtLogradouro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label for="txtNumero" class="form-label">Número</label>
+                                                        <input type="text" name="txtNumero" id="txtNumero" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label for="txtComplemento" class="form-label">Complemento</label>
+                                                        <input type="text" name="txtComplemento" id="txtComplemento" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label for="txtBairro" class="form-label">Bairro</label>
+                                                        <input type="text" name="txtBairro" id="txtBairro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        <label for="cmbUF" class="form-label">UF</label>
+                                                        <select name="cmbUF" id="cmbUF" class="form-select form-select-sm">
+                                                            <option value="0">Selecione</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-9">
+                                                        <label for="cmbCidade" class="form-label">Cidade</label>
+                                                        <select name="cmbCidade" id="cmbCidade" class="form-select form-select-sm">
+                                                            <option value="0">Selecione a UF</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <!--Telefone-->
-                                        <div class="accordion p-1" id="accordionTelefone">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTelefone" aria-expanded="true" aria-controls="collapseTelefone">
-                                                        Telefone(s)
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseTelefone" class="accordion-collapse collapse show" data-bs-parent="#accordionTelefone">
-                                                    <div class="accordion-body">
-                                                        <div class="table-responsive">
-                                                            <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th scope="col">Número</th>
-                                                                        <th scope="col">Tipo</th>
-                                                                        <th scope="col">Principal</th>
-                                                                        <th scope="col" class="text-center">&nbsp;</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody class="table-group-divider">
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div id="formTelefone" class="border border-secondary rounded">
-                                                            <input type="hidden" name="hdnTotalTelefonesAdicionados" id="hdnTotalTelefonesAdicionados" value="0" />
-                                                            <div class="card">
-                                                                <div class="card-body shadow">
-                                                                    <div class="card-title border-bottom border-secondary">
-                                                                        <div class="row">
-                                                                            <div class="col-10">
-                                                                                <h5>Cadastro: Telefone</h5>
-                                                                            </div>
-                                                                            <div class="col-2 text-end">
-                                                                                <button type="button" id="closeFormTelefone" class="btn-close" onclick="FormTelefoneControl(0);"></button>
-                                                                            </div>
-                                                                        </div>
+                                    </div>
+                                    <!--Telefone-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-telefone" role="tabpanel" aria-labelledby="nav-telefone-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Número</th>
+                                                                <th scope="col">Tipo</th>
+                                                                <th scope="col" class="text-center">&nbsp;</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div id="formTelefone" class="border border-secondary rounded">
+                                                    <input type="hidden" name="hdnTotalTelefonesAdicionados" id="hdnTotalTelefonesAdicionados" value="0" />
+                                                    <div class="card">
+                                                        <div class="card-body shadow">
+                                                            <div class="card-title border-bottom border-secondary">
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <h5>Cadastro: Telefone</h5>
                                                                     </div>
-                                                                    <div class="card-text">
-                                                                        <div class="row">
-                                                                            <div class="col-6">
-                                                                                <label for="DDDNum" class="form-label">Número</label>
-                                                                                <input type="text" name="DDDNum" id="DDDNum" class="form-control form-control-sm" maxlength="20" value="" />
-                                                                            </div>
-                                                                            <div class="col-6">
-                                                                                <label for="cmbTipoTelefone" class="form-label">Tipo</label>
-                                                                                <select name="cmbTipoTelefone" id="cmbTipoTelefone" class="form-select form-select-sm">
-                                                                                    <option value="">Selecione</option>
-                                                                                    <option value="1">Celular</option>
-                                                                                    <option value="2">WhatsApp</option>
-                                                                                    <option value="3">Comercial</option>
-                                                                                </select>
-                                                                            </div>
-                                                                            <div class="col-12 mt-2 pt-2 border-top border-secondary text-center">
-                                                                                <button type="button" class="btn btn-secondary btn-sm" onclick="AddTelefone();">
-                                                                                    Salvar
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
+                                                                    <div class="col-2 text-end">
+                                                                        <button type="button" id="closeFormTelefone" class="btn-close" onclick="FormTelefoneControl(0);"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label for="DDDNum" class="form-label">Número</label>
+                                                                        <input type="text" name="DDDNum" id="DDDNum" class="form-control form-control-sm" maxlength="20" value="" />
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label for="cmbTipoTelefone" class="form-label">Tipo</label>
+                                                                        <select name="cmbTipoTelefone" id="cmbTipoTelefone" class="form-select form-select-sm">
+                                                                            <option value="">Selecione</option>
+                                                                            <option value="1">Celular</option>
+                                                                            <option value="2">WhatsApp</option>
+                                                                            <option value="3">Comercial</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-12 mt-2 pt-2 border-top border-secondary text-center">
+                                                                        <button type="button" class="btn btn-secondary btn-sm" onclick="AddTelefone();">
+                                                                            Salvar
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div id="btnNovoTelefone" class="text-center pt-1">
-                                                            <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-                                                                </svg>
-                                                                Novo
+                                                    </div>
+                                                </div>
+                                                <div id="btnNovoTelefone" class="text-center pt-1">
+                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                        </svg>
+                                                        Novo
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--relacionamento-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-relacionamento" role="tabpanel" aria-labelledby="nav-relacionamento-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" class="text-center">#</th>
+                                                                <th scope="col">Nome</th>
+                                                                <th scope="col">Tipo</th>
+                                                                <th scope="col" class="text-center">&nbsp;</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                            <tr>
+                                                                <th scope="row" class="text-center">1</th>
+                                                                <td>Maria Lúcia</td>
+                                                                <td>Mãe</td>
+                                                                <td class="text-center">
+                                                                    <div class="divIcons">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                                        </svg>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center">2</th>
+                                                                <td>Carlos Almeida</td>
+                                                                <td>Pai</td>
+                                                                <td class="text-center">
+                                                                    <div class="divIcons">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                                        </svg>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div id="formRelacionamento" class="p-2">
+                                                    <div class="card">
+                                                        <div class="card-body shadow">
+                                                            <div class="card-title border-bottom border-secondary">
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <h5>Inclusão: <span id="labelTipoRelacionamento"></span></h5>
+                                                                    </div>
+                                                                    <div class="col-2 text-end">
+                                                                        <button type="button" id="closeFormRelacionamento" class="btn-close" onclick="FormControleRelacionamento('');"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <div class="row px-2">
+                                                                    <div id="alerta_Relacionamento" class="alert alert-danger print-error-msg" style="display:none">
+                                                                        <span></span>
+                                                                        <div class="float-end">
+                                                                            <button type="button" id="closeBtn_Relacionamento" class="btn-close" onclick="HideAlert();"></button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-7">
+                                                                        <label for="txtNumeroTelefone" class="form-label">Nome</label>
+                                                                        <input type="text" name="txtNomePacienteRelac" id="txtNomePacienteRelac" class="form-control form-control-sm" maxlength="100" value="" style="width: 100%;" />
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <label for="cmbGrauParentesco" class="form-label">Tipo</label>
+                                                                        <select name="cmbGrauParentesco" id="cmbGrauParentesco" class="form-select form-select-sm">
+                                                                            <option value="">Selecione</option>
+                                                                            <option value="1">Mãe</option>
+                                                                            <option value="2">Pai</option>
+                                                                            <option value="3">Avó Materna</option>
+                                                                            <option value="4">Avô Materno</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-1 pt-4 text-start">
+                                                                        <button type="button" class="btn btn-sm btn-primary" onclick="ValidaRelacionamento();">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="btnOpcoesRelaciomento" class="text-center">
+                                                    <div class="row p-3">
+                                                        <div class="col-6 text-center">
+                                                            <button type="button" class="btn btn-sm btn-secondary" onclick="FormControleRelacionamento('r');">
+                                                                Incluir Responsável
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-6 text-center">
+                                                            <button type="button" class="btn btn-sm btn-secondary" onclick="FormControleRelacionamento('d');">
+                                                                Incluir Dependente
                                                             </button>
                                                         </div>
                                                     </div>
@@ -231,7 +319,7 @@
                                         </button>
                                     </div>
                                     <div class="col-8 text-center pt-2">
-                                        <button type="submit" class="btn btn-primary btn-sm">Atualizar</button>
+                                        <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
                                     </div>
                                     <div class="col-2"></div>
                                 </div>
@@ -247,10 +335,11 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>
     <script src="~/js/paciente.js" asp-append-version="true"></script>
+    <script src="~/js/telefone.js" asp-append-version="true"></script>
     <script type="text/javascript">
         //=== OnLoad ===
         $('#formTelefone').hide();
-        FormControleRelacionamento('');
         ControlaViewTableTelefone(false);
+        FormControleRelacionamento('');        
     </script>
 }

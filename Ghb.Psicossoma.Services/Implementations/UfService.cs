@@ -1,15 +1,14 @@
-﻿using System.Data;
-using AutoMapper;
-using System.Diagnostics;
-using Ghb.Psicossoma.Services.Dtos;
-using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
-using Microsoft.Extensions.Configuration;
-using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.Services.Abstractions;
+using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Ghb.Psicossoma.Repositories.Implementations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Data;
+using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {

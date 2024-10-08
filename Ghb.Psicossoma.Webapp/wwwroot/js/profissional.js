@@ -1,34 +1,6 @@
 ﻿//=========================
-function FormControleRelacionamento(tipo) {
-
-    if (tipo == '') {
-        $('#formRelacionamento').hide();
-        $('#btnOpcoesRelaciomento').show();
-    }
-    else {
-        $('#formRelacionamento').show();
-        $('#btnOpcoesRelaciomento').hide();
-        if (tipo == 'r') {
-            $('#labelTipoRelacionamento').html('Responsável');
-        }
-        else {
-            $('#labelTipoRelacionamento').html('Dependente');
-        }
-    }
-}
-//=========================
-function TipoAbaPacienteControl(tipo) {
-
-    if (tipo == 'p') {
-        $('#btnSaveFormulario').show();
-    }
-    else {
-        $('#btnSaveFormulario').hide();
-    }
-}
-//=========================
 $(document).ready(function () {
-    $("#formPaciente").validate({
+    $("#formProfissional").validate({
         rules: {
             Nome: {
                 required: true,
