@@ -1,0 +1,226 @@
+﻿@{
+    //var controllerName = "Profissional";
+    ViewData["Title"] = "Cadastrar: Profissional";
+}
+<div class="container">
+    <div class="row justify-content-center py-1">
+        <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+            <form id="formPaciente" asp-controller="Paciente" asp-action="Create" method="post">
+                @* @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.PessoaId) *@
+                <div class="card">
+                    <div class="card-body shadow">
+                        <div class="row">
+                            <partial name="~/Views/Shared/_headerForm.cshtml" />
+                        </div>
+                        <div class="row pt-2">
+                            <div class="cod-12">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="nav-dadosPrincipais-tab" data-bs-toggle="tab" data-bs-target="#nav-dadosPrincipais" type="button" role="tab" aria-controls="nav-dadosPrincipais" aria-selected="true">Dados Principais</button>
+                                        <button class="nav-link" id="nav-endereco-tab" data-bs-toggle="tab" data-bs-target="#nav-endereco" type="button" role="tab" aria-controls="nav-endereco" aria-selected="false">Endereço</button>
+                                        <button class="nav-link" id="nav-telefone-tab" data-bs-toggle="tab" data-bs-target="#nav-telefone" type="button" role="tab" aria-controls="nav-telefone" aria-selected="false">Telefone</button>
+                                    </div>
+                                </nav>
+                                <div class="tab-content mb-3" id="nav-tabContent">
+                                    <!--dadosPrincipais-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom show active" id="nav-dadosPrincipais" role="tabpanel" aria-labelledby="nav-dadosPrincipais-tab">
+                                        <div class="row p-2">
+                                            <div id="alertaPadrao" class="alert alert-danger print-error-msg" style="display:none">
+                                                <span></span>
+                                                <div class="float-end">
+                                                    <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert();"></button>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="Nome" class="form-label">Nome</label>
+                                                <input type="text" name="Nome" id="Nome" class="form-control form-control-sm" maxlength="100" value="" />
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="Cpf" class="form-label">Cpf</label>
+                                                <input type="text" name="Cpf" id="Cpf" class="form-control form-control-sm" value="" />
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="cmbSexo" class="form-label">Sexo</label>
+                                                <select name="cmbSexo" id="cmbSexo" class="form-select form-select-sm">
+                                                    <option value="">Selecione</option>
+                                                    <option value="M">Masculino</option>
+                                                    <option value="F">Feminino</option>
+                                                    <option value="O">Outro</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="NomeReduzido" class="form-label">NomeReduzido</label>
+                                                <input type="text" name="NomeReduzido" id="NomeReduzido" class="form-control form-control-sm" maxlength="40" value="" />
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="DataNascimento" class="form-label">DataNascimento</label>
+                                                <input type="date" name="DataNascimento" id="DataNascimento" class="form-control form-control-sm" value="" />
+                                            </div>
+                                            <div class="col-9">
+                                                <label for="Email" class="form-label">Email</label>
+                                                <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Endereço-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-endereco" role="tabpanel" aria-labelledby="nav-endereco-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="d-inline-block">
+                                                            CEP:
+                                                        </div>
+                                                        <div class="d-inline-block">
+                                                            <input type="text" name="txtCEP" id="txtCEP" value="" class="form-control form-control-sm cep" style=" width: 110px;" autocomplete="off" />
+                                                        </div>
+                                                        <div class="d-inline-block">
+                                                            <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('txtCEP').value);" />
+                                                        </div>
+                                                        <div class="d-inline-block">
+                                                            <div onclick="abrirBuscaCEP();">
+                                                                <img src="~/img/iconCorreios.png" alt="Busca de endere�o nos correios" style=" width: auto; height: 18px;" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <label for="txtLogradouro" class="form-label">Logradouro</label>
+                                                        <input type="text" name="txtLogradouro" id="txtLogradouro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label for="txtNumero" class="form-label">Número</label>
+                                                        <input type="text" name="txtNumero" id="txtNumero" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label for="txtComplemento" class="form-label">Complemento</label>
+                                                        <input type="text" name="txtComplemento" id="txtComplemento" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label for="txtBairro" class="form-label">Bairro</label>
+                                                        <input type="text" name="txtBairro" id="txtBairro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        <label for="cmbUF" class="form-label">UF</label>
+                                                        <select name="cmbUF" id="cmbUF" class="form-select form-select-sm">
+                                                            <option value="0">Selecione</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-9">
+                                                        <label for="cmbCidade" class="form-label">Cidade</label>
+                                                        <select name="cmbCidade" id="cmbCidade" class="form-select form-select-sm">
+                                                            <option value="0">Selecione a UF</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Telefone-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-telefone" role="tabpanel" aria-labelledby="nav-telefone-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">                                        
+                                                <div class="table-responsive">
+                                                    <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Número</th>
+                                                                <th scope="col">Tipo</th>
+                                                                <th scope="col" class="text-center">&nbsp;</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div id="formTelefone" class="border border-secondary rounded">
+                                                    <input type="hidden" name="hdnTotalTelefonesAdicionados" id="hdnTotalTelefonesAdicionados" value="0" />
+                                                    <div class="card">
+                                                        <div class="card-body shadow">
+                                                            <div class="card-title border-bottom border-secondary">
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <h5>Cadastro: Telefone</h5>
+                                                                    </div>
+                                                                    <div class="col-2 text-end">
+                                                                        <button type="button" id="closeFormTelefone" class="btn-close" onclick="FormTelefoneControl(0);"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label for="DDDNum" class="form-label">Número</label>
+                                                                        <input type="text" name="DDDNum" id="DDDNum" class="form-control form-control-sm" maxlength="20" value="" />
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label for="cmbTipoTelefone" class="form-label">Tipo</label>
+                                                                        <select name="cmbTipoTelefone" id="cmbTipoTelefone" class="form-select form-select-sm">
+                                                                            <option value="">Selecione</option>
+                                                                            <option value="1">Celular</option>
+                                                                            <option value="2">WhatsApp</option>
+                                                                            <option value="3">Comercial</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-12 mt-2 pt-2 border-top border-secondary text-center">
+                                                                        <button type="button" class="btn btn-secondary btn-sm" onclick="AddTelefone();">
+                                                                            Salvar
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="btnNovoTelefone" class="text-center pt-1">
+                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                        </svg>
+                                                        Novo
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cod-12 border-top border-dark-subtle pt-1">
+                                <div class="row">
+                                    <div class="col-2 text-start pt-2">
+                                        <button type="button" name="btVoltar" id="btVoltar" class="btn btn-outline-secondary btn-sm" onclick="CallAction('', 'Index');">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-columns-reverse" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 .5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10A.5.5 0 0 1 4 .5m-4 2A.5.5 0 0 1 .5 2h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 4h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 6h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 8h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-8 text-center pt-2">
+                                        <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                                    </div>
+                                    <div class="col-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>
+    <script src="~/js/profissional.js" asp-append-version="true"></script>
+    <script src="~/js/telefone.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        //=== OnLoad ===        
+        $('#formTelefone').hide();
+        ControlaViewTableTelefone(false);
+    </script>
+}
