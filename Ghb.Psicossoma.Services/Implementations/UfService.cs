@@ -37,7 +37,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT Id, Sigla, Nome FROM uf;";
+                string selectQuery = $@"SELECT Id, Sigla, Nome FROM uf ORDER BY Nome;";
 
                 DataTable result = _ufRepository.GetAll(selectQuery);
                 List<Uf> list = result.CreateListFromTable<Uf>();

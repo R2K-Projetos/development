@@ -2,6 +2,7 @@
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
@@ -108,6 +109,43 @@ namespace Ghb.Psicossoma.Services.Implementations
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", selectQuery);
                 _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<EnderecoDto> Insert(EnderecoDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<EnderecoDto> returnValue = new();
+            string? insertQuery = null;
+
+            try
+            {
+                Endereco? endereco = _mapper.Map<EnderecoDto, Endereco>(dto);
+                insertQuery = $@"INSERT INTO endereco(Id, PessoaId, CidadeId, Cep, Logradouro, Numero, Complemento, Bairro, Ativo)
+                                 VALUES(null, {endereco.PessoaId}, {endereco.CidadeId}, '{endereco.Cep}', '{endereco.Logradouro}', '{endereco.Numero}', '{endereco.Complemento}', '{endereco.Bairro}', {endereco.Ativo});";
+
+                long newId = _enderecoRepository.Insert(insertQuery);
+                if (newId > 0)
+                    endereco.Id = (int)newId;
+
+                var item = _mapper.Map<Endereco, EnderecoDto>(endereco);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
             elapsedTime.Stop();

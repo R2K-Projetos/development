@@ -48,6 +48,7 @@ public static class ContainerIoC
         services.AddScoped<IProntuarioService, ProntuarioService>();
         services.AddScoped<IRegistroProfissionalService, RegistroProfissionalService>();
         services.AddScoped<IStatusService, StatusService>();
+        services.AddScoped<ITelefoneService, TelefoneService>();
         services.AddScoped<ITipoTelefoneService, TipoTelefoneService>();
         services.AddScoped<IUfService, UfService>();
     }
@@ -75,6 +76,7 @@ public static class ContainerIoC
         services.AddScoped<IProntuarioRepository, ProntuarioRepository>();
         services.AddScoped<IRegistroProfissionalRepository, RegistroProfissionalRepository>();
         services.AddScoped<IStatusRepository, StatusRepository>();
+        services.AddScoped<ITelefoneRepository, TelefoneRepository>();        
         services.AddScoped<ITipoTelefoneRepository, TipoTelefoneRepository>();        
         services.AddScoped<IUfRepository, UfRepository>();        
     }

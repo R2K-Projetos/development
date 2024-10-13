@@ -2,7 +2,7 @@
 
 namespace Ghb.Psicossoma.Services.Dtos
 {
-    public class ProfissionalDto : BaseDto
+    public class ProfissionalDto : PessoaDto
     {
         public int PessoaId { get; set; }
 
@@ -11,5 +11,7 @@ namespace Ghb.Psicossoma.Services.Dtos
         public string Numero { get; set; } = string.Empty;
 
         public bool Ativo { get; set; } = false;
+
+        public EnderecoDto? Endereco { get; set; }
     }
 }

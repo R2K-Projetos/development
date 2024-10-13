@@ -171,7 +171,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                var pessoa = _mapper.Map<PessoaDto, Pessoa>(dto);
+                Pessoa? pessoa = _mapper.Map<PessoaDto, Pessoa>(dto);
                 insertQuery = $@"INSERT INTO pessoa(Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo)
                                  VALUES(null, '{pessoa.Nome}', '{pessoa.NomeReduzido}', '{pessoa.Cpf}', '{pessoa.Sexo}', '{pessoa.Email.ToLower()}', '{pessoa.DataNascimento:yyyy-MM-dd}', {pessoa.Ativo});";
 

@@ -1,32 +1,38 @@
 ﻿using AutoMapper;
-using Ghb.Psicossoma.Domains.Entities;
-using Ghb.Psicossoma.Library.Extensions;
-using Ghb.Psicossoma.Repositories.Abstractions;
-using Ghb.Psicossoma.Services.Abstractions;
-using Ghb.Psicossoma.Services.Dtos;
-using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Serilog.Context;
 using System.Data;
+using Serilog.Context;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Ghb.Psicossoma.Services.Dtos;
+using Ghb.Psicossoma.Domains.Entities;
+using Microsoft.Extensions.Configuration;
+using Ghb.Psicossoma.Library.Extensions;
+using Ghb.Psicossoma.Services.Abstractions;
+using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
     public class ProfissionalService : BaseService<ProfissionalDto, Profissional>, IProfissionalService
     {
         private readonly IProfissionalRepository _profissionalRepository;
+        private readonly IPessoaService _pessoaService;
+        private readonly IEnderecoService _enderecoService;
         private readonly IConfiguration _configuration;
         private readonly ILogger<ProfissionalService> _logger;
 
         public ProfissionalService(IProfissionalRepository profissionalRepository,
+                                   IPessoaService pessoaService,
+                                   IEnderecoService enderecoService,
                                    ILogger<ProfissionalService> logger,
                                    IMapper mapper,
                                    IConfiguration configuration) : base(profissionalRepository, mapper)
         {
-            _profissionalRepository = profissionalRepository;
-            _configuration = configuration;
             _logger = logger;
+            _profissionalRepository = profissionalRepository;
+            _pessoaService = pessoaService;
+            _enderecoService = enderecoService;
+            _configuration = configuration;
         }
 
         ResultDto<ProfissionalResponseDto> IProfissionalService.Get(string id)
@@ -127,12 +133,40 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             ResultDto<ProfissionalDto> returnValue = new();
             string? insertQuery = null;
+            string? insertPessoaQuery = null;
 
             try
             {
+                PessoaDto pessoa = new()
+                {
+                    Cpf = dto.Cpf,
+                    DataNascimento = dto.DataNascimento,
+                    Email = dto.Email,
+                    Ativo = dto.Ativo,
+                    Nome = dto.Nome,
+                    NomeReduzido = dto.NomeReduzido,
+                    Sexo = dto.Sexo
+                };
+
+
+                ResultDto<PessoaDto> result = _pessoaService.Insert(pessoa);
+                PessoaDto? pessoaFound = result.Items.FirstOrDefault();
+
+                EnderecoDto endereco = new()
+                {
+                    Bairro = dto.Endereco.Bairro,
+                    Cep = dto.Endereco.Cep,
+                    Complemento = dto.Endereco.Complemento,
+                    Logradouro = dto.Endereco.Logradouro,
+                    Numero = dto.Endereco.Numero,
+                    PessoaId = pessoaFound.Id
+                };
+
+                ResultDto<EnderecoDto> resultEndereco = _enderecoService.Insert(endereco);
+
                 Profissional profissional = _mapper.Map<ProfissionalDto, Profissional>(dto);
                 insertQuery = $@"INSERT INTO profissional(Id, PessoaId, RegistroProfissionalId, Numero, Ativo)
-                                 VALUES(null, {profissional.PessoaId}, {profissional.RegistroProfissionalId}, '{profissional.Numero}', {profissional.Ativo});";
+                                 VALUES(null, {pessoaFound?.Id}, {profissional.RegistroProfissionalId}, '{profissional.Numero}', {profissional.Ativo});";
 
                 long newId = _profissionalRepository.Insert(insertQuery);
                 if (newId > 0)

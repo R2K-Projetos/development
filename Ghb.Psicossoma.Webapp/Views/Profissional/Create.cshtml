@@ -1,11 +1,13 @@
-﻿@{
+﻿@model ProfissionalViewModel
+
+@{
     //var controllerName = "Profissional";
     ViewData["Title"] = "Cadastrar: Profissional";
 }
 <div class="container">
     <div class="row justify-content-center py-1">
         <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
-            <form id="formPaciente" asp-controller="Paciente" asp-action="Create" method="post">
+            <form id="formProfissional" asp-controller="Profissional" asp-action="Create" method="post">
                 @* @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.PessoaId) *@
                 <div class="card">
@@ -41,13 +43,8 @@
                                                 <input type="text" name="Cpf" id="Cpf" class="form-control form-control-sm" value="" />
                                             </div>
                                             <div class="col-3">
-                                                <label for="cmbSexo" class="form-label">Sexo</label>
-                                                <select name="cmbSexo" id="cmbSexo" class="form-select form-select-sm">
-                                                    <option value="">Selecione</option>
-                                                    <option value="M">Masculino</option>
-                                                    <option value="F">Feminino</option>
-                                                    <option value="O">Outro</option>
-                                                </select>
+                                                @Html.LabelFor(model => model.Sexo, new { @class = "form-label" })
+                                                @Html.DropDownListFor(model => model.Sexo, Model.OpcoesSexo, new { name = "cmbSexo", id = "cmbSexo", @class = "form-select form-select-sm" })
                                             </div>
                                             <div class="col-6">
                                                 <label for="NomeReduzido" class="form-label">NomeReduzido</label>
@@ -73,7 +70,7 @@
                                                             CEP:
                                                         </div>
                                                         <div class="d-inline-block">
-                                                            <input type="text" name="txtCEP" id="txtCEP" value="" class="form-control form-control-sm cep" style=" width: 110px;" autocomplete="off" />
+                                                            @Html.TextBoxFor(model => model.Endereco!.Cep, new { id = "txtCEP", name = "txtCEP", @class = "form-control form-control-sm cep", style = "width: 110px;" })
                                                         </div>
                                                         <div class="d-inline-block">
                                                             <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('txtCEP').value);" />
@@ -87,30 +84,28 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-9">
-                                                        <label for="txtLogradouro" class="form-label">Logradouro</label>
-                                                        <input type="text" name="txtLogradouro" id="txtLogradouro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                        @Html.LabelFor(model => model.Endereco!.Logradouro, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Logradouro, new { id = "txtLogradouro", name = "txtLogradouro", @class="form-control form-control-sm" })
                                                     </div>
                                                     <div class="col-3">
-                                                        <label for="txtNumero" class="form-label">Número</label>
-                                                        <input type="text" name="txtNumero" id="txtNumero" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                        @Html.LabelFor(model => model.Endereco!.Numero, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Numero, new { id = "txtNumero", name = "txtNumero", @class = "form-control form-control-sm" })
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <label for="txtComplemento" class="form-label">Complemento</label>
-                                                        <input type="text" name="txtComplemento" id="txtComplemento" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                        @Html.LabelFor(model => model.Endereco!.Complemento, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Complemento, new { id = "txtComplemento", name = "txtComplemento", @class = "form-control form-control-sm" })
                                                     </div>
                                                     <div class="col-6">
-                                                        <label for="txtBairro" class="form-label">Bairro</label>
-                                                        <input type="text" name="txtBairro" id="txtBairro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                        @Html.LabelFor(model => model.Endereco!.Bairro, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Bairro, new { id = "txtBairro", name = "txtBairro", @class = "form-control form-control-sm" })
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-3">
-                                                        <label for="cmbUF" class="form-label">UF</label>
-                                                        <select name="cmbUF" id="cmbUF" class="form-select form-select-sm">
-                                                            <option value="0">Selecione</option>
-                                                        </select>
+                                                        @Html.LabelFor(model => model.Endereco!.Ufs, new { @class = "form-label" })
+                                                        @Html.DropDownListFor(model => model.Endereco!.UfId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm" })
                                                     </div>
                                                     <div class="col-9">
                                                         <label for="cmbCidade" class="form-label">Cidade</label>
@@ -156,17 +151,12 @@
                                                             <div class="card-text">
                                                                 <div class="row">
                                                                     <div class="col-6">
-                                                                        <label for="DDDNum" class="form-label">Número</label>
-                                                                        <input type="text" name="DDDNum" id="DDDNum" class="form-control form-control-sm" maxlength="20" value="" />
+                                                                        @Html.LabelFor(model => model.Telefone!.DddNumero, new { @class = "form-label" })
+                                                                        @Html.TextBoxFor(model => model.Telefone!.DddNumero, new { id = "DDDNum", name = "DDDNum", maxlength="20", @class = "form-control form-control-sm" })
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        <label for="cmbTipoTelefone" class="form-label">Tipo</label>
-                                                                        <select name="cmbTipoTelefone" id="cmbTipoTelefone" class="form-select form-select-sm">
-                                                                            <option value="">Selecione</option>
-                                                                            <option value="1">Celular</option>
-                                                                            <option value="2">WhatsApp</option>
-                                                                            <option value="3">Comercial</option>
-                                                                        </select>
+                                                                        @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
+                                                                        @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { name = "cmbTipoTelefone", id = "cmbTipoTelefone", @class = "form-select form-select-sm" })
                                                                     </div>
                                                                     <div class="col-12 mt-2 pt-2 border-top border-secondary text-center">
                                                                         <button type="button" class="btn btn-secondary btn-sm" onclick="AddTelefone();">

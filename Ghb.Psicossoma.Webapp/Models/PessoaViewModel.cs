@@ -20,7 +20,9 @@ namespace Ghb.Psicossoma.Webapp.Models
         [StringLength(20)]
         public string Cpf { get; set; } = string.Empty;
 
+        [Required]
         [StringLength(1)]
+        [Display(Name = "Sexo")]
         public string Sexo { get; set; } = string.Empty;
 
         public IEnumerable<SelectListItem> OpcoesSexo { get; set; } = [];
@@ -29,11 +31,26 @@ namespace Ghb.Psicossoma.Webapp.Models
         [StringLength(80)]
         public string Email { get; set; } = string.Empty;
 
+        [Required]
         [Display(Name = "Nascimento")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DataNascimento { get; set; }
 
         public bool Ativo { get; set; }
+
+        public EnderecoViewModel? Endereco { get; set; }
+
+        public TelefoneViewModel? Telefone { get; set; }
+
+        [Display(Name = "Tipo")]
+        public IEnumerable<SelectListItem> TiposTelefone { get; set; } = [];
+
+        public int TipoTelefoneId { get; set; }
+
+        [Display(Name = "Registro")]
+        public IEnumerable<SelectListItem> Registros { get; set; } = [];
+
+        public int RegistroProfissionalId { get; set; }
     }
 }
