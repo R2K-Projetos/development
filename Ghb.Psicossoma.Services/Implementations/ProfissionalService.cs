@@ -91,10 +91,15 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT pf.Id, ps.Nome, rp.Descricao AS RegistroProfissional, pf.Numero, pf.Ativo
+                selectQuery = $@"SELECT pf.Id, ps.Nome, ps.Cpf, tel.dddnumero, rp.nome AS RegistroProfissional, pf.Numero,
+                                 esp.Nome AS Especialidade, pf.Ativo
                                  FROM profissional pf
-                                 INNER JOIN pessoa ps ON pf.pessoaId = ps.Id
-                                 INNER JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id;";
+                                 LEFT JOIN pessoa ps ON pf.pessoaId = ps.Id
+                                 LEFT JOIN telefone tel ON tel.pessoaid = ps.id
+                                 LEFT JOIN tipotelefone tiptel ON tiptel.id = tel.tipotelefoneid
+                                 LEFT JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id
+                                 LEFT JOIN profissionalespecialidade pfesp ON pf.Id = pfesp.profissionalid
+                                 LEFT JOIN especialidade esp ON esp.id = pfesp.especialidadeid;";
 
                 DataTable result = _profissionalRepository.GetAll(selectQuery);
                 List<ProfissionalResponse> profissionais = result.CreateListFromTable<ProfissionalResponse>();

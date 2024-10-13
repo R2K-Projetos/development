@@ -26,7 +26,20 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+
+            List<ProfissionalViewModel>? profissionais = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"profissional/getall").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string? data = message.Content.ReadAsStringAsync().Result;
+                ResultModel<ProfissionalViewModel>? model = JsonConvert.DeserializeObject<ResultModel<ProfissionalViewModel>>(data);
+                profissionais = model?.Items.ToList();
+
+                ViewBag.TotalEncontrado = profissionais?.Count;
+            }
+
+            return View(profissionais);
         }
 
         public IActionResult Create()
