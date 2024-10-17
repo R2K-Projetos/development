@@ -45,7 +45,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                                ,p.Sexo
                                                ,p.Email
                                                ,p.DataNascimento
-                                               ,p.Ativo
+                                               ,p.Ativo as IsAtivo
                                                ,pu.Descricao as PerfilUsuario
                                                ,st.Descricao as StatuslUsuario
                                           from paciente pc
@@ -101,7 +101,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                                ,p.Sexo
                                                ,p.Email
                                                ,p.DataNascimento
-                                               ,p.Ativo
+                                               ,p.Ativo as IsAtivo
                                                ,pu.Descricao as PerfilUsuario
                                                ,st.Descricao as StatuslUsuario
                                           from paciente pc

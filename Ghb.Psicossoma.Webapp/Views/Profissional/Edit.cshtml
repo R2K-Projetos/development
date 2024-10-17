@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row justify-content-center py-1">
         <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
-            <form id="formProfissional" asp-controller="Profissional" asp-action="Create" method="post">
+            <form id="formProfissional" asp-controller="Profissional" asp-action="Edit" method="post">
                 @* @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.PessoaId) *@
                 <div class="card">
@@ -22,6 +22,7 @@
                                         <button class="nav-link active" id="nav-dadosPrincipais-tab" data-bs-toggle="tab" data-bs-target="#nav-dadosPrincipais" type="button" role="tab" aria-controls="nav-dadosPrincipais" aria-selected="true">Dados Principais</button>
                                         <button class="nav-link" id="nav-endereco-tab" data-bs-toggle="tab" data-bs-target="#nav-endereco" type="button" role="tab" aria-controls="nav-endereco" aria-selected="false">Endereço</button>
                                         <button class="nav-link" id="nav-telefone-tab" data-bs-toggle="tab" data-bs-target="#nav-telefone" type="button" role="tab" aria-controls="nav-telefone" aria-selected="false">Telefone</button>
+                                        <button class="nav-link" id="nav-especialidade-tab" data-bs-toggle="tab" data-bs-target="#nav-especialidade" type="button" role="tab" aria-controls="nav-especialidade" aria-selected="false">Especialidades</button>
                                     </div>
                                 </nav>
                                 <div class="tab-content mb-3" id="nav-tabContent">
@@ -55,8 +56,8 @@
                                                 @Html.TextBoxFor(model => model.DataNascimento, new { type = "date", @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-9">
-                                                @Html.LabelFor(model => model.Email, new { @class = "form-label" })
-                                                @Html.TextBoxFor(model => model.Email, new { type = "email", @class = "form-control form-control-sm" })
+                                                <label for="Email" class="form-label">Email</label>
+                                                <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="" />
                                             </div>
                                         </div>
                                     </div>
@@ -85,27 +86,27 @@
                                                 <div class="row">
                                                     <div class="col-9">
                                                         @Html.LabelFor(model => model.Endereco!.Logradouro, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Endereco!.Logradouro, new { id = "txtLogradouro", name = "txtLogradouro", @class="form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Logradouro, new { @class="form-control form-control-sm" })
                                                     </div>
                                                     <div class="col-3">
                                                         @Html.LabelFor(model => model.Endereco!.Numero, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Endereco!.Numero, new { id = "txtNumero", name = "txtNumero", @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Numero, new { @class = "form-control form-control-sm" })
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6">
                                                         @Html.LabelFor(model => model.Endereco!.Complemento, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Endereco!.Complemento, new { id = "txtComplemento", name = "txtComplemento", @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Complemento, new { @class = "form-control form-control-sm" })
                                                     </div>
                                                     <div class="col-6">
                                                         @Html.LabelFor(model => model.Endereco!.Bairro, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Endereco!.Bairro, new { id = "txtBairro", name = "txtBairro", @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Bairro, new { @class = "form-control form-control-sm" })
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-3">
                                                         @Html.LabelFor(model => model.Endereco!.Ufs, new { @class = "form-label" })
-                                                        @Html.DropDownListFor(model => model.Endereco!.UfId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF(this.value)" })
+                                                        @Html.DropDownListFor(model => model.Endereco!.UfId, Model.Endereco!.Ufs, new { @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF(this.value)" })
                                                     </div>
                                                     <div class="col-9">
                                                         <label for="cmbCidade" class="form-label">Cidade</label>
@@ -178,6 +179,66 @@
                                                         </svg>
                                                         Novo
                                                     </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Especialidades-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom show active" id="nav-dadosPrincipais" role="tabpanel" aria-labelledby="nav-dadosPrincipais-tab">
+                                        <div class="row pt-2">
+                                            <div class="col-6">
+                                                <div class="divListaDePara">
+                                                    <table class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <td colspan="2" class="p-2 fw-bold">
+                                                                    Especilidades disponíveis
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="ps-2" style=" width: 1rem;">
+                                                                    Psicologia
+                                                                </td>
+                                                                <td class="ps-2">
+                                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="AddEspecialidade();">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                                        </svg>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="divListaDePara">
+                                                    <table class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <td colspan="2" class="p-2">
+                                                                    <div class="text-start align-middle">
+                                                                        <div class="d-inline-flex" style=" width: 1rem;">
+                                                                            <%if CInt(iTotalIncluido) > 0 then %>
+                                                                            <input type="checkbox" name="ckbRelacionadosTodos" id="ckbRelacionadosTodos" value="1" onclick="checkTodosGuardaValue('formSelecao', 'ckbRelacionadosTodos', 'ckbItemAssociado', 'hdnCodigoRetira');" />
+                                                                            <%end if %>
+                                                                        </div>
+                                                                        <div class="d-inline-flex ps-1 fw-bold">Especilidades relacionadas</div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="ps-2" style=" width: 1rem;">
+                                                                    <input type="checkbox" name="ckbItemAssociado" id="ckbItemAssociado" value="<%= oRsAvaliacaoPerguntaCargo(" IIDCARGO") %>" onclick="GuardaValueItemChecked('ckbItemAssociado', 'hdnCodigoRetira');" />
+                                                                </td>
+                                                                <td class="ps-2"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>

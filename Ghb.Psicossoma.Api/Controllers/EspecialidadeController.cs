@@ -1,7 +1,6 @@
 ﻿using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
-using Ghb.Psicossoma.Services.Implementations;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -145,6 +144,68 @@ namespace Ghb.Psicossoma.Api.Controllers
             catch (Exception ex)
             {
                 result.BindError(500, "Erro na alteração da Especialidade", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Lista todas as especialidades cadastradas
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetListaDisponivel/{ProfissionalId}")]
+        [SwaggerOperation(
+        Summary = "Lista todas as especialidades ainda não vinculadas a um profissional",
+        Description = "Lista todas as especialidades ainda não vinculadas a um profissional",
+        OperationId = "Especialidade.GetListaDisponivel",
+        Tags = new[] { "Especialidade" })]
+        [ProducesResponseType(typeof(ResultDto<EspecialidadeDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<EspecialidadeDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<EspecialidadeDto> GetListaDisponivel(int ProfissionalId)
+        {
+            ResultDto<EspecialidadeDto> result = new();
+
+            try
+            {
+                result = _especialidadeService.GetEspecialidadeDisponivel(ProfissionalId);
+
+                if (!result.HasError)
+                    result.Message = "Especialidades listadas com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na listagem de especialidades", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Lista todas as especialidades cadastradas
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetListaIndisponivel/{ProfissionalId}")]
+        [SwaggerOperation(
+        Summary = "Lista todas as especialidades vinculadas a um profissional",
+        Description = "Lista todas as especialidades vinculadas a um profissional",
+        OperationId = "Especialidade.GetListaIndisponivel",
+        Tags = new[] { "Especialidade" })]
+        [ProducesResponseType(typeof(ResultDto<EspecialidadeDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<EspecialidadeDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<EspecialidadeDto> GetListaIndisponivel(int ProfissionalId)
+        {
+            ResultDto<EspecialidadeDto> result = new();
+
+            try
+            {
+                result = _especialidadeService.GetEspecialidadeIndisponivel(ProfissionalId);
+
+                if (!result.HasError)
+                    result.Message = "Especialidades listadas com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na listagem de especialidades", ex);
             }
 
             return Ok(result);

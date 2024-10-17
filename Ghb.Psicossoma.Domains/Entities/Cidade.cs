@@ -4,7 +4,7 @@ namespace Ghb.Psicossoma.Domains.Entities
 {
     public class Cidade : BaseEntity
     {
-        public string UFId { get; set; } = string.Empty;
+        public int UFId { get; set; }
         public string Nome { get; set; } = string.Empty;
     }
 }

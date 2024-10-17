@@ -48,23 +48,18 @@
                 <caption class="totalListagem">Total encontrado: <b>@ViewBag.TotalEncontrado</b></caption>
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Cpf)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.RegistroProfissional)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Numero)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Especialidade)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Ativo)</th>
-                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody class="linkLinha">
                     @foreach (ProfissionalViewModel item in Model)
                     {
                         <tr onclick="OpenEdit('@controllerName', 'Edit', '@item.Id');">
-                            <td scope="row">
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
                             <td class="text-start">
                                 @Html.DisplayFor(modelItem => item.Nome)
                             </td>
@@ -79,9 +74,6 @@
                             </td>
                             <td class="text-start">
                                 @Html.DisplayFor(modelItem => item.Especialidade)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Ativo)
                             </td>
                             <td class="text-center">
                                 @if (item.Ativo)
@@ -98,7 +90,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="8" class="pt-1"></td>
+                        <td colspan="6" class="pt-1"></td>
                     </tr>
                 </tfoot>
             </table>

@@ -18,7 +18,7 @@ namespace Ghb.Psicossoma.Domains.Entities
 
         public DateTime DataNascimento { get; set; }
 
-        public bool Ativo { get; set; }
+        public bool IsAtivo { get; set; }
 
         public string? PerfilUsuario { get; set; }
 

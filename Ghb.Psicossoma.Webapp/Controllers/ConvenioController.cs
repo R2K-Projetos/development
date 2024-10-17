@@ -40,6 +40,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }
             return View(convenios);
         }
+
         public IActionResult Create()
         {
             ConvenioViewModel convenio = new();

@@ -26,7 +26,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
         public IActionResult Index()
         {
-
             List<ProfissionalViewModel>? profissionais = new();
             HttpResponseMessage message = _httpClient.GetAsync($"profissional/getall").Result;
 
@@ -79,11 +78,26 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return View(result);
         }
 
+        public ActionResult Edit(int id)
+        {
+            ProfissionalViewModel? itemFound = null;
+            HttpResponseMessage message = _httpClient.GetAsync($"profissional/Get/{id}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<ProfissionalViewModel>? model = JsonConvert.DeserializeObject<ResultModel<ProfissionalViewModel>>(content);
+                itemFound = model!.Items.FirstOrDefault()!;
+            }
+
+            return View(itemFound);
+        }
+
         private List<SelectListItem> FillSexoDropDown()
         {
             List<SelectListItem> sexo = new()
             {
-                new() { Text = "--Selecione o sexo--", Value = ""},
+                new() { Text = "[Selecione]", Value = ""},
                 new() { Text = "Masculino", Value = "M"},
                 new() { Text = "Feminino", Value = "F"}
             };
@@ -103,11 +117,11 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 {
                     foreach (UfViewModel item in response?.Items!)
                     {
-                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
+                        SelectListItem select = new() { Text = item.Sigla, Value = item.Id.ToString() };
                         ufs.Add(select);
                     }
 
-                    ufs.Insert(0, new SelectListItem() { Text = "--Selecione o estado--", Value = "-1" });
+                    ufs.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
                 }
             }
 
@@ -131,7 +145,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                         tipos.Add(select);
                     }
 
-                    tipos.Insert(0, new SelectListItem() { Text = "--Selecione o tipo--", Value = "-1" });
+                    tipos.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
                 }
             }
 
@@ -155,11 +169,89 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                         registros.Add(select);
                     }
 
-                    registros.Insert(0, new SelectListItem() { Text = "--Selecione o registro--", Value = "-1" });
+                    registros.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
                 }
             }
 
             return registros;
+        }
+
+        public IActionResult FillCidadesUF(int ufId)
+        {
+            HttpResponseMessage message = _httpClient.GetAsync($"cidade/GetAllByUf?ufId={ufId}").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<CidadeViewModel>? response = JsonConvert.DeserializeObject<ResultModel<CidadeViewModel>>(content);
+
+            var listaCidades = new List<CidadeViewModel>();
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (CidadeViewModel item in response?.Items!)
+                    {
+                        var cidade = new CidadeViewModel
+                        {
+                            Id = item.Id,
+                            Nome = item.Nome,
+                            UFId = ufId
+                        };
+                        listaCidades.Add(cidade);
+                    }
+                }
+            }
+
+            return Json(listaCidades);
+        }
+
+        public IActionResult FillEspecialidadeDisponivel(int ProfissionalId)
+        {
+            HttpResponseMessage message = _httpClient.GetAsync($"Especialidade/GetListaDisponivel/" + ProfissionalId).Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<EspecialidadeViewModel>? response = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(content);
+
+            var list = new List<EspecialidadeViewModel>();
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (EspecialidadeViewModel item in response?.Items!)
+                    {
+                        var especialidade = new EspecialidadeViewModel
+                        {
+                            Id = item.Id,
+                            Nome = item.Nome,
+                        };
+                        list.Add(especialidade);
+                    }
+                }
+            }
+
+            return Json(list);
+        }
+        public IActionResult FillEspecialidadeIndisponivel(int ProfissionalId)
+        {
+            HttpResponseMessage message = _httpClient.GetAsync($"Especialidade/GetListaIndisponivel/" + ProfissionalId).Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<EspecialidadeViewModel>? response = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(content);
+
+            var list = new List<EspecialidadeViewModel>();
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (EspecialidadeViewModel item in response?.Items!)
+                    {
+                        var especialidade = new EspecialidadeViewModel
+                        {
+                            Id = item.Id,
+                            Nome = item.Nome,
+                        };
+                        list.Add(especialidade);
+                    }
+                }
+            }
+
+            return Json(list);
         }
     }
 }

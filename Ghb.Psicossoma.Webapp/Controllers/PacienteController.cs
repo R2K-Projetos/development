@@ -10,7 +10,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class PacienteController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7188/api";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
@@ -29,7 +28,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Index()
         {
             List<PacienteViewModel>? pacientes = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/paciente/getall").Result;
+            HttpResponseMessage message = _httpClient.GetAsync($"paciente/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -55,7 +54,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public IActionResult Create(PacienteViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/paciente/create", obj).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"paciente/create", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -69,8 +68,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public ActionResult Edit(int id)
         {
             PacienteViewModel? itemFound = null;
-            string itemFind = $"{baseAddress}/paciente/get/{id}";
-            HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
+            HttpResponseMessage message = _httpClient.GetAsync($"paciente/get/{id}").Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -85,8 +83,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public ActionResult Edit(PacienteViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/paciente/update", obj).Result;
-
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"paciente/update", obj).Result;
             if (message.IsSuccessStatusCode)
             {
                 string content = message.Content.ReadAsStringAsync().Result;
@@ -105,6 +102,105 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 new() { Text = "Feminino", Value = "F"}
             };
             return sexo;
+        }
+
+        private List<SelectListItem> FillUf()
+        {
+            List<SelectListItem> ufs = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"uf/getall").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<UfViewModel>? response = JsonConvert.DeserializeObject<ResultModel<UfViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (UfViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Sigla, Value = item.Id.ToString() };
+                        ufs.Add(select);
+                    }
+
+                    ufs.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return ufs;
+        }
+
+        private List<SelectListItem> FillTipoCelular()
+        {
+            List<SelectListItem> tipos = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"telefone/gettypes").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<TipoTelefoneViewModel>? response = JsonConvert.DeserializeObject<ResultModel<TipoTelefoneViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (TipoTelefoneViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
+                        tipos.Add(select);
+                    }
+
+                    tipos.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return tipos;
+        }
+
+        public IActionResult FillCidadesUF(int ufId)
+        {
+            HttpResponseMessage message = _httpClient.GetAsync($"cidade/GetAllByUf?ufId={ufId}").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<CidadeViewModel>? response = JsonConvert.DeserializeObject<ResultModel<CidadeViewModel>>(content);
+
+            var listaCidades = new List<CidadeViewModel>();
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (CidadeViewModel item in response?.Items!)
+                    {
+                        var cidade = new CidadeViewModel
+                        {
+                            Id = item.Id,
+                            Nome = item.Nome,
+                            UFId = ufId
+                        };
+                        listaCidades.Add(cidade);
+                    }
+                }
+            }
+
+            return Json(listaCidades);
+        }
+
+        private List<SelectListItem> FillGrauParentesco()
+        {
+            List<SelectListItem> ufs = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"uf/getall").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<UfViewModel>? response = JsonConvert.DeserializeObject<ResultModel<UfViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (UfViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Sigla, Value = item.Id.ToString() };
+                        ufs.Add(select);
+                    }
+
+                    ufs.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return ufs;
         }
     }
 }

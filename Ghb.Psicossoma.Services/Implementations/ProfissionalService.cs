@@ -91,15 +91,21 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT pf.Id, ps.Nome, ps.Cpf, tel.dddnumero, rp.nome AS RegistroProfissional, pf.Numero,
-                                 esp.Nome AS Especialidade, pf.Ativo
-                                 FROM profissional pf
-                                 LEFT JOIN pessoa ps ON pf.pessoaId = ps.Id
-                                 LEFT JOIN telefone tel ON tel.pessoaid = ps.id
-                                 LEFT JOIN tipotelefone tiptel ON tiptel.id = tel.tipotelefoneid
-                                 LEFT JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id
-                                 LEFT JOIN profissionalespecialidade pfesp ON pf.Id = pfesp.profissionalid
-                                 LEFT JOIN especialidade esp ON esp.id = pfesp.especialidadeid;";
+                selectQuery = $@"SELECT pf.Id
+                                        ,pf.pessoaId as PessoaId
+                                        ,ps.Nome
+                                        ,ps.Cpf
+                                        ,pf.Numero
+                                        ,rp.nome AS RegistroProfissional
+                                        ,pf.Ativo
+                                        ,IFNULL(GROUP_CONCAT(esp.Nome), '') as Especialidade
+                                   FROM profissional pf
+                                  INNER JOIN pessoa ps ON pf.pessoaId = ps.Id
+                                   LEFT JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id
+                                   LEFT JOIN profissionalespecialidade pfesp ON pf.Id = pfesp.profissionalid
+                                   LEFT JOIN especialidade esp ON esp.id = pfesp.especialidadeid
+                                  GROUP BY pf.Id,ps.Nome,ps.Cpf,rp.nome,pf.Numero,pf.Ativo
+                                  ORDER BY ps.Nome;";
 
                 DataTable result = _profissionalRepository.GetAll(selectQuery);
                 List<ProfissionalResponse> profissionais = result.CreateListFromTable<ProfissionalResponse>();
