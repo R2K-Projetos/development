@@ -3,8 +3,6 @@
 @{
     var controllerName = "Paciente";
     ViewData["Title"] = "Cadastrar: Paciente";
-
-    var opcoesSexoList = ViewBag.OpcoesSexo as List<SelectListItem>;
 }
 <div class="container">
     <div class="row justify-content-center py-1">
@@ -40,34 +38,34 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
-                                                        <label for="Nome" class="form-label">@Html.LabelFor(model => model.Nome)</label>
-                                                        <input type="text" name="Nome" id="Nome" class="form-control form-control-sm" maxlength="100" value="@Model.Nome" />
+                                                        @Html.LabelFor(model => model.Nome, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-3">
-                                                        <label for="Cpf" class="form-label">@Html.LabelFor(model => model.Cpf)</label>
-                                                        <input type="text" name="Cpf" id="Cpf" class="form-control form-control-sm" value="@Model.Cpf" />
+                                                        @Html.LabelFor(model => model.Cpf, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Cpf, new { @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Cpf, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-3">
-                                                        <label for="cmbSexo" class="form-label">Sexo</label>
-                                                        <select id="cmbSexo" name="cmbSexo" class="form-select form-select-sm" aria-label="Sexo Opções">
-                                                            <option selected>[Selecione]</option>
-                                                            @foreach (var item in opcoesSexoList)
-                                                            {
-                                                                <option value="@item.Value">@item.Text</option>
-                                                            }
-                                                        </select>
+                                                        @Html.LabelFor(model => model.Sexo, new { @class = "form-label" })
+                                                        @Html.DropDownListFor(model => model.Sexo, Model.OpcoesSexo, new { name = "cmbSexo", id = "cmbSexo", @class = "form-select form-select-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Sexo, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-6">
-                                                        <label for="NomeReduzido" class="form-label">@Html.LabelFor(model => model.NomeReduzido)</label>
-                                                        <input type="text" name="NomeReduzido" id="NomeReduzido" class="form-control form-control-sm" maxlength="40" value="@Model.NomeReduzido" />
+                                                        @Html.LabelFor(model => model.NomeReduzido, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.NomeReduzido, new { @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.NomeReduzido, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-3">
-                                                        <label for="DataNascimento" class="form-label">@Html.LabelFor(model => model.DataNascimento)</label>
-                                                        <input type="date" name="DataNascimento" id="DataNascimento" class="form-control form-control-sm" value="@Model.DataNascimento" />
+                                                        @Html.LabelFor(model => model.DataNascimento, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.DataNascimento, new { type = "date", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-9">
-                                                        <label for="Email" class="form-label">@Html.LabelFor(model => model.Email)</label>
-                                                        <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="@Model.Email" />
+                                                        @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Email, new { type = "email", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,7 +81,8 @@
                                                             CEP:
                                                         </div>
                                                         <div class="d-inline-block">
-                                                            <input type="text" name="txtCEP" id="txtCEP" value="" class="form-control form-control-sm cep" style=" width: 110px;" autocomplete="off" />
+                                                            @Html.TextBoxFor(model => model.Endereco!.Cep, new { id = "txtCEP", name = "txtCEP", @class = "form-control form-control-sm cep", style = "width: 110px;" })
+                                                            @Html.ValidationMessageFor(model => model.Endereco!.Cep, "", new { @class = "text-danger" })
                                                         </div>
                                                         <div class="d-inline-block">
                                                             <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('txtCEP').value);" />
@@ -97,30 +96,32 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-9">
-                                                        <label for="txtLogradouro" class="form-label">Logradouro</label>
-                                                        <input type="text" name="txtLogradouro" id="txtLogradouro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                        @Html.LabelFor(model => model.Endereco!.Logradouro, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Logradouro, new { id = "txtLogradouro", name = "txtLogradouro", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.Logradouro, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-3">
-                                                        <label for="txtNumero" class="form-label">Número</label>
-                                                        <input type="text" name="txtNumero" id="txtNumero" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                        @Html.LabelFor(model => model.Endereco!.Numero, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Numero, new { id = "txtNumero", name = "txtNumero", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.Numero, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <label for="txtComplemento" class="form-label">Complemento</label>
-                                                        <input type="text" name="txtComplemento" id="txtComplemento" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                        @Html.LabelFor(model => model.Endereco!.Complemento, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Complemento, new { id = "txtComplemento", name = "txtComplemento", @class = "form-control form-control-sm" })
                                                     </div>
                                                     <div class="col-6">
-                                                        <label for="txtBairro" class="form-label">Bairro</label>
-                                                        <input type="text" name="txtBairro" id="txtBairro" value="" class="form-control form-control-sm" autocomplete="off" />
+                                                        @Html.LabelFor(model => model.Endereco!.Bairro, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Bairro, new { id = "txtBairro", name = "txtBairro", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.Bairro, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-3">
-                                                        <label for="cmbUF" class="form-label">UF</label>
-                                                        <select name="cmbUF" id="cmbUF" class="form-select form-select-sm">
-                                                            <option value="0">Selecione</option>
-                                                        </select>
+                                                        @Html.LabelFor(model => model.Endereco!.Ufs, new { @class = "form-label" })
+                                                        @Html.DropDownListFor(model => model.Endereco!.UfId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF(this.value)" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.UfId, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-9">
                                                         <label for="cmbCidade" class="form-label">Cidade</label>
@@ -136,19 +137,6 @@
                                     <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-telefone" role="tabpanel" aria-labelledby="nav-telefone-tab">
                                         <div class="row p-2">
                                             <div class="col-12">
-                                                <div class="table-responsive">
-                                                    <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">Número</th>
-                                                                <th scope="col">Tipo</th>
-                                                                <th scope="col" class="text-center">&nbsp;</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="table-group-divider">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
                                                 <div id="formTelefone" class="border border-secondary rounded">
                                                     <input type="hidden" name="hdnTotalTelefonesAdicionados" id="hdnTotalTelefonesAdicionados" value="0" />
                                                     <div class="card">
@@ -164,29 +152,46 @@
                                                                 </div>
                                                             </div>
                                                             <div class="card-text">
+                                                                <div id="alertaTelefone" class="alert alert-danger print-error-msg" style="display:none">
+                                                                    <span></span>
+                                                                    <div class="float-end">
+                                                                        <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert('alertaTelefone');"></button>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="row">
                                                                     <div class="col-6">
-                                                                        <label for="DDDNum" class="form-label">Número</label>
-                                                                        <input type="text" name="DDDNum" id="DDDNum" class="form-control form-control-sm" maxlength="20" value="" />
+                                                                        @Html.LabelFor(model => model.Telefone!.DDDNum, new { @class = "form-label" })
+                                                                        @Html.TextBoxFor(model => model.Telefone!.DDDNum, new { name = "txtNumeroTel", id = "txtNumeroTel", maxlength = "20", @class = "form-control form-control-sm" })
                                                                     </div>
-                                                                    <div class="col-6">
-                                                                        <label for="cmbTipoTelefone" class="form-label">Tipo</label>
-                                                                        <select name="cmbTipoTelefone" id="cmbTipoTelefone" class="form-select form-select-sm">
-                                                                            <option value="">Selecione</option>
-                                                                            <option value="1">Celular</option>
-                                                                            <option value="2">WhatsApp</option>
-                                                                            <option value="3">Comercial</option>
-                                                                        </select>
+                                                                    <div class="col-4">
+                                                                        @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
+                                                                        @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { name = "cmbTipoTelefone", id = "cmbTipoTelefone", @class = "form-select form-select-sm" })
                                                                     </div>
-                                                                    <div class="col-12 mt-2 pt-2 border-top border-secondary text-center">
+                                                                    <div class="col-2 text-center pt-2">
+                                                                        <div class="pt-4"></div>
                                                                         <button type="button" class="btn btn-secondary btn-sm" onclick="AddTelefone();">
-                                                                            Salvar
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                                            </svg>
                                                                         </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Número</th>
+                                                                <th scope="col">Tipo</th>
+                                                                <th scope="col" class="text-center">&nbsp;</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                                 <div id="btnNovoTelefone" class="text-center pt-1">
                                                     <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">
@@ -265,8 +270,8 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-7">
-                                                                        <label for="txtNumeroTelefone" class="form-label">Nome</label>
-                                                                        <input type="text" name="txtNomePacienteRelac" id="txtNomePacienteRelac" class="form-control form-control-sm" maxlength="100" value="" style="width: 100%;" />
+                                                                        <label for="txtNomePessoaRelacionada" class="form-label">Nome da Pessoa</label>
+                                                                        <input type="text" name="txtNomePessoaRelacionada" id="txtNomePessoaRelacionada" class="form-control form-control-sm" maxlength="100" value="" />
                                                                     </div>
                                                                     <div class="col-4">
                                                                         <label for="cmbGrauParentesco" class="form-label">Tipo</label>
@@ -333,7 +338,7 @@
 </div>
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>
+    <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>    
     <script src="~/js/paciente.js" asp-append-version="true"></script>
     <script src="~/js/telefone.js" asp-append-version="true"></script>
     <script type="text/javascript">

@@ -6,15 +6,17 @@ namespace Ghb.Psicossoma.Webapp.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        public int PessoaId { get; set; }
+
+        [Required(ErrorMessage = "{0} é um campo obrigatório")]
         public int TipoTelefoneId { get; set; }
 
-        public bool Principal { get; set; }
-
-        [Required]
-        [StringLength(80)]
+        [Required(ErrorMessage = "{0} é um campo obrigatório")]
+        [StringLength(20, MinimumLength = 10, ErrorMessage = "{0} deve possuir pelo menos {2} caracteres")]
         [Display(Name = "Número")]
-        public string DddNumero { get; set; } = string.Empty;
+        public string DDDNum { get; set; } = string.Empty;
+
+        public bool Principal { get; set; }
 
         public bool Ativo { get; set; } = true;
     }

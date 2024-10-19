@@ -11,60 +11,46 @@ function FormTelefoneControl(bVisualiza) {
     }
 }
 //=========================
+function LimpaTelefone() {
+
+    HideAlert('alertaTelefone');
+    $('#txtNumeroTel').val('');
+    $("#cmbTipoTelefone").val($("#cmbTipoTelefone option:first").val());
+}
+//=========================
 function AddTelefone() {
-    $(document).ready(function () {
-        $("#formTelefone").validate({
-            rules: {
-                DDDNum: {
-                    required: true,
-                    minlength: 10,
-                    maxLength: 20
-                }
-            },
-            errorElement: "span",
-            errorPlacement: function (error, element) {
-                let customError = $([
-                    '<span class="invalid-feedback mt-0 mb-2 d-block text-start">',
-                    '  <span class="error-box mb-0 d-block"></span>',
-                    '</span>'
-                ].join(""));
 
-                error.addClass("form-error-message");
-                error.appendTo(customError.find('.error-box'));
-                customError.insertBefore(element);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-                $(element).closest('.invalid-feedback').toggle();
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-                $(element).closest('.invalid-feedback').toggle();
-            }
-        });
-        const arrayDadosTefone = Array(3);
+    const arrayDadosTefone = Array(3);
+    let totalInserido = $('#hdnTotalTelefonesAdicionados').val();
 
-        let totalInserido = $('#hdnTotalTelefonesAdicionados').val();
-        let numero = $('#DDDNum').val();
-        let codTipoTefone = RetornaComboSelecionado('cmbTipoTelefone');
-        let principal = 0;
-        if (totalInserido == 0) {
-            principal = 1;
-        }
-        let numeroItem = parseInt(totalInserido) + 1;
+    let numero = $('#txtNumeroTel').val();
+    if (numero == '' || numero == undefined) {
+        ShowAlert('danger', 'O campo <b>Número</b> deve ser informado.', 'alertaTelefone');
+        return false;
+    } 
+    let codTipoTefone = RetornaComboSelecionado('cmbTipoTelefone');
+    if (parseInt(codTipoTefone) < 0) {
+        ShowAlert('danger', 'O campo <b>Tipo</b> deve ser informado.', 'alertaTelefone');
+        return false;
+    }
+    //let principal = 0;
+    //if (totalInserido == 0) {
+    //    principal = 1;
+    //}
+    let numeroItem = parseInt(totalInserido) + 1;
 
-        arrayDadosTefone[0] = numeroItem;
-        arrayDadosTefone[1] = numero;
-        arrayDadosTefone[2] = GetTextValueComboBox('cmbTipoTelefone');
-        arrayDadosTefone[3] = codTipoTefone;
+    arrayDadosTefone[0] = numeroItem;
+    arrayDadosTefone[1] = numero;
+    arrayDadosTefone[2] = GetTextValueComboBox('cmbTipoTelefone');
+    arrayDadosTefone[3] = codTipoTefone;
 
-        let novaLinha = MontaLinhaTelefone(arrayDadosTefone);
+    let novaLinha = MontaLinhaTelefone(arrayDadosTefone);
 
-        $('#tableListaTelefone > tbody:last-child').append(novaLinha);
-        $('#hdnTotalTelefonesAdicionados').val(numeroItem);
+    $('#tableListaTelefone > tbody:last-child').append(novaLinha);
+    $('#hdnTotalTelefonesAdicionados').val(numeroItem);
 
-        ControlaViewTableTelefone(true);
-    });
+    LimpaTelefone();
+    ControlaViewTableTelefone(true);
 }
 function RemoveTelefone(idLinha) {
 

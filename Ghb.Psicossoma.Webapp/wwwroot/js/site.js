@@ -20,10 +20,10 @@ function OpenEdit(controller, view, Id) {
 }
 //=======================================
 //Retorna value comobox
-// Ex: let valor = RetornaComboSelecionado('comboNome');
+// Ex: let valor = RetornaComboSelecionado('comboId');
 //=======================================
-function RetornaComboSelecionado(sNomeCombo) {
-    return $("[name='" + sNomeCombo + "']").find(":selected").val();
+function RetornaComboSelecionado(comboId) {
+    return $('#' + comboId).find(":selected").val();
 }
 //=======================================
 //Retorna value comobox

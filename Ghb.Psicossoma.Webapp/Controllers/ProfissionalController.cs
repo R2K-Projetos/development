@@ -49,7 +49,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             profissional.Endereco.Ufs = FillUf();
             profissional.TiposTelefone = FillTipoCelular();
             profissional.OpcoesSexo = FillSexoDropDown();
-            profissional.Registros = FillRegistro();
+            profissional.TiposRegistroProfissional = FillRegistro();
 
             return View(profissional);
         }
@@ -57,25 +57,27 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public IActionResult Create(ProfissionalViewModel profissional)
         {
-            ProfissionalViewModel? result = null;
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"profissional/create", profissional).Result;
-            string content = message.Content.ReadAsStringAsync().Result;
-            ResultModel<ProfissionalViewModel>? response = JsonConvert.DeserializeObject<ResultModel<ProfissionalViewModel>>(content);
-
-            if (message.IsSuccessStatusCode)
+            if (ModelState.IsValid)
             {
-                if (!response?.HasError ?? false)
+                ProfissionalViewModel? result = null;
+                HttpResponseMessage message = _httpClient.PostAsJsonAsync($"profissional/create", profissional).Result;
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<ProfissionalViewModel>? response = JsonConvert.DeserializeObject<ResultModel<ProfissionalViewModel>>(content);
+
+                if (message.IsSuccessStatusCode)
                 {
-                    result = response?.Items.FirstOrDefault()!;
-                }
-                else
-                {
-                    //TODO: Determinar como serão exibidas mensagens de erro ao usuário
-                    //Aqui, como não há associação com Pessoa, a API retorna erro, na propriedade message.
+                    if (!response?.HasError ?? false)
+                    {
+                        result = response?.Items.FirstOrDefault()!;
+                    }
+                    else
+                    {
+                        //TODO: Determinar como serão exibidas mensagens de erro ao usuário
+                        //Aqui, como não há associação com Pessoa, a API retorna erro, na propriedade message.
+                    }
                 }
             }
-
-            return View(result);
+            return View(profissional);
         }
 
         public ActionResult Edit(int id)
@@ -104,54 +106,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return sexo;
         }
 
-        private List<SelectListItem> FillUf()
-        {
-            List<SelectListItem> ufs = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"uf/getall").Result;
-            string content = message.Content.ReadAsStringAsync().Result;
-            ResultModel<UfViewModel>? response = JsonConvert.DeserializeObject<ResultModel<UfViewModel>>(content);
-
-            if (message.IsSuccessStatusCode)
-            {
-                if (!response?.HasError ?? false)
-                {
-                    foreach (UfViewModel item in response?.Items!)
-                    {
-                        SelectListItem select = new() { Text = item.Sigla, Value = item.Id.ToString() };
-                        ufs.Add(select);
-                    }
-
-                    ufs.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
-                }
-            }
-
-            return ufs;
-        }
-
-        private List<SelectListItem> FillTipoCelular()
-        {
-            List<SelectListItem> tipos = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"telefone/gettypes").Result;
-            string content = message.Content.ReadAsStringAsync().Result;
-            ResultModel<TipoTelefoneViewModel>? response = JsonConvert.DeserializeObject<ResultModel<TipoTelefoneViewModel>>(content);
-
-            if (message.IsSuccessStatusCode)
-            {
-                if (!response?.HasError ?? false)
-                {
-                    foreach (TipoTelefoneViewModel item in response?.Items!)
-                    {
-                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
-                        tipos.Add(select);
-                    }
-
-                    tipos.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
-                }
-            }
-
-            return tipos;
-        }
-
         private List<SelectListItem> FillRegistro()
         {
             List<SelectListItem> registros = new();
@@ -174,6 +128,30 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }
 
             return registros;
+        }
+
+        private List<SelectListItem> FillUf()
+        {
+            List<SelectListItem> ufs = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"uf/getall").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<UfViewModel>? response = JsonConvert.DeserializeObject<ResultModel<UfViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (UfViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Sigla, Value = item.Id.ToString() };
+                        ufs.Add(select);
+                    }
+
+                    ufs.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return ufs;
         }
 
         public IActionResult FillCidadesUF(int ufId)
@@ -201,6 +179,30 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }
 
             return Json(listaCidades);
+        }
+
+        private List<SelectListItem> FillTipoCelular()
+        {
+            List<SelectListItem> tipos = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"telefone/gettypes").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<TipoTelefoneViewModel>? response = JsonConvert.DeserializeObject<ResultModel<TipoTelefoneViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (TipoTelefoneViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
+                        tipos.Add(select);
+                    }
+
+                    tipos.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return tipos;
         }
 
         public IActionResult FillEspecialidadeDisponivel(int ProfissionalId)

@@ -45,8 +45,12 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Create()
         {
             PacienteViewModel model = new();
-
-            ViewBag.OpcoesSexo = FillSexoDropDown();
+            model.Endereco = new();
+            model.Telefone = new();
+            model.Endereco.Ufs = FillUf();
+            model.TiposTelefone = FillTipoCelular();
+            model.OpcoesSexo = FillSexoDropDown();
+            model.TipoDeParentesco = FillGrauParentesco();
 
             return View(model);
         }
@@ -75,6 +79,13 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 string content = message.Content.ReadAsStringAsync().Result;
                 ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
                 itemFound = model!.Items.FirstOrDefault()!;
+                itemFound.Endereco = new();
+                itemFound.Telefone = new();
+                itemFound.Endereco.Ufs = FillUf();
+                itemFound.TiposTelefone = FillTipoCelular();
+                itemFound.OpcoesSexo = FillSexoDropDown();
+                itemFound.TipoDeParentesco = FillGrauParentesco();
+                itemFound.TelefonesPessoa = GetTelefonePaciente(itemFound.PessoaId);
             }
 
             return View(itemFound);
@@ -128,30 +139,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return ufs;
         }
 
-        private List<SelectListItem> FillTipoCelular()
-        {
-            List<SelectListItem> tipos = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"telefone/gettypes").Result;
-            string content = message.Content.ReadAsStringAsync().Result;
-            ResultModel<TipoTelefoneViewModel>? response = JsonConvert.DeserializeObject<ResultModel<TipoTelefoneViewModel>>(content);
-
-            if (message.IsSuccessStatusCode)
-            {
-                if (!response?.HasError ?? false)
-                {
-                    foreach (TipoTelefoneViewModel item in response?.Items!)
-                    {
-                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
-                        tipos.Add(select);
-                    }
-
-                    tipos.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
-                }
-            }
-
-            return tipos;
-        }
-
         public IActionResult FillCidadesUF(int ufId)
         {
             HttpResponseMessage message = _httpClient.GetAsync($"cidade/GetAllByUf?ufId={ufId}").Result;
@@ -179,28 +166,67 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return Json(listaCidades);
         }
 
-        private List<SelectListItem> FillGrauParentesco()
+        private List<SelectListItem> FillTipoCelular()
         {
-            List<SelectListItem> ufs = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"uf/getall").Result;
+            List<SelectListItem> tipos = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"telefone/gettypes").Result;
             string content = message.Content.ReadAsStringAsync().Result;
-            ResultModel<UfViewModel>? response = JsonConvert.DeserializeObject<ResultModel<UfViewModel>>(content);
+            ResultModel<TipoTelefoneViewModel>? response = JsonConvert.DeserializeObject<ResultModel<TipoTelefoneViewModel>>(content);
 
             if (message.IsSuccessStatusCode)
             {
                 if (!response?.HasError ?? false)
                 {
-                    foreach (UfViewModel item in response?.Items!)
+                    foreach (TipoTelefoneViewModel item in response?.Items!)
                     {
-                        SelectListItem select = new() { Text = item.Sigla, Value = item.Id.ToString() };
-                        ufs.Add(select);
+                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
+                        tipos.Add(select);
                     }
 
-                    ufs.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                    tipos.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
                 }
             }
 
-            return ufs;
+            return tipos;
+        }
+
+        private List<SelectListItem> FillGrauParentesco()
+        {
+            List<SelectListItem> list = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"GrauParentesco/GetAll").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<GrauParentescoViewModel>? response = JsonConvert.DeserializeObject<ResultModel<GrauParentescoViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (GrauParentescoViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
+                        list.Add(select);
+                    }
+
+                    list.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return list;
+        }
+
+        private List<TelefoneViewModel> GetTelefonePaciente(int PessoaId)
+        {
+            List<TelefoneViewModel>? lista = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"Telefone/GetAllTelefonePessoa/{PessoaId}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string? data = message.Content.ReadAsStringAsync().Result;
+                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(data);
+                lista = model?.Items.ToList();
+            }
+
+            return lista;
         }
     }
 }

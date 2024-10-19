@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ghb.Psicossoma.Webapp.Models
 {
@@ -13,5 +14,10 @@ namespace Ghb.Psicossoma.Webapp.Models
         public string? StatuslUsuario { get; set; }
 
         public bool IsAtivo { get; set; }
+
+        public GrauParentescoViewModel? GrauParentesco { get; set; }
+
+        [Display(Name = "Tipo de Parentesco")]
+        public IEnumerable<SelectListItem> TipoDeParentesco { get; set; } = [];
     }
 }

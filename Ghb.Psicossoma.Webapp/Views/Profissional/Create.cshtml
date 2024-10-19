@@ -37,26 +37,42 @@
                                             <div class="col-12">
                                                 @Html.LabelFor(model => model.Nome, new { @class = "form-label" })
                                                 @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-sm" })
+                                                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col-3">
                                                 @Html.LabelFor(model => model.Cpf, new { @class = "form-label" })
                                                 @Html.TextBoxFor(model => model.Cpf, new { @class = "form-control form-control-sm" })
+                                                @Html.ValidationMessageFor(model => model.Cpf, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col-3">
                                                 @Html.LabelFor(model => model.Sexo, new { @class = "form-label" })
-                                                @Html.DropDownListFor(model => model.Sexo, Model.OpcoesSexo, new { name = "cmbSexo", id = "cmbSexo", @class = "form-select form-select-sm" })
+                                                @Html.DropDownListFor(model => model.Sexo, Model.OpcoesSexo, new { @class = "form-select form-select-sm" })
+                                                @Html.ValidationMessageFor(model => model.Sexo, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col-6">
                                                 @Html.LabelFor(model => model.NomeReduzido, new { @class = "form-label" })
                                                 @Html.TextBoxFor(model => model.NomeReduzido, new { @class = "form-control form-control-sm" })
+                                                @Html.ValidationMessageFor(model => model.NomeReduzido, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col-3">
                                                 @Html.LabelFor(model => model.DataNascimento, new { @class = "form-label" })
                                                 @Html.TextBoxFor(model => model.DataNascimento, new { type = "date", @class = "form-control form-control-sm" })
+                                                @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
                                             </div>
                                             <div class="col-9">
                                                 @Html.LabelFor(model => model.Email, new { @class = "form-label" })
                                                 @Html.TextBoxFor(model => model.Email, new { type = "email", @class = "form-control form-control-sm" })
+                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-6">
+                                                @Html.LabelFor(model => model.TiposRegistroProfissional, new { @class = "form-label" })
+                                                @Html.DropDownListFor(model => model.RegistroProfissionalId, Model.TiposRegistroProfissional, new { name = "cmbSexo", id = "cmbSexo", @class = "form-select form-select-sm" })
+                                                @Html.ValidationMessageFor(model => model.TiposRegistroProfissional, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-6">
+                                                @Html.LabelFor(model => model.Numero, new { @class = "form-label" })
+                                                @Html.TextBoxFor(model => model.Numero, new { @class = "form-control form-control-sm" })
+                                                @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
                                     </div>
@@ -120,20 +136,7 @@
                                     <!--Telefone-->
                                     <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-telefone" role="tabpanel" aria-labelledby="nav-telefone-tab">
                                         <div class="row p-2">
-                                            <div class="col-12">                                        
-                                                <div class="table-responsive">
-                                                    <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">Número</th>
-                                                                <th scope="col">Tipo</th>
-                                                                <th scope="col" class="text-center">&nbsp;</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="table-group-divider">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                            <div class="col-12">
                                                 <div id="formTelefone" class="border border-secondary rounded">
                                                     <input type="hidden" name="hdnTotalTelefonesAdicionados" id="hdnTotalTelefonesAdicionados" value="0" />
                                                     <div class="card">
@@ -149,10 +152,16 @@
                                                                 </div>
                                                             </div>
                                                             <div class="card-text">
+                                                                <div id="alertaTelefone" class="alert alert-danger print-error-msg" style="display:none">
+                                                                    <span></span>
+                                                                    <div class="float-end">
+                                                                        <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert('alertaTelefone');"></button>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="row">
                                                                     <div class="col-6">
-                                                                        @Html.LabelFor(model => model.Telefone!.DddNumero, new { @class = "form-label" })
-                                                                        @Html.TextBoxFor(model => model.Telefone!.DddNumero, new { id = "DDDNum", name = "DDDNum", maxlength="20", @class = "form-control form-control-sm" })
+                                                                        @Html.LabelFor(model => model.Telefone!.DDDNum, new { @class = "form-label" })
+                                                                        @Html.TextBoxFor(model => model.Telefone!.DDDNum, new { id = "DDDNum", name = "DDDNum", maxlength = "20", @class = "form-control form-control-sm" })
                                                                     </div>
                                                                     <div class="col-4">
                                                                         @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
@@ -170,6 +179,19 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Número</th>
+                                                                <th scope="col">Tipo</th>
+                                                                <th scope="col" class="text-center">&nbsp;</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                                 <div id="btnNovoTelefone" class="text-center pt-1">
                                                     <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">
@@ -194,7 +216,7 @@
                                         </button>
                                     </div>
                                     <div class="col-8 text-center pt-2">
-                                        <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="ValidaFormProfissional();">Cadastrar</button>
                                     </div>
                                     <div class="col-2"></div>
                                 </div>

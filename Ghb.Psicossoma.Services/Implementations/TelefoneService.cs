@@ -115,5 +115,49 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             return returnValue;
         }
+
+        public ResultDto<TelefoneDto> GetAllTelefonePessoa(string PessaoId)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<TelefoneDto> returnValue = new();
+            string? selectQuery = null;
+
+            try
+            {
+                selectQuery = $@"SELECT Id, PessoaId, TipoTelefoneId, Principal, Dddnum, Ativo
+                                 FROM telefone
+                                 WHERE PessoaId = {PessaoId};";
+
+                DataTable result = _telefoneRepository.GetAll(selectQuery);
+                List<Telefone> telefones = result.CreateListFromTable<Telefone>();
+
+                if (telefones?.Count > 0)
+                {
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = telefones.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Telefone>, IEnumerable<TelefoneDto>>(telefones ?? Enumerable.Empty<Telefone>());
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
     }
 }

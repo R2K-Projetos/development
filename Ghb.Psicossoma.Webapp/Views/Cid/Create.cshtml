@@ -13,14 +13,17 @@
                         <div class="row">
                             <partial name="~/Views/Shared/_headerForm.cshtml" />
                             <div class="cod-12 pb-2">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="row pt-1">
                                     <div class="col-6">
-                                        <label for="Codigo" class="form-label">@Html.LabelFor(model => model.Codigo)</label>
-                                        <input type="text" name="Codigo" id="Codigo" class="form-control form-control-sm" maxlength="20" />
+                                        @Html.LabelFor(model => model.Codigo, new { @class = "form-label" })
+                                        @Html.TextBoxFor(model => model.Codigo, new { @class = "form-control form-control-sm" })
+                                        @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-12">
-                                        <label for="Descricao" class="form-label">@Html.LabelFor(model => model.Descricao)</label>
-                                        <textarea name="Descricao" id="Descricao" class="form-control form-control-sm" maxlength="200" rows="1" cols="1" style="height: 110px;"></textarea>
+                                        @Html.LabelFor(model => model.Descricao, new { @class = "form-label" })
+                                        @Html.TextArea("Descricao", null, 1, 1, new { @class = "form-control form-control-sm", style = "height: 110px;" })
+                                        @Html.ValidationMessageFor(model => model.Descricao, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>
@@ -46,52 +49,3 @@
         </div>
     </div>
 </div>
-@section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>
-    <script type="text/javascript">
-        //$.validator.setDefaults({
-        //    submitHandler: function () {
-        //alert("submitted!");
-        //return false;
-        //    }
-        //});
-
-        $(document).ready(function () {
-            $("#formEntidade").validate({
-                rules: {
-                    Codigo: {
-                        required: true,
-                        minlength: 2,
-                        maxLength: 10
-                    },
-                    Descricao: {
-                        required: true,
-                        minlength: 2,
-                        maxLength: 200
-                    }
-                },
-                errorElement: "span",
-                errorPlacement: function (error, element) {
-                    let customError = $([
-                        '<span class="invalid-feedback mt-0 mb-2 d-block text-start">',
-                        '  <span class="error-box mb-0 d-block"></span>',
-                        '</span>'
-                    ].join(""));
-
-                    error.addClass("form-error-message");
-                    error.appendTo(customError.find('.error-box'));
-                    customError.insertBefore(element);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).closest('.invalid-feedback').toggle();
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                    $(element).closest('.invalid-feedback').toggle();
-                }
-            });
-        });
-    </script>
-}

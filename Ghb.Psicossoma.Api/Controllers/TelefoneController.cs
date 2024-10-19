@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Ghb.Psicossoma.Services.Dtos;
-using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.AspNetCore.Authorization;
-using Ghb.Psicossoma.Api.Controllers.Base;
+﻿using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
+using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Ghb.Psicossoma.Services.Implementations;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Ghb.Psicossoma.Api.Controllers
 {
@@ -115,6 +114,37 @@ namespace Ghb.Psicossoma.Api.Controllers
             catch (Exception ex)
             {
                 result.BindError(500, "Erro na listagem de tipos de telefone", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Lista dos telefones de uma pessoa
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAllTelefonePessoa/{PessoaId}")]
+        [SwaggerOperation(
+        Summary = "Lista dos telefones de uma pessoa",
+        Description = "Lista dos telefones de uma pessoa",
+        OperationId = "Telefone.GetTelefonePessoa",
+        Tags = new[] { "Telefone" })]
+        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<TelefoneDto> GetAllTelefonePessoa(int PessoaId)
+        {
+            ResultDto<TelefoneDto> result = new();
+
+            try
+            {
+                result = _telefoneService.GetAllTelefonePessoa(PessoaId.ToString());
+
+                if (!result.HasError)
+                    result.Message = "Telefones listados com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na listagem de telefones", ex);
             }
 
             return Ok(result);

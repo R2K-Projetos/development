@@ -150,10 +150,16 @@
                                                                 </div>
                                                             </div>
                                                             <div class="card-text">
+                                                                <div id="alertaTelefone" class="alert alert-danger print-error-msg" style="display:none">
+                                                                    <span></span>
+                                                                    <div class="float-end">
+                                                                        <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert('alertaTelefone');"></button>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="row">
                                                                     <div class="col-6">
-                                                                        @Html.LabelFor(model => model.Telefone!.DddNumero, new { @class = "form-label" })
-                                                                        @Html.TextBoxFor(model => model.Telefone!.DddNumero, new { id = "DDDNum", name = "DDDNum", maxlength="20", @class = "form-control form-control-sm" })
+                                                                        @Html.LabelFor(model => model.Telefone!.DDDNum, new { @class = "form-label" })
+                                                                        @Html.TextBoxFor(model => model.Telefone!.DDDNum, new { id = "DDDNum", name = "DDDNum", maxlength = "20", @class = "form-control form-control-sm" })
                                                                     </div>
                                                                     <div class="col-4">
                                                                         @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
