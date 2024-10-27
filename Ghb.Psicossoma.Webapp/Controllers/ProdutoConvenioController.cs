@@ -9,7 +9,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class ProdutoConvenioController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7188/api";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
@@ -45,7 +44,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 }
                 else
                 {
-                    HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/produtoconvenio/getall").Result;
+                    HttpResponseMessage message = _httpClient.GetAsync($"produtoconvenio/getall").Result;
 
                     if (message.IsSuccessStatusCode)
                     {

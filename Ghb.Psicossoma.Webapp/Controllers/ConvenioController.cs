@@ -9,7 +9,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class ConvenioController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7188/api";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
@@ -28,7 +27,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Index()
         {
             List<ConvenioViewModel>? convenios = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/convenio/getall").Result;
+            HttpResponseMessage message = _httpClient.GetAsync($"convenio/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -50,7 +49,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public IActionResult Create(ConvenioViewModel convenio)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/convenio/create", convenio).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"convenio/create", convenio).Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -64,7 +63,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public ActionResult Edit(int id)
         {
             ConvenioViewModel? convenioFound = null;
-            string convenioFind = $"{baseAddress}/convenio/get/{id}";
+            string convenioFind = $"convenio/get/{id}";
             HttpResponseMessage message = _httpClient.GetAsync(convenioFind).Result;
 
             if (message.IsSuccessStatusCode)
@@ -79,7 +78,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public ActionResult Edit(ConvenioViewModel convenio)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/convenio/update", convenio).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"convenio/update", convenio).Result;
 
             if (message.IsSuccessStatusCode)
             {

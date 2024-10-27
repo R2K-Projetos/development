@@ -9,7 +9,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class GrupoGuiaController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7188/api";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
@@ -28,7 +27,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Index()
         {
             List<GrupoGuiaViewModel>? gruposGuia = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/grupoguia/getall").Result;
+            HttpResponseMessage message = _httpClient.GetAsync($"grupoguia/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -51,7 +50,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public IActionResult Create(GrupoGuiaViewModel grupoGuia)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/grupoguia/create", grupoGuia).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"grupoguia/create", grupoGuia).Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -65,7 +64,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public ActionResult Edit(int id)
         {
             GrupoGuiaViewModel? grupoGuiaFound = null;
-            string grupoGuiaFind = $"{baseAddress}/grupoguia/get/{id}";
+            string grupoGuiaFind = $"grupoguia/get/{id}";
             HttpResponseMessage message = _httpClient.GetAsync(grupoGuiaFind).Result;
 
             if (message.IsSuccessStatusCode)
@@ -81,7 +80,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public ActionResult Edit(GrupoGuiaViewModel grupoGuia)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/grupoguia/update", grupoGuia).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"grupoguia/update", grupoGuia).Result;
 
             if (message.IsSuccessStatusCode)
             {

@@ -4,7 +4,6 @@ using Ghb.Psicossoma.Webapp.Models.ResultModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Text.Json.Serialization;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
@@ -52,7 +51,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Create(UserViewModel user)
         {
             UserViewModel? result = null;
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/user/create", user).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"user/create", user).Result;
             string content = message.Content.ReadAsStringAsync().Result;
             ResultModel<UserViewModel>? response = JsonConvert.DeserializeObject<ResultModel<UserViewModel>>(content);
 

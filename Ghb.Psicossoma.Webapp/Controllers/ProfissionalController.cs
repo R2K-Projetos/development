@@ -230,6 +230,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return Json(list);
         }
+
         public IActionResult FillEspecialidadeIndisponivel(int ProfissionalId)
         {
             HttpResponseMessage message = _httpClient.GetAsync($"Especialidade/GetListaIndisponivel/" + ProfissionalId).Result;

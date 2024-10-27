@@ -1,0 +1,69 @@
+﻿@model TelefoneViewModel
+
+@{
+    var radPrincipal_Sim = @Model.Principal ? "checked" : "";
+    var radPrincipal_Nao = @Model.Principal ? "" : "checked";
+
+    var radAtivo_Sim = @Model.Ativo ? "checked" : "";
+    var radAtivo_Nao = @Model.Ativo ? "" : "checked";
+}
+@* <form asp-action="Edit" asp-controller="Telefone" method="post"> *@
+<div class="card">
+    <div class="card-body shadow">
+        <div class="card-title border-bottom border-secondary">
+            <div class="row">
+                <div class="col-10">
+                    <h5>Editar: Telefone</h5>
+                </div>
+                <div class="col-2 text-end">
+                    <button type="button" id="closeFormTelefone" class="btn-close" onclick="FormTelefoneControl(0);"></button>
+                </div>
+            </div>
+        </div>
+        <div class="card-text">
+            <div class="row">
+                <div id="alertaTelefone" class="alert alert-danger print-error-msg" style="display:none">
+                    <span></span>
+                    <div class="float-end">
+                        <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert('alertaTelefone');"></button>
+                    </div>
+                </div>                
+                @Html.HiddenFor(model => model.Id)
+                <div class="col-3">
+                    @Html.LabelFor(model => model.DDDNum, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.DDDNum, new { id = "DDDNum", name = "DDDNum", maxlength = "20", @class = "form-control form-control-sm" })
+                </div>
+                <div class="col-3">
+                    @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { name = "cmbTipoTelefone", id = "cmbTipoTelefone", @class = "form-select form-select-sm" })
+                </div>
+                <div class="col-3 text-center">
+                    <div class="ps-1 pb-2">Principal</div>
+                    <div class="btn-group ps-1" role="group" aria-label="Telefone Principal">
+                        <input type="radio" class="btn-check" name="Principal" id="Principal" value="1" autocomplete="off" @radPrincipal_Sim />
+                        <label class="btn btn-outline-secondary btn-sm" for="Principal">Sim</label>
+                        <input type="radio" class="btn-check" name="Principal" id="Principal" value="0" autocomplete="off" @radPrincipal_Nao />
+                        <label class="btn btn-outline-secondary btn-sm" for="Principal">Não</label>
+                    </div>
+                </div>
+                <div class="col-3 text-center">
+                    <div class="ps-1 pb-2">Ativo</div>
+                    <div class="btn-group ps-1" role="group" aria-label="Telefone Ativo">
+                        <input type="radio" class="btn-check" name="Ativo" id="Ativo" value="1" autocomplete="off" @radAtivo_Sim />
+                        <label class="btn btn-outline-secondary btn-sm" for="Ativo">Sim</label>
+                        <input type="radio" class="btn-check" name="Ativo" id="Ativo" value="0" autocomplete="off" @radAtivo_Nao />
+                        <label class="btn btn-outline-secondary btn-sm" for="Ativo">Não</label>
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row border-top border-secondary">
+                <div class="col-12 text-center pt-2">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="AtualizarTelefone();">Alterar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* </form> *@

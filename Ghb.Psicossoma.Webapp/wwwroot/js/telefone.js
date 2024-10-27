@@ -90,3 +90,31 @@ function ControlaViewTableTelefone(bShowTable) {
         $('#tableListaTelefone').hide();
     }
 }
+
+function EditTelefone(Id) {
+
+    $.ajax({
+        type: 'GET',
+        url: 'ObterPartialTelefone',
+        data: { Id: Id },
+        cache: false,
+        async: true,
+        success: function (data) {
+            FormTelefoneControl(1);
+            $('#formTelefone').html(data);
+        },
+        failure: function (data) {
+            alert('ajax.failure:\n'
+                + 'data: ' + data + '\n'
+            );
+        },
+        error: function (req, status, error) {
+            alert('ajax.error:\n'
+                + 'data: ' + data + '\n'
+                + 'req: ' + req + '\n'
+                + 'status: ' + status + '\n'
+                + 'error: ' + error + '\n'
+            );
+        }
+    });
+}

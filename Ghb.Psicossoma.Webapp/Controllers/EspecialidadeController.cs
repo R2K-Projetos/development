@@ -9,7 +9,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class EspecialidadeController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7188/api";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
@@ -28,7 +27,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Index()
         {
             List<EspecialidadeViewModel>? list = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/especialidade/getall").Result;
+            HttpResponseMessage message = _httpClient.GetAsync($"especialidade/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -50,7 +49,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public IActionResult Create(EspecialidadeViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/especialidade/create", obj).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"especialidade/create", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -64,7 +63,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public ActionResult Edit(int id)
         {
             EspecialidadeViewModel? itemFound = null;
-            string itemFind = $"{baseAddress}/especialidade/get/{id}";
+            string itemFind = $"especialidade/get/{id}";
             HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
 
             if (message.IsSuccessStatusCode)
@@ -80,7 +79,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public ActionResult Edit(EspecialidadeViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/especialidade/update", obj).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"especialidade/update", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {

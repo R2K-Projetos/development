@@ -36,15 +36,15 @@ namespace Ghb.Psicossoma.Api.Controllers
         Description = "Busca os dados de um determinado telefone",
         OperationId = "Telefone.Get",
         Tags = new[] { "Telefone" })]
-        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<TelefoneDto> Get(int id)
+        [ProducesResponseType(typeof(ResultDto<TelefoneResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<TelefoneResponseDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<TelefoneResponseDto> Get(int id)
         {
-            ResultDto<TelefoneDto> result = new();
+            ResultDto<TelefoneResponseDto> result = new();
 
             try
             {
-                result = _telefoneService.Get(id.ToString());
+                result = _telefoneService.GetTelefone(id.ToString());
 
                 if (!result.HasError)
                     result.Message = "Telefone localizado com sucesso!";
@@ -52,37 +52,6 @@ namespace Ghb.Psicossoma.Api.Controllers
             catch (Exception ex)
             {
                 result.BindError(500, "Erro na localização de prontuário", ex);
-            }
-
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Lista todos os telefones cadastrados
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetAll")]
-        [SwaggerOperation(
-        Summary = "Lista todos os telefones cadastrados",
-        Description = "Lista todos os telefones cadastrados",
-        OperationId = "Telefone.GetAll",
-        Tags = new[] { "Telefone" })]
-        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<TelefoneDto> GetAll()
-        {
-            ResultDto<TelefoneDto> result = new();
-
-            try
-            {
-                result = _telefoneService.GetAll();
-
-                if (!result.HasError)
-                    result.Message = "Telefones listados com sucesso!";
-            }
-            catch (Exception ex)
-            {
-                result.BindError(500, "Erro na listagem de telefones", ex);
             }
 
             return Ok(result);
@@ -129,11 +98,11 @@ namespace Ghb.Psicossoma.Api.Controllers
         Description = "Lista dos telefones de uma pessoa",
         OperationId = "Telefone.GetTelefonePessoa",
         Tags = new[] { "Telefone" })]
-        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<TelefoneDto> GetAllTelefonePessoa(int PessoaId)
+        [ProducesResponseType(typeof(ResultDto<TelefoneResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<TelefoneResponseDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<TelefoneResponseDto> GetAllTelefonePessoa(int PessoaId)
         {
-            ResultDto<TelefoneDto> result = new();
+            ResultDto<TelefoneResponseDto> result = new();
 
             try
             {
@@ -145,6 +114,71 @@ namespace Ghb.Psicossoma.Api.Controllers
             catch (Exception ex)
             {
                 result.BindError(500, "Erro na listagem de telefones", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Cria um novo telefone
+        /// </summary>
+        /// <param name="telefoneInfo">Json contendo os dados de um novo telefone></param>
+        /// <returns></returns>
+        [HttpPost("Create")]
+        [SwaggerOperation(
+        Summary = "Cria um novo telefone",
+        Description = "Cria um novo telefone",
+        OperationId = "Telefone.Create",
+        Tags = new[] { "Telefone" })]
+        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<TelefoneDto> Create([FromBody] TelefoneDto telefoneInfo)
+        {
+            ResultDto<TelefoneDto> result = new();
+
+            try
+            {
+                telefoneInfo.Id = 0;
+                result = _telefoneService.Insert(telefoneInfo);
+
+                if (!result.HasError)
+                    result.Message = "Telefone criado com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na criação do telefone", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Atualiza os dados de um Telefone
+        /// </summary>
+        /// <param name="telefoneInfo">Json contendo os dados do telefone></param>
+        /// <returns></returns>
+        [HttpPost("Update")]
+        [SwaggerOperation(
+        Summary = "Atualiza os dados de um telefone",
+        Description = "Atualiza os dados de um telefone",
+        OperationId = "Telefone.Update",
+        Tags = new[] { "Telefone" })]
+        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<TelefoneDto> Update([FromBody] TelefoneDto telefoneInfo)
+        {
+            ResultDto<TelefoneDto> result = new();
+
+            try
+            {
+                result = _telefoneService.Update(telefoneInfo);
+
+                if (!result.HasError)
+                    result.Message = "Telefone alterado com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na alteração de telefone", ex);
             }
 
             return Ok(result);

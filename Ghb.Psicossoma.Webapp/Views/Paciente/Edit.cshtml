@@ -4,11 +4,9 @@
     var controllerName = "Paciente";
     ViewData["Title"] = "Alterar: Paciente";
 
-    var statusAtivo = "";
-    if (@Model.Ativo)
-    {
-        statusAtivo = "checked";
-    }
+    var statusAtivo = @Model.Ativo ? "checked" : "";
+    var colorPrincipal = "";
+    var colorAtivo = "";
 }
 <div class="container">
     <div class="row justify-content-center py-1">
@@ -144,7 +142,6 @@
                                                     <table class="table table-md table-light table-striped table-hover border border-tables">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col" class="text-center">#</th>
                                                                 <th scope="col">Número</th>
                                                                 <th scope="col">Tipo</th>
                                                                 <th scope="col">Principal</th>
@@ -153,134 +150,48 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody class="table-group-divider">
-                                                            <tr>
-                                                                <th scope="row" class="text-center">1</th>
-                                                                <td>(84) 98765-4321</td>
-                                                                <td>Celular</td>
-                                                                <td class="text-center">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-check2-circle" viewBox="0 0 16 16">
-                                                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
-                                                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
-                                                                    </svg>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-check2-circle" viewBox="0 0 16 16">
-                                                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
-                                                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
-                                                                    </svg>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <div class=" divIcons">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                                                            @foreach (var item in Model.TelefonesPessoa)
+                                                            {
+                                                                <tr>
+                                                                    <td scope="row">
+                                                                        @Html.DisplayFor(modelItem => item.DDDNum)
+                                                                    </td>
+                                                                    <td class="text-start">
+                                                                        @Html.DisplayFor(modelItem => item.TipoTelefone)
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        @if (item.Principal)
+                                                                            colorPrincipal = "green";
+                                                                        else
+                                                                            colorPrincipal = "lightGray";
+
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="@colorPrincipal" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                                                                         </svg>
-                                                                    </div>
-                                                                    <div class="divIcons">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        @if (item.Ativo)
+                                                                            colorAtivo = "green";
+                                                                        else
+                                                                            colorAtivo = "lightGray";
+
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="@colorAtivo" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                                                                         </svg>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row" class="text-center">2</th>
-                                                                <td>(84) 3210-7654</td>
-                                                                <td>Comercial</td>
-                                                                <td class="text-center">&nbsp</td>
-                                                                <td class="text-center">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-check2-circle" viewBox="0 0 16 16">
-                                                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
-                                                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
-                                                                    </svg>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <div class=" divIcons">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="divIcons">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                                                        </svg>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row" class="text-center">3</th>
-                                                                <td>+55 84 3356-7897</td>
-                                                                <td>WhatsApp</td>
-                                                                <td class="text-center">&nbsp</td>
-                                                                <td class="text-center">&nbsp</td>
-                                                                <td class="text-center">
-                                                                    <div class=" divIcons">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="divIcons">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                                                        </svg>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="btn btn-outline-secondary btn-icon" onclick="EditTelefone(@item.Id);">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                                                                            </svg>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            }
                                                         </tbody>
                                                     </table>
                                                 </div>
                                                 <div id="formTelefone" class="border border-secondary rounded">
-                                                    <div class="card">
-                                                        <div class="card-body shadow">
-                                                            <div class="card-title border-bottom border-secondary">
-                                                                <div class="row">
-                                                                    <div class="col-10">
-                                                                        <h5>Cadastro: Telefone</h5>
-                                                                    </div>
-                                                                    <div class="col-2 text-end">
-                                                                        <button type="button" id="closeFormTelefone" class="btn-close" onclick="FormTelefoneControl(0);"></button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-text">
-                                                                <div class="row">
-                                                                    <div id="alertaTelefone" class="alert alert-danger print-error-msg" style="display:none">
-                                                                        <span></span>
-                                                                        <div class="float-end">
-                                                                            <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert('alertaTelefone');"></button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        @Html.LabelFor(model => model.Telefone!.DDDNum, new { @class = "form-label" })
-                                                                        @Html.TextBoxFor(model => model.Telefone!.DDDNum, new { id = "DDDNum", name = "DDDNum", maxlength = "20", @class = "form-control form-control-sm" })
-                                                                    </div>
-                                                                    <div class="col-4">
-                                                                        @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
-                                                                        @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { name = "cmbTipoTelefone", id = "cmbTipoTelefone", @class = "form-select form-select-sm" })
-                                                                    </div>
-                                                                    <div class="col-2 text-center">
-                                                                        <div class="ps-1 pt-2 pb-2">Principal</div>
-                                                                        <div class="btn-group ps-1" role="group" aria-label="Basic radio toggle button group">
-                                                                            <input type="radio" class="btn-check" name="radPrincipal" id="radPrincipal_1" value="1" autocomplete="off" />
-                                                                            <label class="btn btn-outline-secondary btn-sm" for="radPrincipal_1">Sim</label>
-                                                                            <input type="radio" class="btn-check" name="radPrincipal" id="radPrincipal_2" value="0" autocomplete="off" />
-                                                                            <label class="btn btn-outline-secondary btn-sm" for="radPrincipal_2">Não</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-2 text-center pt-2">
-                                                                        <div class="pt-4"></div>
-                                                                        <button type="button" class="btn btn-secondary btn-sm" onclick="AddTelefone();">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-                                                                            </svg>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div id="btnNovoTelefone" class="text-center">
                                                     <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">

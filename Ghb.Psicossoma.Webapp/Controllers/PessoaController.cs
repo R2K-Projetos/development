@@ -1,16 +1,15 @@
-﻿using Newtonsoft.Json;
-using Ghb.Psicossoma.Cache;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Mvc;
+﻿using Ghb.Psicossoma.Cache;
 using Ghb.Psicossoma.Webapp.Models;
 using Ghb.Psicossoma.Webapp.Models.ResultModel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class PessoaController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7188/api";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
@@ -29,7 +28,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Index()
         {
             List<PessoaViewModel>? pessoas = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/pessoa/getall").Result;
+            HttpResponseMessage message = _httpClient.GetAsync($"pessoa/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -55,7 +54,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public IActionResult Create(PessoaViewModel pessoa)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/pessoa/create", pessoa).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"pessoa/create", pessoa).Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -69,7 +68,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public ActionResult Edit(int id)
         {
             PessoaViewModel? pessoaFound = null;
-            string pessoaFind = $"{baseAddress}/pessoa/get/{id}";
+            string pessoaFind = $"pessoa/get/{id}";
             HttpResponseMessage message = _httpClient.GetAsync(pessoaFind).Result;
 
             if (message.IsSuccessStatusCode)
@@ -86,7 +85,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public ActionResult Edit(PessoaViewModel pessoa)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/pessoa/update", pessoa).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"pessoa/update", pessoa).Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -126,7 +125,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 }
                 else
                 {
-                    HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/pessoa/getall").Result;
+                    HttpResponseMessage message = _httpClient.GetAsync($"pessoa/getall").Result;
 
                     if (message.IsSuccessStatusCode)
                     {

@@ -6,6 +6,7 @@ namespace Ghb.Psicossoma.Services.Abstractions
 {
     public interface ITelefoneService : IBaseService<TelefoneDto>
     {
-        ResultDto<TelefoneDto> GetAllTelefonePessoa(string pessoaId);
+        ResultDto<TelefoneResponseDto> GetTelefone(string Id);
+        ResultDto<TelefoneResponseDto> GetAllTelefonePessoa(string pessoaId);
     }
 }

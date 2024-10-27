@@ -9,7 +9,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 {
     public class PlanoSaudeController : Controller
     {
-        private readonly string baseAddress = "https://localhost:7188/api/planosaude";
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
         private readonly IConfiguration _configuration;
@@ -28,7 +27,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Index()
         {
             List<PlanoSaudeViewModel>? list = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"{baseAddress}/getall").Result;
+            HttpResponseMessage message = _httpClient.GetAsync($"planosaude/getall").Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -51,7 +50,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(PlanoSaudeViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/create", obj).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"planosaude/create", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {
@@ -65,7 +64,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public ActionResult Edit(int id)
         {
             PlanoSaudeViewModel? itemFound = null;
-            string itemFind = $"{baseAddress}/get/{id}";
+            string itemFind = $"planosaude/get/{id}";
             HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
 
             if (message.IsSuccessStatusCode)
@@ -82,7 +81,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PlanoSaudeViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"{baseAddress}/update", obj).Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"planosaude/update", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {

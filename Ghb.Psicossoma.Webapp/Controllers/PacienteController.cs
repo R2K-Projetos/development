@@ -48,7 +48,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             model.Endereco = new();
             model.Telefone = new();
             model.Endereco.Ufs = FillUf();
-            model.TiposTelefone = FillTipoCelular();
+            model.TiposTelefone = FillTipoTelefone();
             model.OpcoesSexo = FillSexoDropDown();
             model.TipoDeParentesco = FillGrauParentesco();
 
@@ -81,11 +81,11 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 itemFound = model!.Items.FirstOrDefault()!;
                 itemFound.Endereco = new();
                 itemFound.Telefone = new();
-                itemFound.Endereco.Ufs = FillUf();
-                itemFound.TiposTelefone = FillTipoCelular();
+                itemFound.Endereco.Ufs = FillUf();                
                 itemFound.OpcoesSexo = FillSexoDropDown();
                 itemFound.TipoDeParentesco = FillGrauParentesco();
                 itemFound.TelefonesPessoa = GetTelefonePaciente(itemFound.PessoaId);
+                //itemFound.Telefone.TiposTelefone = FillTipoTelefone();
             }
 
             return View(itemFound);
@@ -166,7 +166,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return Json(listaCidades);
         }
 
-        private List<SelectListItem> FillTipoCelular()
+        private List<SelectListItem> FillTipoTelefone()
         {
             List<SelectListItem> tipos = new();
             HttpResponseMessage message = _httpClient.GetAsync($"telefone/gettypes").Result;
@@ -227,6 +227,23 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }
 
             return lista;
+        }
+
+        public IActionResult ObterPartialTelefone(int id)
+        {
+            TelefoneViewModel? itemFound = null;
+            string itemFind = $"telefone/get/{id}";
+            HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(content);
+                itemFound = model!.Items.FirstOrDefault()!;
+                itemFound.TiposTelefone = FillTipoTelefone();
+            }            
+
+            return PartialView("~/Views/Shared/_PartialFormTelefone.cshtml", itemFound);
         }
     }
 }
