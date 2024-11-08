@@ -79,13 +79,18 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 string content = message.Content.ReadAsStringAsync().Result;
                 ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
                 itemFound = model!.Items.FirstOrDefault()!;
-                itemFound.Endereco = new();
-                itemFound.Telefone = new();
-                itemFound.Endereco.Ufs = FillUf();                
+
                 itemFound.OpcoesSexo = FillSexoDropDown();
-                itemFound.TipoDeParentesco = FillGrauParentesco();
-                itemFound.TelefonesPessoa = GetTelefonePaciente(itemFound.PessoaId);
-                //itemFound.Telefone.TiposTelefone = FillTipoTelefone();
+
+                itemFound.Endereco = GetEnderecoPessoa(itemFound.PessoaId);                
+                itemFound.Endereco.Ufs = FillUf();
+                //itemFound.Endereco.CidadeId = GetEnderecoPessoa(itemFound.PessoaId).CidadeId;
+
+                itemFound.Telefone = new();                
+                itemFound.TelefonesPessoa = GetTelefonePessoa(itemFound.PessoaId);
+                itemFound.Telefone.TiposTelefone = FillTipoTelefone();
+
+                itemFound.TipoDeParentesco = FillGrauParentesco();               
             }
 
             return View(itemFound);
@@ -166,6 +171,21 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return Json(listaCidades);
         }
 
+        private EnderecoViewModel GetEnderecoPessoa(int PessoaId)
+        {
+            EnderecoViewModel? itemFound = null;
+            HttpResponseMessage message = _httpClient.GetAsync($"Endereco/GetEnderecoPessoa/{PessoaId}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string? data = message.Content.ReadAsStringAsync().Result;
+                ResultModel<EnderecoViewModel>? model = JsonConvert.DeserializeObject<ResultModel<EnderecoViewModel>>(data);
+                itemFound = model!.Items.FirstOrDefault()!;
+            }
+
+            return itemFound;
+        }
+
         private List<SelectListItem> FillTipoTelefone()
         {
             List<SelectListItem> tipos = new();
@@ -214,7 +234,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return list;
         }
 
-        private List<TelefoneViewModel> GetTelefonePaciente(int PessoaId)
+        private List<TelefoneViewModel> GetTelefonePessoa(int PessoaId)
         {
             List<TelefoneViewModel>? lista = new();
             HttpResponseMessage message = _httpClient.GetAsync($"Telefone/GetAllTelefonePessoa/{PessoaId}").Result;
@@ -232,8 +252,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult ObterPartialTelefone(int id)
         {
             TelefoneViewModel? itemFound = null;
-            string itemFind = $"telefone/get/{id}";
-            HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
+            HttpResponseMessage message = _httpClient.GetAsync($"telefone/get/{id}").Result;
 
             if (message.IsSuccessStatusCode)
             {

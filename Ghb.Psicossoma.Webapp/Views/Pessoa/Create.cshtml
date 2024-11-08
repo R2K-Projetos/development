@@ -1,69 +1,350 @@
 ﻿@using Ghb.Psicossoma.Webapp.Models.Enums;
-
 @model PessoaViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    var controllerName = "Pessoa";
+    ViewData["Title"] = "Cadastro: Pessoa";
 }
-
-@using (Html.BeginForm("Create", "Pessoa", FormMethod.Post))
-{
-    <fieldset>
-        <legend>Nova Pessoa</legend>
-
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
-
-        @if (ViewBag.Message is not null)
-        {
-            <p style="border: 1px solid red">
-                @ViewBag.Message
-            </p>
-        }
-
-        <table>
-            <tr>
-                <td>@Html.LabelFor(a => a.Nome)</td>
-                <td>@Html.TextBoxFor(a => a.Nome)</td>
-                <td>@Html.ValidationMessageFor(a => a.Nome)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(a => a.NomeReduzido)</td>
-                <td>@Html.TextBoxFor(a => a.NomeReduzido)</td>
-                <td>@Html.ValidationMessageFor(a => a.NomeReduzido)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(a => a.Sexo)</td>
-                <td>
-                    @Html.DropDownList("Sexo", Model.OpcoesSexo)
-                </td>
-                <td>@Html.ValidationMessageFor(a => a.Sexo)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(a => a.Cpf)</td>
-                <td>@Html.TextBoxFor(a => a.Cpf)</td>
-                <td>@Html.ValidationMessageFor(a => a.Cpf)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(a => a.DataNascimento)</td>
-                <td>@Html.TextBoxFor(a => a.DataNascimento, new { @type = "date" })</td>
-                <td>@Html.ValidationMessageFor(a => a.DataNascimento)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(a => a.Email)</td>
-                <td>@Html.TextBoxFor(a => a.Email)</td>
-                <td>@Html.ValidationMessageFor(a => a.Email)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(a => a.Ativo)</td>
-                <td>@Html.CheckBoxFor(a => a.Ativo)</td>
-                <td>@Html.ValidationMessageFor(a => a.Ativo)</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Novo" /></td>
-                <td></td>
-            </tr>
-        </table>
-    </fieldset>
+<div class="container">
+    <div class="row justify-content-center py-1">
+        <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+            <form id="formPessoa" asp-controller="Pessoa" asp-action="Create" method="post">
+                @Html.HiddenFor(model => model.Id)
+                <div class="card">
+                    <div class="card-body shadow">
+                        <div class="row">
+                            <partial name="~/Views/Shared/_headerForm.cshtml" />
+                        </div>
+                        <div class="row pt-2">
+                            <div class="cod-12">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="nav-dadosPrincipais-tab" data-bs-toggle="tab" data-bs-target="#nav-dadosPrincipais" type="button" role="tab" aria-controls="nav-dadosPrincipais" aria-selected="true" onclick="TipoAbaControlPessoa('p')">Dados Principais</button>
+                                        <button class="nav-link" id="nav-endereco-tab" data-bs-toggle="tab" data-bs-target="#nav-endereco" type="button" role="tab" aria-controls="nav-endereco" aria-selected="false" onclick="TipoAbaControlPessoa('p')">Endereço</button>
+                                        <button class="nav-link" id="nav-telefone-tab" data-bs-toggle="tab" data-bs-target="#nav-telefone" type="button" role="tab" aria-controls="nav-endereco" aria-selected="false" onclick="TipoAbaControlPessoa('p')">Telefone</button>
+                                        <button class="nav-link" id="nav-relacionamento-tab" data-bs-toggle="tab" data-bs-target="#nav-relacionamento" type="button" role="tab" aria-controls="nav-relacionamento" aria-selected="false" onclick="TipoAbaControlPessoa('r')">Relacionamento</button>
+                                    </div>
+                                </nav>
+                                <div class="tab-content mb-3" id="nav-tabContent">
+                                    <!--dadosPrincipais-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom show active" id="nav-dadosPrincipais" role="tabpanel" aria-labelledby="nav-dadosPrincipais-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div id="alertaPadrao" class="alert alert-danger print-error-msg" style="display:none">
+                                                        <span></span>
+                                                        <div class="float-end">
+                                                            <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert();"></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        @Html.LabelFor(model => model.Nome, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-3">
+                                                        @Html.LabelFor(model => model.Cpf, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Cpf, new { @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Cpf, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-3">
+                                                        @Html.LabelFor(model => model.Sexo, new { @class = "form-label" })
+                                                        @Html.DropDownListFor(model => model.Sexo, Model.OpcoesSexo, new { name = "cmbSexo", id = "cmbSexo", @class = "form-select form-select-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Sexo, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-6">
+                                                        @Html.LabelFor(model => model.NomeReduzido, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.NomeReduzido, new { @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.NomeReduzido, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-3">
+                                                        @Html.LabelFor(model => model.DataNascimento, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.DataNascimento, new { type = "date", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-9">
+                                                        @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Email, new { type = "email", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Endereço-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-endereco" role="tabpanel" aria-labelledby="nav-endereco-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="d-inline-block">
+                                                            CEP:
+                                                        </div>
+                                                        <div class="d-inline-block">
+                                                            @Html.TextBoxFor(model => model.Endereco!.Cep, new { id = "txtCEP", name = "txtCEP", @class = "form-control form-control-sm cep", style = "width: 110px;" })
+                                                            @Html.ValidationMessageFor(model => model.Endereco!.Cep, "", new { @class = "text-danger" })
+                                                        </div>
+                                                        <div class="d-inline-block">
+                                                            <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('txtCEP').value);" />
+                                                        </div>
+                                                        <div class="d-inline-block">
+                                                            <div onclick="abrirBuscaCEP();">
+                                                                <img src="~/img/iconCorreios.png" alt="Busca de endere�o nos correios" style=" width: auto; height: 18px;" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        @Html.LabelFor(model => model.Endereco!.Logradouro, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Logradouro, new { id = "txtLogradouro", name = "txtLogradouro", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.Logradouro, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-3">
+                                                        @Html.LabelFor(model => model.Endereco!.Numero, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Numero, new { id = "txtNumero", name = "txtNumero", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.Numero, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        @Html.LabelFor(model => model.Endereco!.Complemento, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Complemento, new { id = "txtComplemento", name = "txtComplemento", @class = "form-control form-control-sm" })
+                                                    </div>
+                                                    <div class="col-6">
+                                                        @Html.LabelFor(model => model.Endereco!.Bairro, new { @class = "form-label" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Bairro, new { id = "txtBairro", name = "txtBairro", @class = "form-control form-control-sm" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.Bairro, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        @Html.LabelFor(model => model.Endereco!.Ufs, new { @class = "form-label" })
+                                                        @Html.DropDownListFor(model => model.Endereco!.UfId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF('" + @controllerName + "', this.value)" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.UfId, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-9">
+                                                        <label for="cmbCidade" class="form-label">Cidade</label>
+                                                        <select name="cmbCidade" id="cmbCidade" class="form-select form-select-sm">
+                                                            <option value="0">Selecione a UF</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Telefone-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-telefone" role="tabpanel" aria-labelledby="nav-telefone-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div id="formTelefone" class="border border-secondary rounded">
+                                                    <input type="hidden" name="hdnTotalTelefonesAdicionados" id="hdnTotalTelefonesAdicionados" value="0" />
+                                                    <div class="card">
+                                                        <div class="card-body shadow">
+                                                            <div class="card-title border-bottom border-secondary">
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <h5>Cadastro: Telefone</h5>
+                                                                    </div>
+                                                                    <div class="col-2 text-end">
+                                                                        <button type="button" id="closeFormTelefone" class="btn-close" onclick="FormTelefoneControl(0);"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <div id="alertaTelefone" class="alert alert-danger print-error-msg" style="display:none">
+                                                                    <span></span>
+                                                                    <div class="float-end">
+                                                                        <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert('alertaTelefone');"></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        @Html.LabelFor(model => model.Telefone!.DDDNum, new { @class = "form-label" })
+                                                                        @Html.TextBoxFor(model => model.Telefone!.DDDNum, new { name = "txtNumeroTel", id = "txtNumeroTel", maxlength = "20", @class = "form-control form-control-sm" })
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
+                                                                        @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { name = "cmbTipoTelefone", id = "cmbTipoTelefone", @class = "form-select form-select-sm" })
+                                                                    </div>
+                                                                    <div class="col-2 text-center pt-2">
+                                                                        <div class="pt-4"></div>
+                                                                        <button type="button" class="btn btn-secondary btn-sm" onclick="AddTelefone();">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="tableListaTelefone" class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Número</th>
+                                                                <th scope="col">Tipo</th>
+                                                                <th scope="col" class="text-center">&nbsp;</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div id="btnNovoTelefone" class="text-center pt-1">
+                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                        </svg>
+                                                        Novo
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--relacionamento-->
+                                    <div class="tab-pane fade border border-secondary-subtle border-top-0 rounded-bottom" id="nav-relacionamento" role="tabpanel" aria-labelledby="nav-relacionamento-tab">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-md table-light table-striped table-hover border border-tables">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" class="text-center">#</th>
+                                                                <th scope="col">Nome</th>
+                                                                <th scope="col">Tipo</th>
+                                                                <th scope="col" class="text-center">&nbsp;</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                            <tr>
+                                                                <th scope="row" class="text-center">1</th>
+                                                                <td>Maria Lúcia</td>
+                                                                <td>Mãe</td>
+                                                                <td class="text-center">
+                                                                    <div class="divIcons">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                                        </svg>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row" class="text-center">2</th>
+                                                                <td>Carlos Almeida</td>
+                                                                <td>Pai</td>
+                                                                <td class="text-center">
+                                                                    <div class="divIcons">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                                        </svg>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div id="formRelacionamento" class="p-2">
+                                                    <div class="card">
+                                                        <div class="card-body shadow">
+                                                            <div class="card-title border-bottom border-secondary">
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <h5>Inclusão: <span id="labelTipoRelacionamento"></span></h5>
+                                                                    </div>
+                                                                    <div class="col-2 text-end">
+                                                                        <button type="button" id="closeFormRelacionamento" class="btn-close" onclick="FormControleRelacionamento('');"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <div class="row px-2">
+                                                                    <div id="alerta_Relacionamento" class="alert alert-danger print-error-msg" style="display:none">
+                                                                        <span></span>
+                                                                        <div class="float-end">
+                                                                            <button type="button" id="closeBtn_Relacionamento" class="btn-close" onclick="HideAlert();"></button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-7">
+                                                                        <label for="txtNomePessoaRelacionada" class="form-label">Nome da Pessoa</label>
+                                                                        <input type="text" name="txtNomePessoaRelacionada" id="txtNomePessoaRelacionada" class="form-control form-control-sm" maxlength="100" value="" />
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <label for="cmbGrauParentesco" class="form-label">Tipo</label>
+                                                                        <select name="cmbGrauParentesco" id="cmbGrauParentesco" class="form-select form-select-sm">
+                                                                            <option value="">Selecione</option>
+                                                                            <option value="1">Mãe</option>
+                                                                            <option value="2">Pai</option>
+                                                                            <option value="3">Avó Materna</option>
+                                                                            <option value="4">Avô Materno</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-1 pt-4 text-start">
+                                                                        <button type="button" class="btn btn-sm btn-primary" onclick="ValidaRelacionamento();">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="btnOpcoesRelaciomento" class="text-center">
+                                                    <div class="row p-3">
+                                                        <div class="col-6 text-center">
+                                                            <button type="button" class="btn btn-sm btn-secondary" onclick="FormControleRelacionamento('r');">
+                                                                Incluir Responsável
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-6 text-center">
+                                                            <button type="button" class="btn btn-sm btn-secondary" onclick="FormControleRelacionamento('d');">
+                                                                Incluir Dependente
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cod-12 border-top border-dark-subtle pt-1">
+                                <div class="row">
+                                    <div class="col-2 text-start pt-2">
+                                        <button type="button" name="btVoltar" id="btVoltar" class="btn btn-outline-secondary btn-sm" onclick="CallAction('@controllerName', 'Index');">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-columns-reverse" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 .5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10A.5.5 0 0 1 4 .5m-4 2A.5.5 0 0 1 .5 2h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 4h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 6h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 8h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-8 text-center pt-2">
+                                        <button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+                                    </div>
+                                    <div class="col-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/pessoa.js" asp-append-version="true"></script>
+    <script src="~/js/cidade.js" asp-append-version="true"></script>
+    <script src="~/js/telefone.js" asp-append-version="true"></script>
+    <script src="~/js/relacionamento.pessoa.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        //=== OnLoad ===
+        $('#formTelefone').hide();
+        ControlaViewTableTelefone(false);
+        FormControleRelacionamento('');        
+    </script>
 }

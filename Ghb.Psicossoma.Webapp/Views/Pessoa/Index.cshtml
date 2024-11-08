@@ -18,15 +18,26 @@
                     <div id="divDataListPessoa"></div>
                     <input type="hidden" name="hdnCodPessoaAutocomplete" id="hdnCodPessoaAutocomplete" />
                 </div>
-                <div class="col-4">
-                    &nbsp;
-                </div>
-                <div class="col-4 text-center">
-                    <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
-                </div>
-                <div class="col-4">
-                    <div class="pt-2 ComboPaginacao">
-                        &nbsp;
+                <div class="col-12 pt-1">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="tooltipW3">
+                                <button asp-action="Create" class="btn btn-outline-secondary btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                                    </svg>
+                                </button>
+                                <span class="tooltipW3text">Novo Paciente</span>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <button type="submit" class="btn btn-secondary btn-sm">Consultar</button>
+                        </div>
+                        <div class="col-4">
+                            <div class="pt-2 ComboPaginacao">
+                                &nbsp;
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

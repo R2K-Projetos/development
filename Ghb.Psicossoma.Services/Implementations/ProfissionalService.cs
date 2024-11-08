@@ -166,7 +166,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                 EnderecoDto endereco = new()
                 {
                     Bairro = dto.Endereco.Bairro,
-                    Cep = dto.Endereco.Cep,
+                    CEP = dto.Endereco.CEP,
                     Complemento = dto.Endereco.Complemento,
                     Logradouro = dto.Endereco.Logradouro,
                     Numero = dto.Endereco.Numero,

@@ -13,6 +13,7 @@ namespace Ghb.Psicossoma.Webapp.Models
         [Display(Name = "Status de Acesso")]
         public string? StatuslUsuario { get; set; }
 
+        [Display(Name = "Ativo")]
         public bool IsAtivo { get; set; }
 
         public GrauParentescoViewModel? GrauParentesco { get; set; }

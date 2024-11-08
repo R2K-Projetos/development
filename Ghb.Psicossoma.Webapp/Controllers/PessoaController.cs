@@ -44,11 +44,15 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
         public IActionResult Create()
         {
-            PessoaViewModel pessoa = new();
-            pessoa.OpcoesSexo = FillSexoDropDown();
-            pessoa.Sexo = "";
+            PessoaViewModel model = new();
+            model.Endereco = new();
+            model.Telefone = new();
+            model.Endereco.Ufs = FillUf();
+            model.TiposTelefone = FillTipoTelefone();
+            model.OpcoesSexo = FillSexoDropDown();
+            model.TipoDeParentesco = FillGrauParentesco();
 
-            return View(pessoa);
+            return View(model);
         }
 
         [HttpPost]
@@ -67,19 +71,23 @@ namespace Ghb.Psicossoma.Webapp.Controllers
        
         public ActionResult Edit(int id)
         {
-            PessoaViewModel? pessoaFound = null;
-            string pessoaFind = $"pessoa/get/{id}";
-            HttpResponseMessage message = _httpClient.GetAsync(pessoaFind).Result;
+            PessoaViewModel? itemFound = null;
+            HttpResponseMessage message = _httpClient.GetAsync($"pessoa/get/{id}").Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string content = message.Content.ReadAsStringAsync().Result;
                 ResultModel<PessoaViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PessoaViewModel>>(content);
-                pessoaFound = model!.Items.FirstOrDefault()!;
-                pessoaFound.OpcoesSexo = FillSexoDropDown();
+                itemFound = model!.Items.FirstOrDefault()!;
+                itemFound.Endereco = new();
+                itemFound.Telefone = new();
+                itemFound.Endereco.Ufs = FillUf();
+                itemFound.OpcoesSexo = FillSexoDropDown();
+                itemFound.TipoDeParentesco = FillGrauParentesco();
+                itemFound.TelefonesPessoa = GetTelefonePessoa(itemFound.Id);
             }
 
-            return View(pessoaFound);
+            return View(itemFound);
         }
 
         [HttpPost]
@@ -107,6 +115,137 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             };
 
             return sexo;
+        }
+
+        private List<SelectListItem> FillUf()
+        {
+            List<SelectListItem> ufs = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"uf/getall").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<UfViewModel>? response = JsonConvert.DeserializeObject<ResultModel<UfViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (UfViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Sigla, Value = item.Id.ToString() };
+                        ufs.Add(select);
+                    }
+
+                    ufs.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return ufs;
+        }
+
+        public IActionResult FillCidadesUF(int ufId)
+        {
+            HttpResponseMessage message = _httpClient.GetAsync($"cidade/GetAllByUf?ufId={ufId}").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<CidadeViewModel>? response = JsonConvert.DeserializeObject<ResultModel<CidadeViewModel>>(content);
+
+            var listaCidades = new List<CidadeViewModel>();
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (CidadeViewModel item in response?.Items!)
+                    {
+                        var cidade = new CidadeViewModel
+                        {
+                            Id = item.Id,
+                            Nome = item.Nome,
+                            UFId = ufId
+                        };
+                        listaCidades.Add(cidade);
+                    }
+                }
+            }
+
+            return Json(listaCidades);
+        }
+
+        private List<SelectListItem> FillTipoTelefone()
+        {
+            List<SelectListItem> tipos = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"telefone/gettypes").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<TipoTelefoneViewModel>? response = JsonConvert.DeserializeObject<ResultModel<TipoTelefoneViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (TipoTelefoneViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
+                        tipos.Add(select);
+                    }
+
+                    tipos.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return tipos;
+        }
+
+        private List<SelectListItem> FillGrauParentesco()
+        {
+            List<SelectListItem> list = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"GrauParentesco/GetAll").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<GrauParentescoViewModel>? response = JsonConvert.DeserializeObject<ResultModel<GrauParentescoViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (GrauParentescoViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
+                        list.Add(select);
+                    }
+
+                    list.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return list;
+        }
+
+        private List<TelefoneViewModel> GetTelefonePessoa(int PessoaId)
+        {
+            List<TelefoneViewModel>? lista = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"Telefone/GetAllTelefonePessoa/{PessoaId}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string? data = message.Content.ReadAsStringAsync().Result;
+                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(data);
+                lista = model?.Items.ToList();
+            }
+
+            return lista;
+        }
+
+        public IActionResult ObterPartialTelefone(int id)
+        {
+            TelefoneViewModel? itemFound = null;
+            string itemFind = $"telefone/get/{id}";
+            HttpResponseMessage message = _httpClient.GetAsync(itemFind).Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(content);
+                itemFound = model!.Items.FirstOrDefault()!;
+                itemFound.TiposTelefone = FillTipoTelefone();
+            }
+
+            return PartialView("~/Views/Shared/_PartialFormTelefone.cshtml", itemFound);
         }
 
         public List<PessoaViewModel> GetByName(string name)

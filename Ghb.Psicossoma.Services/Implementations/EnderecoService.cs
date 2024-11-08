@@ -2,7 +2,6 @@
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Ghb.Psicossoma.Repositories.Abstractions;
-using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
@@ -40,9 +39,17 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, PessoaId, CidadeId, CEP, Logradouro, Numero, Complemento, Bairro, Ativo
-                                 FROM endereco
-                                 WHERE id = {id};";
+                selectQuery = $@"SELECT e.Id
+                                        ,e.PessoaId
+                                        ,e.CidadeId
+                                        ,e.CEP
+                                        ,e.Logradouro
+                                        ,e.Numero
+                                        ,e.Complemento
+                                        ,e.Bairro
+                                        ,e.Ativo
+                                   FROM endereco e
+                                  WHERE e.PessoaId = {id};";
 
                 DataTable result = _enderecoRepository.Get(selectQuery);
                 List<Endereco> enderecos = result.CreateListFromTable<Endereco>();
@@ -84,8 +91,16 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, PessoaId, CidadeId, CEP, Logradouro, Numero, Complemento, Bairro, Ativo
-                                 FROM endereco;";
+                selectQuery = $@"SELECT e.Id
+                                        ,e.PessoaId
+                                        ,e.CidadeId
+                                        ,e.CEP
+                                        ,e.Logradouro
+                                        ,e.Numero
+                                        ,e.Complemento
+                                        ,e.Bairro
+                                        ,e.Ativo
+                                   FROM endereco e;";
 
                 DataTable result = _enderecoRepository.GetAll(selectQuery);
                 List<Endereco> enderecos = result.CreateListFromTable<Endereco>();
@@ -146,6 +161,58 @@ namespace Ghb.Psicossoma.Services.Implementations
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", insertQuery);
                 _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public ResultDto<EnderecoDto> GetEnderecoPessoa(string PessoaId)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<EnderecoDto> returnValue = new();
+
+            try
+            {
+                string selectQuery = $@"SELECT e.Id
+                                               ,e.PessoaId
+                                               ,e.CidadeId
+                                               ,e.CEP
+                                               ,e.Logradouro
+                                               ,e.Numero
+                                               ,e.Complemento
+                                               ,e.Bairro
+                                               ,e.Ativo
+                                               ,c.UFId
+                                          FROM endereco e
+                                         INNER JOIN cidade c on c.Id = e.CidadeId
+                                         WHERE e.PessoaId = {PessoaId};";
+
+                DataTable result = _enderecoRepository.Get(selectQuery);
+                List<EnderecoDto> list = result.CreateListFromTable<EnderecoDto>();
+
+                if (list?.Count > 0)
+                {
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = list.AsEnumerable<EnderecoDto>();
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 
             elapsedTime.Stop();

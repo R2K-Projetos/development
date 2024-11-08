@@ -83,5 +83,36 @@ namespace Ghb.Psicossoma.Api.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Busca os dados do endereço de uma pessoa
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetEnderecoPessoa/{PessoaId}")]
+        [SwaggerOperation(
+        Summary = "Busca os dados do endereço de uma pessoa",
+        Description = "Busca os dados do endereço de uma pessoa",
+        OperationId = "Endereco.GetEnderecoPessoa",
+        Tags = new[] { "Endereco" })]
+        [ProducesResponseType(typeof(ResultDto<EnderecoDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<EnderecoDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<EnderecoDto> GetEnderecoPessoa(int PessoaId)
+        {
+            ResultDto<EnderecoDto> result = new();
+
+            try
+            {
+                result = _enderecoService.GetEnderecoPessoa(PessoaId.ToString());
+
+                if (!result.HasError)
+                    result.Message = "Endereço localizado com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na localização de endereço", ex);
+            }
+
+            return Ok(result);
+        }
     }
 }

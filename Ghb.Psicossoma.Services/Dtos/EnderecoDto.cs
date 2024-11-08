@@ -8,7 +8,7 @@ namespace Ghb.Psicossoma.Services.Dtos
 
         public int CidadeId { get; set; }
 
-        public string Cep { get; set; } = string.Empty;
+        public string CEP { get; set; } = string.Empty;
 
         public string Logradouro { get; set; } = string.Empty;
 
@@ -19,5 +19,7 @@ namespace Ghb.Psicossoma.Services.Dtos
         public string Bairro { get; set; } = string.Empty;
 
         public bool Ativo { get; set; }
+
+        public int UFId { get; set; }
     }
 }

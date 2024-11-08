@@ -8,7 +8,7 @@ namespace Ghb.Psicossoma.Webapp.Models
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
         [StringLength(10, MinimumLength = 9, ErrorMessage = "{0} deve possuir pelo menos {2} caracteres")]
         [Display(Name = "CEP")]
-        public string Cep { get; set; } = string.Empty;
+        public string CEP { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
         [StringLength(80)]
@@ -33,9 +33,12 @@ namespace Ghb.Psicossoma.Webapp.Models
         [Display(Name = "UF")]
         public IEnumerable<SelectListItem> Ufs { get; set; } = [];
 
-        [Required]
-        public int UfId { get; set; }
-
         public bool Ativo { get; set; } = true;
+
+        [Required(ErrorMessage = "{0} é um campo obrigatório")]
+        [Display(Name = "Cidade")]
+        public int CidadeId { get; set; }
+
+        public int UFId { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿//=========================
-function TipoAbaPacienteControl(tipo) {
+function TipoAbaControlPessoa(tipo) {
 
     if (tipo == 'p') {
         $('#btnSaveFormulario').show();

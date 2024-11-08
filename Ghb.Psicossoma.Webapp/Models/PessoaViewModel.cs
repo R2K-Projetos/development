@@ -49,5 +49,8 @@ namespace Ghb.Psicossoma.Webapp.Models
         public IEnumerable<SelectListItem> TiposTelefone { get; set; } = [];
 
         public int TipoTelefoneId { get; set; }
+
+        [Display(Name = "Tipo de Parentesco")]
+        public IEnumerable<SelectListItem> TipoDeParentesco { get; set; } = [];
     }
 }

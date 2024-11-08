@@ -2,7 +2,7 @@
 
 @{
     var controllerName = "Paciente";
-    ViewData["Title"] = "Cadastrar: Paciente";
+    ViewData["Title"] = "Cadastro: Paciente";
 }
 <div class="container">
     <div class="row justify-content-center py-1">
@@ -81,8 +81,8 @@
                                                             CEP:
                                                         </div>
                                                         <div class="d-inline-block">
-                                                            @Html.TextBoxFor(model => model.Endereco!.Cep, new { id = "txtCEP", name = "txtCEP", @class = "form-control form-control-sm cep", style = "width: 110px;" })
-                                                            @Html.ValidationMessageFor(model => model.Endereco!.Cep, "", new { @class = "text-danger" })
+                                                            @Html.TextBoxFor(model => model.Endereco!.CEP, new { id = "txtCEP", name = "txtCEP", @class = "form-control form-control-sm cep", style = "width: 110px;" })
+                                                            @Html.ValidationMessageFor(model => model.Endereco!.CEP, "", new { @class = "text-danger" })
                                                         </div>
                                                         <div class="d-inline-block">
                                                             <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('txtCEP').value);" />
@@ -120,8 +120,8 @@
                                                 <div class="row">
                                                     <div class="col-3">
                                                         @Html.LabelFor(model => model.Endereco!.Ufs, new { @class = "form-label" })
-                                                        @Html.DropDownListFor(model => model.Endereco!.UfId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF(this.value)" })
-                                                        @Html.ValidationMessageFor(model => model.Endereco!.UfId, "", new { @class = "text-danger" })
+                                                        @Html.DropDownListFor(model => model.Endereco!.UFId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF('" + @controllerName + "', this.value)" })
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.UFId, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-9">
                                                         <label for="cmbCidade" class="form-label">Cidade</label>
@@ -337,10 +337,10 @@
     </div>
 </div>
 @section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>    
     <script src="~/js/paciente.js" asp-append-version="true"></script>
+        <script src="~/js/cidade.js" asp-append-version="true"></script>
     <script src="~/js/telefone.js" asp-append-version="true"></script>
+    <script src="~/js/relacionamento.pessoa.js" asp-append-version="true"></script>
     <script type="text/javascript">
         //=== OnLoad ===
         $('#formTelefone').hide();
