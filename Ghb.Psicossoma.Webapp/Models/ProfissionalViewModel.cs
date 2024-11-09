@@ -5,6 +5,8 @@ namespace Ghb.Psicossoma.Webapp.Models
 {
     public class ProfissionalViewModel : PessoaViewModel
     {
+        public int PessoaId { get; set; }
+
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
         [Display(Name = "Nº do Registro")]
         [StringLength(10)]

@@ -1,6 +1,4 @@
-﻿using Ghb.Psicossoma.SharedAbstractions.Services.Dtos.Base;
-
-namespace Ghb.Psicossoma.Services.Dtos
+﻿namespace Ghb.Psicossoma.Services.Dtos
 {
     public class ProfissionalDto : PessoaDto
     {
@@ -10,7 +8,7 @@ namespace Ghb.Psicossoma.Services.Dtos
 
         public string Numero { get; set; } = string.Empty;
 
-        public bool Ativo { get; set; } = false;
+        public bool IsAtivo { get; set; } = false;
 
         public EnderecoDto? Endereco { get; set; }
     }

@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using Ghb.Psicossoma.Cache;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Mvc;
+﻿using Ghb.Psicossoma.Cache;
 using Ghb.Psicossoma.Webapp.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Ghb.Psicossoma.Webapp.Models.ResultModel;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
@@ -43,15 +43,15 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
         public IActionResult Create()
         {
-            ProfissionalViewModel profissional = new();
-            profissional.Endereco = new();
-            profissional.Telefone = new();
-            profissional.Endereco.Ufs = FillUf();
-            profissional.TiposTelefone = FillTipoCelular();
-            profissional.OpcoesSexo = FillSexoDropDown();
-            profissional.TiposRegistroProfissional = FillRegistro();
+            ProfissionalViewModel model = new();
+            model.OpcoesSexo = FillSexoDropDown();
+            model.Endereco = new();
+            model.Endereco.Ufs = FillUf();
+            model.Telefone = new();
+            model.TiposTelefone = FillTipoTelefone();
+            model.TiposRegistroProfissional = FillRegistro();
 
-            return View(profissional);
+            return View(model);
         }
 
         [HttpPost]
@@ -90,11 +90,23 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 string content = message.Content.ReadAsStringAsync().Result;
                 ResultModel<ProfissionalViewModel>? model = JsonConvert.DeserializeObject<ResultModel<ProfissionalViewModel>>(content);
                 itemFound = model!.Items.FirstOrDefault()!;
+
+                itemFound.OpcoesSexo = FillSexoDropDown();
+
+                itemFound.Endereco = GetEnderecoPessoa(itemFound.PessoaId);
+                itemFound.Endereco.Ufs = FillUf();
+
+                itemFound.Telefone = new();
+                itemFound.Telefone.TiposTelefone = FillTipoTelefone();
+                itemFound.TelefonesPessoa = GetTelefonePessoa(itemFound.PessoaId);
+
+                itemFound.TiposRegistroProfissional = FillRegistro();
             }
 
             return View(itemFound);
         }
 
+        #region Profissional
         private List<SelectListItem> FillSexoDropDown()
         {
             List<SelectListItem> sexo = new()
@@ -129,7 +141,9 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return registros;
         }
+        #endregion
 
+        #region Endereco
         private List<SelectListItem> FillUf()
         {
             List<SelectListItem> ufs = new();
@@ -181,7 +195,24 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return Json(listaCidades);
         }
 
-        private List<SelectListItem> FillTipoCelular()
+        private EnderecoViewModel GetEnderecoPessoa(int PessoaId)
+        {
+            EnderecoViewModel? itemFound = null;
+            HttpResponseMessage message = _httpClient.GetAsync($"Endereco/GetEnderecoPessoa/{PessoaId}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string? data = message.Content.ReadAsStringAsync().Result;
+                ResultModel<EnderecoViewModel>? model = JsonConvert.DeserializeObject<ResultModel<EnderecoViewModel>>(data);
+                itemFound = model!.Items.FirstOrDefault()!;
+            }
+
+            return itemFound;
+        }
+        #endregion
+
+        #region Telefones
+        private List<SelectListItem> FillTipoTelefone()
         {
             List<SelectListItem> tipos = new();
             HttpResponseMessage message = _httpClient.GetAsync($"telefone/gettypes").Result;
@@ -205,6 +236,39 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return tipos;
         }
 
+        private List<TelefoneViewModel> GetTelefonePessoa(int PessoaId)
+        {
+            List<TelefoneViewModel>? lista = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"Telefone/GetAllTelefonePessoa/{PessoaId}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string? data = message.Content.ReadAsStringAsync().Result;
+                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(data);
+                lista = model?.Items.ToList();
+            }
+
+            return lista;
+        }
+
+        public IActionResult ObterPartialTelefone(int id)
+        {
+            TelefoneViewModel? itemFound = null;
+            HttpResponseMessage message = _httpClient.GetAsync($"telefone/get/{id}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(content);
+                itemFound = model!.Items.FirstOrDefault()!;
+                itemFound.TiposTelefone = FillTipoTelefone();
+            }
+
+            return PartialView("~/Views/Shared/_PartialFormTelefone.cshtml", itemFound);
+        }
+        #endregion
+
+        #region Especialidades
         public IActionResult FillEspecialidadeDisponivel(int ProfissionalId)
         {
             HttpResponseMessage message = _httpClient.GetAsync($"Especialidade/GetListaDisponivel/" + ProfissionalId).Result;
@@ -256,5 +320,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return Json(list);
         }
+        #endregion
     }
 }

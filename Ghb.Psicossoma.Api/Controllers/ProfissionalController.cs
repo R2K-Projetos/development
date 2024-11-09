@@ -116,6 +116,5 @@ namespace Ghb.Psicossoma.Api.Controllers
 
             return Ok(result);
         }
-
     }
 }

@@ -1,15 +1,15 @@
 ﻿@model ProfissionalViewModel
 
 @{
-    //var controllerName = "Profissional";
-    ViewData["Title"] = "Cadastrar: Profissional";
+    var controllerName = "Profissional";
+    ViewData["Title"] = "Cadastro: Profissional";
 }
 <div class="container">
     <div class="row justify-content-center py-1">
         <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
             <form id="formProfissional" asp-controller="Profissional" asp-action="Create" method="post">
-                @* @Html.HiddenFor(model => model.Id)
-                @Html.HiddenFor(model => model.PessoaId) *@
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.PessoaId)
                 <div class="card">
                     <div class="card-body shadow">
                         <div class="row">
@@ -121,7 +121,7 @@
                                                 <div class="row">
                                                     <div class="col-3">
                                                         @Html.LabelFor(model => model.Endereco!.Ufs, new { @class = "form-label" })
-                                                        @Html.DropDownListFor(model => model.Endereco!.UFId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF(this.value)" })
+                                                        @Html.DropDownListFor(model => model.Endereco!.UFId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF('" + @controllerName + "', this.value)" })
                                                     </div>
                                                     <div class="col-9">
                                                         <label for="cmbCidade" class="form-label">Cidade</label>
@@ -209,7 +209,7 @@
                             <div class="cod-12 border-top border-dark-subtle pt-1">
                                 <div class="row">
                                     <div class="col-2 text-start pt-2">
-                                        <button type="button" name="btVoltar" id="btVoltar" class="btn btn-outline-secondary btn-sm" onclick="CallAction('', 'Index');">
+                                        <button type="button" name="btVoltar" id="btVoltar" class="btn btn-outline-secondary btn-sm" onclick="CallAction('@controllerName', 'Index');">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-columns-reverse" viewBox="0 0 16 16">
                                                 <path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 .5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10A.5.5 0 0 1 4 .5m-4 2A.5.5 0 0 1 .5 2h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 4h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 6h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 8h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
                                             </svg>
@@ -229,9 +229,8 @@
     </div>
 </div>
 @section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation/dist/messages_pt_BR.js"></script>
     <script src="~/js/profissional.js" asp-append-version="true"></script>
+    <script src="~/js/cidade.js" asp-append-version="true"></script>
     <script src="~/js/telefone.js" asp-append-version="true"></script>
     <script type="text/javascript">
         //=== OnLoad ===        

@@ -45,11 +45,11 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         public IActionResult Create()
         {
             PacienteViewModel model = new();
+            model.OpcoesSexo = FillSexoDropDown();            
             model.Endereco = new();
-            model.Telefone = new();
             model.Endereco.Ufs = FillUf();
-            model.TiposTelefone = FillTipoTelefone();
-            model.OpcoesSexo = FillSexoDropDown();
+            model.Telefone = new();
+            model.TiposTelefone = FillTipoTelefone();            
             model.TipoDeParentesco = FillGrauParentesco();
 
             return View(model);
@@ -84,13 +84,12 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
                 itemFound.Endereco = GetEnderecoPessoa(itemFound.PessoaId);                
                 itemFound.Endereco.Ufs = FillUf();
-                //itemFound.Endereco.CidadeId = GetEnderecoPessoa(itemFound.PessoaId).CidadeId;
 
-                itemFound.Telefone = new();                
-                itemFound.TelefonesPessoa = GetTelefonePessoa(itemFound.PessoaId);
+                itemFound.Telefone = new();
                 itemFound.Telefone.TiposTelefone = FillTipoTelefone();
+                itemFound.TelefonesPessoa = GetTelefonePessoa(itemFound.PessoaId);
 
-                itemFound.TipoDeParentesco = FillGrauParentesco();               
+                itemFound.TipoDeParentesco = FillGrauParentesco();
             }
 
             return View(itemFound);
@@ -109,6 +108,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return View(obj);
         }
 
+        #region Paciente
         private List<SelectListItem> FillSexoDropDown()
         {
             List<SelectListItem> sexo = new()
@@ -119,7 +119,9 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             };
             return sexo;
         }
+        #endregion
 
+        #region Endereco
         private List<SelectListItem> FillUf()
         {
             List<SelectListItem> ufs = new();
@@ -185,7 +187,9 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return itemFound;
         }
+        #endregion
 
+        #region Telefones
         private List<SelectListItem> FillTipoTelefone()
         {
             List<SelectListItem> tipos = new();
@@ -208,30 +212,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }
 
             return tipos;
-        }
-
-        private List<SelectListItem> FillGrauParentesco()
-        {
-            List<SelectListItem> list = new();
-            HttpResponseMessage message = _httpClient.GetAsync($"GrauParentesco/GetAll").Result;
-            string content = message.Content.ReadAsStringAsync().Result;
-            ResultModel<GrauParentescoViewModel>? response = JsonConvert.DeserializeObject<ResultModel<GrauParentescoViewModel>>(content);
-
-            if (message.IsSuccessStatusCode)
-            {
-                if (!response?.HasError ?? false)
-                {
-                    foreach (GrauParentescoViewModel item in response?.Items!)
-                    {
-                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
-                        list.Add(select);
-                    }
-
-                    list.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
-                }
-            }
-
-            return list;
         }
 
         private List<TelefoneViewModel> GetTelefonePessoa(int PessoaId)
@@ -264,5 +244,32 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return PartialView("~/Views/Shared/_PartialFormTelefone.cshtml", itemFound);
         }
+        #endregion
+
+        #region Relacionamento (Grau Parentesco)
+        private List<SelectListItem> FillGrauParentesco()
+        {
+            List<SelectListItem> list = new();
+            HttpResponseMessage message = _httpClient.GetAsync($"GrauParentesco/GetAll").Result;
+            string content = message.Content.ReadAsStringAsync().Result;
+            ResultModel<GrauParentescoViewModel>? response = JsonConvert.DeserializeObject<ResultModel<GrauParentescoViewModel>>(content);
+
+            if (message.IsSuccessStatusCode)
+            {
+                if (!response?.HasError ?? false)
+                {
+                    foreach (GrauParentescoViewModel item in response?.Items!)
+                    {
+                        SelectListItem select = new() { Text = item.Nome, Value = item.Id.ToString() };
+                        list.Add(select);
+                    }
+
+                    list.Insert(0, new SelectListItem() { Text = "[Selecione]", Value = "-1" });
+                }
+            }
+
+            return list;
+        }
+        #endregion
     }
 }

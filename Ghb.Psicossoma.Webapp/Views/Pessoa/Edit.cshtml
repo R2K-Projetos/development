@@ -1,6 +1,4 @@
-﻿@using Ghb.Psicossoma.Webapp.Models.Enums;
-
-@model PessoaViewModel
+﻿@model PessoaViewModel
 
 @{
     var controllerName = "Pessoa";
@@ -9,6 +7,9 @@
     var statusAtivo = @Model.Ativo ? "checked" : "";
     var colorPrincipal = "";
     var colorAtivo = "";
+
+    var UFId = Model.Endereco.UFId.ToString();
+    var CidadeId = Model.Endereco.CidadeId.ToString();
 }
 <div class="container">
     <div class="row justify-content-center py-1">
@@ -346,6 +347,10 @@
     <script src="~/js/relacionamento.pessoa.js" asp-append-version="true"></script>
     <script type="text/javascript">
         //=== OnLoad ===
+        CarregaListaCidadesUF('@controllerName', '@UFId');
+        setTimeout(function () {
+            $("#cmbCidade option[value='@CidadeId']").attr("selected", true);
+        }, 200);
         $('#formTelefone').hide();
         FormControleRelacionamento('');
     </script>

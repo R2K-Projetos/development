@@ -1,15 +1,15 @@
 ﻿@model ProfissionalViewModel
 
 @{
-    //var controllerName = "Profissional";
+    var controllerName = "Profissional";
     ViewData["Title"] = "Cadastrar: Profissional";
 }
 <div class="container">
     <div class="row justify-content-center py-1">
         <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
             <form id="formProfissional" asp-controller="Profissional" asp-action="Edit" method="post">
-                @* @Html.HiddenFor(model => model.Id)
-                @Html.HiddenFor(model => model.PessoaId) *@
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.PessoaId)
                 <div class="card">
                     <div class="card-body shadow">
                         <div class="row">
@@ -58,6 +58,16 @@
                                             <div class="col-9">
                                                 <label for="Email" class="form-label">Email</label>
                                                 <input type="email" name="Email" id="Email" class="form-control form-control-sm" maxlength="80" value="" />
+                                            </div>
+                                            <div class="col-6">
+                                                @Html.LabelFor(model => model.TiposRegistroProfissional, new { @class = "form-label" })
+                                                @Html.DropDownListFor(model => model.RegistroProfissionalId, Model.TiposRegistroProfissional, new { name = "cmbSexo", id = "cmbSexo", @class = "form-select form-select-sm" })
+                                                @Html.ValidationMessageFor(model => model.TiposRegistroProfissional, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-6">
+                                                @Html.LabelFor(model => model.Numero, new { @class = "form-label" })
+                                                @Html.TextBoxFor(model => model.Numero, new { @class = "form-control form-control-sm" })
+                                                @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
                                     </div>

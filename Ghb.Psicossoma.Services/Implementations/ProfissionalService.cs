@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using System.Data;
-using Serilog.Context;
-using System.Diagnostics;
-using Microsoft.Extensions.Logging;
-using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.Domains.Entities;
-using Microsoft.Extensions.Configuration;
 using Ghb.Psicossoma.Library.Extensions;
-using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.Services.Abstractions;
+using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog.Context;
+using System.Data;
+using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
@@ -153,7 +153,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                     Cpf = dto.Cpf,
                     DataNascimento = dto.DataNascimento,
                     Email = dto.Email,
-                    Ativo = dto.Ativo,
+                    Ativo = dto.IsAtivo,
                     Nome = dto.Nome,
                     NomeReduzido = dto.NomeReduzido,
                     Sexo = dto.Sexo
