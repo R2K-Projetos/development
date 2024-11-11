@@ -190,33 +190,33 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public ResultDto<EspecialidadeDto> GetEspecialidadeDisponivel(int ProfissionalId)
+        public ResultDto<EspecialidadeResponseDto> GetEspecialidadeDisponivel(string ProfissionalId)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<EspecialidadeDto> returnValue = new();
+            ResultDto<EspecialidadeResponseDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = "select e.Id"
-                + "                   ,e.Nome"
-                + "              from especialidade e"
-                + "             where not exists (SELECT 1 "
-                + "                                 FROM profissionalespecialidade pe"
-                + "                                where pe.EspecialidadeId = e.Id"
-                + "                                  and pe.ProfissionalId = " + ProfissionalId.ToString() + ");";
+                selectQuery = $@"select e.Id
+                                       ,e.Nome
+                                       ,IF(IFNULL(pe.Id, 0) = 0, '0', '1') as Checked
+                                  from especialidade e
+                                  left join profissionalespecialidade pe on pe.EspecialidadeId = e.Id
+                                   and pe.ProfissionalId = {ProfissionalId}
+                                 order by 2";
 
                 DataTable result = _especialidadeRepository.GetAll(selectQuery);
-                List<Especialidade> list = result.CreateListFromTable<Especialidade>();
+                List<EspecialidadeResponseDto> list = result.CreateListFromTable<EspecialidadeResponseDto>();
 
                 if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Especialidade>, IEnumerable<EspecialidadeDto>>(list ?? Enumerable.Empty<Especialidade>());
+                    returnValue.Items = list.AsEnumerable();
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -238,46 +238,37 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public ResultDto<EspecialidadeDto> GetEspecialidadeIndisponivel(int ProfissionalId)
+        public ResultDto<ProfissionalEspecialidadeDto> AdicionaEspecialidade(ProfissionalEspecialidadeDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<EspecialidadeDto> returnValue = new();
-            string? selectQuery = null;
+            ResultDto<ProfissionalEspecialidadeDto> returnValue = new();
+            string? insertQuery = null;
 
             try
             {
-                selectQuery = "select e.Id"
-                + "                   ,e.Nome"
-                + "              from especialidade e"
-                + "             where exists (SELECT 1 "
-                + "                             FROM profissionalespecialidade pe"
-                + "                            where pe.EspecialidadeId = e.Id"
-                + "                              and pe.ProfissionalId = " + ProfissionalId.ToString() + ");";
+                var entidade = _mapper.Map<ProfissionalEspecialidadeDto, ProfissionalEspecialidade>(dto);
+                insertQuery = $@"INSERT INTO profissionalespecialidade
+                                 (ProfissionalId, EspecialidadeId, Ativo)
+                                 VALUES
+                                 ('{dto.ProfissionalId}','{dto.EspecialidadeId}',1); ";
 
-                DataTable result = _especialidadeRepository.GetAll(selectQuery);
-                List<Especialidade> list = result.CreateListFromTable<Especialidade>();
+                long newId = _especialidadeRepository.Insert(insertQuery);
+                if (newId > 0)
+                    entidade.Id = (int)newId;
 
-                if (list?.Count > 0)
-                {
-                    returnValue.CurrentPage = 1;
-                    returnValue.PageSize = -1;
-                    returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Especialidade>, IEnumerable<EspecialidadeDto>>(list ?? Enumerable.Empty<Especialidade>());
-                    returnValue.WasExecuted = true;
-                    returnValue.ResponseCode = 200;
-                }
-                else
-                {
-                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
-                }
+                var item = _mapper.Map<ProfissionalEspecialidade, ProfissionalEspecialidadeDto>(entidade);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
             }
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
-                LogContext.PushProperty("Query", selectQuery);
-                _logger.LogError(ex, "Erro na recuperação dos dados");
+                LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
             elapsedTime.Stop();

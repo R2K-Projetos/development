@@ -10,5 +10,7 @@ namespace Ghb.Psicossoma.Webapp.Models
         [Display(Name = "Nome")]
         [StringLength(40)]
         public string Nome { get; set; } = string.Empty;
+
+        public string Checked { get; set; } = string.Empty;
     }
 }

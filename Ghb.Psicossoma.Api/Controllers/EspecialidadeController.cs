@@ -150,24 +150,24 @@ namespace Ghb.Psicossoma.Api.Controllers
         }
 
         /// <summary>
-        /// Lista todas as especialidades cadastradas
+        /// Lista todas as especialidades e marca as vinculadas ao profissional
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetListaDisponivel/{ProfissionalId}")]
         [SwaggerOperation(
-        Summary = "Lista todas as especialidades ainda não vinculadas a um profissional",
-        Description = "Lista todas as especialidades ainda não vinculadas a um profissional",
+        Summary = "Lista todas as especialidades e marca as vinculadas ao profissional",
+        Description = "Lista todas as especialidades e marca as vinculadas ao profissional",
         OperationId = "Especialidade.GetListaDisponivel",
         Tags = new[] { "Especialidade" })]
-        [ProducesResponseType(typeof(ResultDto<EspecialidadeDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<EspecialidadeDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<EspecialidadeDto> GetListaDisponivel(int ProfissionalId)
+        [ProducesResponseType(typeof(ResultDto<EspecialidadeResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<EspecialidadeResponseDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<EspecialidadeResponseDto> GetListaDisponivel(int ProfissionalId)
         {
-            ResultDto<EspecialidadeDto> result = new();
+            ResultDto<EspecialidadeResponseDto> result = new();
 
             try
             {
-                result = _especialidadeService.GetEspecialidadeDisponivel(ProfissionalId);
+                result = _especialidadeService.GetEspecialidadeDisponivel(ProfissionalId.ToString());
 
                 if (!result.HasError)
                     result.Message = "Especialidades listadas com sucesso!";
@@ -181,31 +181,32 @@ namespace Ghb.Psicossoma.Api.Controllers
         }
 
         /// <summary>
-        /// Lista todas as especialidades cadastradas
+        /// Adiciona um Especialidade a um profissional
+        /// <param name="obj">Json contendo os dados da classe profissionalespecialidade></param>
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetListaIndisponivel/{ProfissionalId}")]
+        [HttpPost("AdicionaEspecialidade")]
         [SwaggerOperation(
-        Summary = "Lista todas as especialidades vinculadas a um profissional",
-        Description = "Lista todas as especialidades vinculadas a um profissional",
-        OperationId = "Especialidade.GetListaIndisponivel",
+        Summary = "Adiciona um Especialidade a um profissional",
+        Description = "Adiciona um Especialidade a um profissional",
+        OperationId = "Especialidade.AdicionaEspecialidade",
         Tags = new[] { "Especialidade" })]
-        [ProducesResponseType(typeof(ResultDto<EspecialidadeDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<EspecialidadeDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<EspecialidadeDto> GetListaIndisponivel(int ProfissionalId)
+        [ProducesResponseType(typeof(ResultDto<ProfissionalEspecialidadeDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<ProfissionalEspecialidadeDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<ProfissionalEspecialidadeDto> AdicionaEspecialidade([FromBody] ProfissionalEspecialidadeDto obj)
         {
-            ResultDto<EspecialidadeDto> result = new();
+            ResultDto<ProfissionalEspecialidadeDto> result = new();
 
             try
             {
-                result = _especialidadeService.GetEspecialidadeIndisponivel(ProfissionalId);
+                result = _especialidadeService.AdicionaEspecialidade(obj);
 
                 if (!result.HasError)
-                    result.Message = "Especialidades listadas com sucesso!";
+                    result.Message = "Especialidade adicionada com sucesso!";
             }
             catch (Exception ex)
             {
-                result.BindError(500, "Erro na listagem de especialidades", ex);
+                result.BindError(500, "Erro na inclusão da Especialidade", ex);
             }
 
             return Ok(result);

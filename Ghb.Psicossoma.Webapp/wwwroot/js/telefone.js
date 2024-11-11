@@ -90,7 +90,6 @@ function ControlaViewTableTelefone(bShowTable) {
         $('#tableListaTelefone').hide();
     }
 }
-
 function EditTelefone(Id) {
 
     $.ajax({
@@ -110,7 +109,6 @@ function EditTelefone(Id) {
         },
         error: function (req, status, error) {
             alert('ajax.error:\n'
-                + 'data: ' + data + '\n'
                 + 'req: ' + req + '\n'
                 + 'status: ' + status + '\n'
                 + 'error: ' + error + '\n'

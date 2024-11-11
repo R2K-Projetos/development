@@ -7,14 +7,14 @@ namespace Ghb.Psicossoma.Webapp.Models
     {
         public int PessoaId { get; set; }
 
+        [Display(Name = "Ativo")]
+        public bool IsAtivo { get; set; }
+
         [Display(Name = "Perfil de Acesso")]
         public string? PerfilUsuario { get; set; }
 
         [Display(Name = "Status de Acesso")]
         public string? StatuslUsuario { get; set; }
-
-        [Display(Name = "Ativo")]
-        public bool IsAtivo { get; set; }
 
         public GrauParentescoViewModel? GrauParentesco { get; set; }
 

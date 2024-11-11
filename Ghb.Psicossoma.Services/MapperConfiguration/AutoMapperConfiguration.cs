@@ -25,6 +25,7 @@ public class AutoMapperConfiguration : Profile
         CreateMap<PlanoSaude, PlanoSaudeDto>().ReverseMap();
         CreateMap<ProdutoConvenio, ProdutoConvenioDto>().ReverseMap();
         CreateMap<Profissional, ProfissionalDto>().ReverseMap();
+        CreateMap<ProfissionalEspecialidade, ProfissionalEspecialidadeDto>().ReverseMap();
         CreateMap<ProntuarioHistorico, ProntuarioHistoricoDto>().ReverseMap();
         CreateMap<Prontuario, ProntuarioDto>().ReverseMap();
         CreateMap<RegistroProfissional, RegistroProfissionalDto>().ReverseMap();
@@ -37,7 +38,7 @@ public class AutoMapperConfiguration : Profile
 
         //Retornos específicos
         CreateMap<ConvenioResponse, ConvenioResponseDto>().ReverseMap();        
-        CreateMap<PacienteResponse, PacienteResponseDto>().ReverseMap();
+        CreateMap<PacienteResponse, PacienteResponseDto>().ReverseMap();        
         CreateMap<ProfissionalResponse, ProfissionalResponseDto>().ReverseMap();
         CreateMap<TelefoneResponse, TelefoneResponseDto>().ReverseMap();
         CreateMap<UserResponse, UserResponseDto>().ReverseMap();

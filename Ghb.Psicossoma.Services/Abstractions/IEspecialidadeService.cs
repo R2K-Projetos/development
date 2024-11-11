@@ -6,7 +6,8 @@ namespace Ghb.Psicossoma.Services.Abstractions
 {
     public interface IEspecialidadeService : IBaseService<EspecialidadeDto>
     {
-        ResultDto<EspecialidadeDto> GetEspecialidadeDisponivel(int ProfissionalId);
-        ResultDto<EspecialidadeDto> GetEspecialidadeIndisponivel(int ProfissionalId);
+        ResultDto<EspecialidadeResponseDto> GetEspecialidadeDisponivel(string ProfissionalId);
+
+        ResultDto<ProfissionalEspecialidadeDto> AdicionaEspecialidade(ProfissionalEspecialidadeDto dto);
     }
 }

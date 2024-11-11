@@ -45,11 +45,22 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                 selectQuery = $@"SELECT pf.Id, ps.Nome, rp.Descricao AS RegistroProfissional, pf.Numero, pf.Ativo
-                                  FROM profissional pf
-                                  INNER JOIN pessoa ps ON pf.pessoaId = ps.Id
-                                  INNER JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id
-                                  WHERE pf.Id = {id};";
+                 selectQuery = $@"SELECT pf.Id
+                                         ,pf.PessoaId
+                                         ,p.Nome
+                                         ,p.NomeReduzido
+                                         ,p.Cpf
+                                         ,p.Sexo
+                                         ,p.Email
+                                         ,p.DataNascimento
+                                         ,p.Ativo
+                                         ,pf.Numero
+                                         ,pf.Ativo AS IsAtivo
+                                         ,rp.Nome AS RegistroProfissional
+                                    FROM profissional pf
+                                   INNER JOIN pessoa p ON pf.pessoaId = p.Id
+                                    LEFT JOIN registroprofissional rp ON pf.registroProfissionalId = rp.id
+                                   WHERE pf.Id = {id};";
 
                 DataTable result = _profissionalRepository.Get(selectQuery);
                 List<ProfissionalResponse> profissionais = result.CreateListFromTable<ProfissionalResponse>();
@@ -93,19 +104,19 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 selectQuery = $@"SELECT pf.Id
                                         ,pf.pessoaId as PessoaId
-                                        ,ps.Nome
-                                        ,ps.Cpf
+                                        ,p.Nome
+                                        ,p.Cpf
                                         ,pf.Numero
                                         ,rp.nome AS RegistroProfissional
-                                        ,pf.Ativo
-                                        ,IFNULL(GROUP_CONCAT(esp.Nome), '') as Especialidade
+                                        ,pf.Ativo as IsAtivo
+                                        ,IFNULL(GROUP_CONCAT(esp.Nome), '') as Especialidades
                                    FROM profissional pf
-                                  INNER JOIN pessoa ps ON pf.pessoaId = ps.Id
+                                  INNER JOIN pessoa p ON pf.pessoaId = p.Id
                                    LEFT JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id
                                    LEFT JOIN profissionalespecialidade pfesp ON pf.Id = pfesp.profissionalid
                                    LEFT JOIN especialidade esp ON esp.id = pfesp.especialidadeid
-                                  GROUP BY pf.Id,ps.Nome,ps.Cpf,rp.nome,pf.Numero,pf.Ativo
-                                  ORDER BY ps.Nome;";
+                                  GROUP BY pf.Id,p.Nome,p.Cpf,rp.nome,pf.Numero,pf.Ativo
+                                  ORDER BY p.Nome;";
 
                 DataTable result = _profissionalRepository.GetAll(selectQuery);
                 List<ProfissionalResponse> profissionais = result.CreateListFromTable<ProfissionalResponse>();

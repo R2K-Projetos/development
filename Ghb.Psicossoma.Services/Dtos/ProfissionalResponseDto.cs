@@ -1,19 +1,15 @@
-﻿using Ghb.Psicossoma.SharedAbstractions.Services.Dtos.Base;
-
-namespace Ghb.Psicossoma.Services.Dtos
+﻿namespace Ghb.Psicossoma.Services.Dtos
 {
-    public class ProfissionalResponseDto : PessoaDto //BaseDto
+    public class ProfissionalResponseDto : PessoaDto
     {
         public int PessoaId { get; set; }
 
         public string Numero { get; set; } = string.Empty;
 
-        public string DddNumero { get; set; } = string.Empty;
-
         public string RegistroProfissional { get; set; } = string.Empty;
 
-        public string Especialidade { get; set; } = string.Empty;
+        public bool IsAtivo { get; set; } = false;
 
-        public bool Ativo { get; set; } = false;
+        public string Especialidades { get; set; } = string.Empty;
     }
 }

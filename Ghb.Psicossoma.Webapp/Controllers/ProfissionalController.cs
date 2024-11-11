@@ -93,6 +93,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
                 itemFound.OpcoesSexo = FillSexoDropDown();
 
+                itemFound.Endereco = new();
                 itemFound.Endereco = GetEnderecoPessoa(itemFound.PessoaId);
                 itemFound.Endereco.Ufs = FillUf();
 
@@ -269,56 +270,45 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         #endregion
 
         #region Especialidades
-        public IActionResult FillEspecialidadeDisponivel(int ProfissionalId)
+        public IActionResult ObterPartialEspecialidades(int ProfissionalId)
         {
+            List<EspecialidadeViewModel>? lista = new();
             HttpResponseMessage message = _httpClient.GetAsync($"Especialidade/GetListaDisponivel/" + ProfissionalId).Result;
-            string content = message.Content.ReadAsStringAsync().Result;
-            ResultModel<EspecialidadeViewModel>? response = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(content);
 
-            var list = new List<EspecialidadeViewModel>();
             if (message.IsSuccessStatusCode)
             {
-                if (!response?.HasError ?? false)
-                {
-                    foreach (EspecialidadeViewModel item in response?.Items!)
-                    {
-                        var especialidade = new EspecialidadeViewModel
-                        {
-                            Id = item.Id,
-                            Nome = item.Nome,
-                        };
-                        list.Add(especialidade);
-                    }
-                }
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<EspecialidadeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(content);
+                lista = model?.Items.ToList();
             }
 
-            return Json(list);
+            return PartialView("~/Views/Profissional/_PartialProfissionalEspecialidades.cshtml", lista);
         }
 
-        public IActionResult FillEspecialidadeIndisponivel(int ProfissionalId)
+        [HttpPost]
+        public IActionResult AdicionaEspecialidade(ProfissionalEspecialidadeViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.GetAsync($"Especialidade/GetListaIndisponivel/" + ProfissionalId).Result;
-            string content = message.Content.ReadAsStringAsync().Result;
-            ResultModel<EspecialidadeViewModel>? response = JsonConvert.DeserializeObject<ResultModel<EspecialidadeViewModel>>(content);
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"Especialidade/AdicionaEspecialidade", obj).Result;
 
-            var list = new List<EspecialidadeViewModel>();
             if (message.IsSuccessStatusCode)
             {
-                if (!response?.HasError ?? false)
-                {
-                    foreach (EspecialidadeViewModel item in response?.Items!)
-                    {
-                        var especialidade = new EspecialidadeViewModel
-                        {
-                            Id = item.Id,
-                            Nome = item.Nome,
-                        };
-                        list.Add(especialidade);
-                    }
-                }
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<ProfissionalEspecialidadeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<ProfissionalEspecialidadeViewModel>>(content);
             }
 
-            return Json(list);
+            return Ok(obj);
+        }
+
+        public IActionResult RetiraEspecialidade(ProfissionalEspecialidadeViewModel obj)
+        {
+            HttpResponseMessage message = _httpClient.DeleteAsync($"Especialidade/RetiraEspecialidade/{obj.ProfissionalId}/{obj.EspecialidadeId}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<ProfissionalEspecialidadeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<ProfissionalEspecialidadeViewModel>>(content);
+            }
+            return Ok();
         }
         #endregion
     }

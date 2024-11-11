@@ -52,7 +52,7 @@
                         <th scope="col">@Html.DisplayNameFor(model => model.Cpf)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.RegistroProfissional)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Numero)</th>
-                        <th scope="col">@Html.DisplayNameFor(model => model.Especialidade)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Especialidades)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Ativo)</th>
                     </tr>
                 </thead>
@@ -73,7 +73,7 @@
                                 @Html.DisplayFor(modelItem => item.Numero)
                             </td>
                             <td class="text-start">
-                                @Html.DisplayFor(modelItem => item.Especialidade)
+                                @Html.DisplayFor(modelItem => item.Especialidades)
                             </td>
                             <td class="text-center">
                                 @if (item.Ativo)
