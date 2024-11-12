@@ -6,6 +6,8 @@
 
     var radAtivo_Sim = @Model.Ativo ? "checked" : "";
     var radAtivo_Nao = @Model.Ativo ? "" : "checked";
+
+    var Id = Model.Id;
 }
 @* <form asp-action="Edit" asp-controller="Telefone" method="post"> *@
 <div class="card">
@@ -28,14 +30,16 @@
                         <button type="button" id="closeBtn" class="btn-close" onclick="HideAlert('alertaTelefone');"></button>
                     </div>
                 </div>                
-                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.PessoaId)
                 <div class="col-3">
                     @Html.LabelFor(model => model.DDDNum, new { @class = "form-label" })
-                    @Html.TextBoxFor(model => model.DDDNum, new { id = "DDDNum", name = "DDDNum", maxlength = "20", @class = "form-control form-control-sm" })
+                    @Html.TextBoxFor(model => model.DDDNum, new { @class = "form-control form-control-sm", @onkeypress = "MaskItem(this, mphone);", @onblur = "MaskItem(this, mphone);" })
+                    @Html.ValidationMessageFor(model => model.DDDNum, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-3">
                     @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
-                    @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { name = "cmbTipoTelefone", id = "cmbTipoTelefone", @class = "form-select form-select-sm" })
+                    @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { @class = "form-select form-select-sm" })
+                    @Html.ValidationMessageFor(model => model.TipoTelefoneId, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-3 text-center">
                     <div class="ps-1 pb-2">Principal</div>
@@ -60,7 +64,7 @@
         <div class="card-body">
             <div class="row border-top border-secondary">
                 <div class="col-12 text-center pt-2">
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="AtualizarTelefone();">Alterar</button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="AtualizarTelefone(@Id);">Alterar</button>
                 </div>
             </div>
         </div>

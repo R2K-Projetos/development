@@ -1,4 +1,8 @@
-﻿function CarregaListaCidadesUF(Entidade, ufId) {
+﻿$(document).ready(function () {
+    $('.cep').mask('00000-000');
+});
+//==============================
+function CarregaListaCidadesUF(Entidade, ufId) {
 
     let link = '/' + Entidade + '/FillCidadesUF?ufId=' + ufId;
     $(document).ready(function () {

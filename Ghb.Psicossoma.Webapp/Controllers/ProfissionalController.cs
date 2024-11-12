@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
@@ -76,6 +77,15 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                         //Aqui, como não há associação com Pessoa, a API retorna erro, na propriedade message.
                     }
                 }
+            }
+            else
+            {
+                profissional.OpcoesSexo = FillSexoDropDown();
+                profissional.Endereco = new();
+                profissional.Endereco.Ufs = FillUf();
+                profissional.Telefone = new();
+                profissional.TiposTelefone = FillTipoTelefone();
+                profissional.TiposRegistroProfissional = FillRegistro();
             }
             return View(profissional);
         }
@@ -252,7 +262,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return lista;
         }
 
-        public IActionResult ObterPartialTelefone(int id)
+        public IActionResult ObterPartialFormTelefone(int id)
         {
             TelefoneViewModel? itemFound = null;
             HttpResponseMessage message = _httpClient.GetAsync($"telefone/get/{id}").Result;
@@ -266,6 +276,13 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }
 
             return PartialView("~/Views/Shared/_PartialFormTelefone.cshtml", itemFound);
+        }
+
+        public IActionResult ObterPartialListaTelefones(int PessoaId)
+        {
+            var lista = GetTelefonePessoa(PessoaId);
+
+            return PartialView("~/Views/Profissional/_PartialProfissionalEspecialidades.cshtml", lista);       
         }
         #endregion
 

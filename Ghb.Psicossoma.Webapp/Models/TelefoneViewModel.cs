@@ -7,6 +7,8 @@ namespace Ghb.Psicossoma.Webapp.Models
     {
         public int Id { get; set; }
 
+        public int PessoaId { get; set; }
+
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
         public int TipoTelefoneId { get; set; }
 

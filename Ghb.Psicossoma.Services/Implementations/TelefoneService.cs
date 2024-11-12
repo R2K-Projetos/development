@@ -90,6 +90,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 selectQuery = $@"SELECT t.Id
+                                        ,t.PessoaId                                        
                                         ,t.TipoTelefoneId
                                         ,t.Principal
                                         ,t.DDDNum
@@ -178,8 +179,12 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var telefone = _mapper.Map<TelefoneDto, Telefone>(dto);
                 updateQuery = $@"UPDATE telefone
-                                 SET PessoaId = {telefone.PessoaId}, TipoTelefoneId = {telefone.TipoTelefoneId},Principal = {telefone.Principal}, DDDNum = '{telefone.DDDNum}', Ativo = {telefone.Ativo}
-                                 WHERE Id = {telefone.Id};";
+                                    SET PessoaId = {telefone.PessoaId}
+                                        ,TipoTelefoneId = {telefone.TipoTelefoneId}
+                                        ,Principal = {telefone.Principal}
+                                        ,DDDNum = '{telefone.DDDNum}'
+                                        ,Ativo = {telefone.Ativo}
+                                  WHERE Id = {telefone.Id};";
 
                 _telefoneRepository.Update(updateQuery);
                 var item = _mapper.Map<Telefone, TelefoneDto>(telefone);

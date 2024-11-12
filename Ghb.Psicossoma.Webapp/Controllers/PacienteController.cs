@@ -108,7 +108,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return View(obj);
         }
 
-        #region Paciente
         private List<SelectListItem> FillSexoDropDown()
         {
             List<SelectListItem> sexo = new()
@@ -119,7 +118,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             };
             return sexo;
         }
-        #endregion
 
         #region Endereco
         private List<SelectListItem> FillUf()
@@ -229,7 +227,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return lista;
         }
 
-        public IActionResult ObterPartialTelefone(int id)
+        public IActionResult ObterPartialFormTelefone(int id)
         {
             TelefoneViewModel? itemFound = null;
             HttpResponseMessage message = _httpClient.GetAsync($"telefone/get/{id}").Result;
@@ -243,6 +241,13 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             }            
 
             return PartialView("~/Views/Shared/_PartialFormTelefone.cshtml", itemFound);
+        }
+
+        public IActionResult ObterPartialListaTelefones(int PessoaId)
+        {
+            var lista = GetTelefonePessoa(PessoaId);
+
+            return PartialView("~/Views/Shared/_PartialListaTelefones.cshtml", lista);
         }
         #endregion
 

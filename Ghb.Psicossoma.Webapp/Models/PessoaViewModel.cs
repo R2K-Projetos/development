@@ -42,6 +42,7 @@ namespace Ghb.Psicossoma.Webapp.Models
         public EnderecoViewModel? Endereco { get; set; }
 
         public TelefoneViewModel? Telefone { get; set; }
+
         public List<TelefoneViewModel>? TelefonesPessoa { get; set; }
 
         [Required(ErrorMessage = "{0} é um campo obrigatório")]

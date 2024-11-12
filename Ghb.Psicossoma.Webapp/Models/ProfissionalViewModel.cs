@@ -17,13 +17,13 @@ namespace Ghb.Psicossoma.Webapp.Models
 
         public bool IsAtivo { get; set; } = false;
 
-        public string Especialidades { get; set; } = string.Empty;
-
         public int RegistroProfissionalId { get; set; }
 
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
         [Display(Name = "Tipo de Registro")]
         public IEnumerable<SelectListItem> TiposRegistroProfissional { get; set; } = [];
+
+        public string Especialidades { get; set; } = string.Empty;
 
         public List<EspecialidadeViewModel>? EspecialidadesProfissional { get; set; }
     }

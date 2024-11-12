@@ -1,4 +1,27 @@
 ﻿//=========================
+function MaskItem(o, f) {
+    setTimeout(function () {
+        var v = mphone(o.value);
+        if (v != o.value) {
+            o.value = v;
+        }
+    }, 1);
+}
+function mphone(v) {
+    var r = v.replace(/\D/g, "");
+    r = r.replace(/^0/, "");
+    if (r.length > 10) {
+        r = r.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+    } else if (r.length > 5) {
+        r = r.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+    } else if (r.length > 2) {
+        r = r.replace(/^(\d\d)(\d{0,5})/, "($1) $2");
+    } else {
+        r = r.replace(/^(\d*)/, "($1");
+    }
+    return r;
+}
+//=========================
 function FormTelefoneControl(bVisualiza) {
 
     if (parseInt(bVisualiza) == 1) {
@@ -14,8 +37,8 @@ function FormTelefoneControl(bVisualiza) {
 function LimpaTelefone() {
 
     HideAlert('alertaTelefone');
-    $('#txtNumeroTel').val('');
-    $("#cmbTipoTelefone").val($("#cmbTipoTelefone option:first").val());
+    $('#Telefone_DDDNum').val('');
+    $("#TipoTelefoneId").val($("#TipoTelefoneId option:first").val());
 }
 //=========================
 function AddTelefone() {
@@ -23,12 +46,12 @@ function AddTelefone() {
     const arrayDadosTefone = Array(3);
     let totalInserido = $('#hdnTotalTelefonesAdicionados').val();
 
-    let numero = $('#txtNumeroTel').val();
+    let numero = $('#Telefone_DDDNum').val();
     if (numero == '' || numero == undefined) {
         ShowAlert('danger', 'O campo <b>Número</b> deve ser informado.', 'alertaTelefone');
         return false;
     } 
-    let codTipoTefone = RetornaComboSelecionado('cmbTipoTelefone');
+    let codTipoTefone = RetornaComboSelecionado('TipoTelefoneId');
     if (parseInt(codTipoTefone) < 0) {
         ShowAlert('danger', 'O campo <b>Tipo</b> deve ser informado.', 'alertaTelefone');
         return false;
@@ -41,7 +64,7 @@ function AddTelefone() {
 
     arrayDadosTefone[0] = numeroItem;
     arrayDadosTefone[1] = numero;
-    arrayDadosTefone[2] = GetTextValueComboBox('cmbTipoTelefone');
+    arrayDadosTefone[2] = GetTextValueComboBox('TipoTelefoneId');
     arrayDadosTefone[3] = codTipoTefone;
 
     let novaLinha = MontaLinhaTelefone(arrayDadosTefone);
@@ -90,21 +113,102 @@ function ControlaViewTableTelefone(bShowTable) {
         $('#tableListaTelefone').hide();
     }
 }
-function EditTelefone(Id) {
+//=========================
+function ListaTelefones() {
 
     $.ajax({
         type: 'GET',
-        url: 'ObterPartialTelefone',
+        url: 'ObterPartialListaTelefones',
+        data: { PessoaId: $('#PessoaId').val() },
+        cache: false,
+        async: true,
+        success: function (retorno) {
+            $('#listaTelefones').show();
+            $('#listaTelefones').html(retorno);
+        },
+        failure: function (retorno) {
+            alert('ajax.failure:\n'
+                + 'data: ' + retorno + '\n'
+            );
+        },
+        error: function (req, status, error) {
+            alert('ajax.error:\n'
+                + 'req: ' + req + '\n'
+                + 'status: ' + status + '\n'
+                + 'error: ' + error + '\n'
+            );
+        }
+    });
+}
+//=========================
+function EditTelefone(Id, PessoaId) {
+
+    $.ajax({
+        type: 'GET',
+        url: 'ObterPartialFormTelefone',
         data: { Id: Id },
         cache: false,
         async: true,
-        success: function (data) {
+        success: function (retorno) {
             FormTelefoneControl(1);
-            $('#formTelefone').html(data);
+            $('#formTelefone').html(retorno);
         },
-        failure: function (data) {
+        failure: function (retorno) {
             alert('ajax.failure:\n'
-                + 'data: ' + data + '\n'
+                + 'data: ' + retorno + '\n'
+            );
+        },
+        error: function (req, status, error) {
+            alert('ajax.error:\n'
+                + 'req: ' + req + '\n'
+                + 'status: ' + status + '\n'
+                + 'error: ' + error + '\n'
+            );
+        }
+    });
+}
+function AtualizarTelefone(Id) {
+
+    let PessoaId = $('#PessoaId').val();
+    let TipoTelefoneId = $('#TipoTelefoneId').val();
+    $('#Principal').is(":checked") ? Principal = 1 : Principal = 0;    
+    let DDDNum = $('#DDDNum').val();
+    $('#Ativo').is(":checked") ? Ativo = 1 : Ativo = 0;
+
+    let model = {};
+    model.Id = Id;
+    model.PessoaId = PessoaId;
+    model.TipoTelefoneId = TipoTelefoneId;
+    model.Principal = Principal;
+    model.DDDNum = DDDNum;
+    model.Ativo = Ativo;
+
+    //alert(''
+    //    + 'model.Id: ' + model.Id + '\n'
+    //    + 'model.PessoaId: ' + model.PessoaId + '\n'
+    //    + 'model.TipoTelefoneId: ' + model.TipoTelefoneId + '\n'
+    //    + 'model.Principal: ' + model.Principal + '\n'
+    //    + 'model.DDDNum: ' + model.DDDNum + '\n'
+    //    + 'model.Ativo: ' + model.Ativo + '\n'
+    //);
+    //return false;
+
+    var urlAjax = '/Telefone/Edit';
+
+    $.ajax({
+        type: 'POST',
+        url: urlAjax,
+        data: model,
+        dataType: "json",
+        cache: false,
+        async: true,
+        success: function (retorno) {
+            $('#formTelefone').hide();
+            ListaTelefones();            
+        },
+        failure: function (retorno) {
+            alert('ajax.failure:\n'
+                + 'data: ' + retorno + '\n'
             );
         },
         error: function (req, status, error) {

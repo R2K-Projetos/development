@@ -232,7 +232,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return lista;
         }
 
-        public IActionResult ObterPartialTelefone(int id)
+        public IActionResult ObterPartialFormTelefone(int id)
         {
             TelefoneViewModel? itemFound = null;
             string itemFind = $"telefone/get/{id}";

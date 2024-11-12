@@ -38,12 +38,12 @@
                                                     </div>
                                                     <div class="col-12">
                                                         @Html.LabelFor(model => model.Nome, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-sm cpf" })
                                                         @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-3">
                                                         @Html.LabelFor(model => model.Cpf, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Cpf, new { @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Cpf, new { @class = "form-control form-control-sm cpf" })
                                                         @Html.ValidationMessageFor(model => model.Cpf, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-3">
@@ -80,7 +80,7 @@
                                                             CEP:
                                                         </div>
                                                         <div class="d-inline-block">
-                                                            @Html.TextBoxFor(model => model.Endereco!.CEP, new { id = "txtCEP", name = "txtCEP", @class = "form-control form-control-sm cep", style = "width: 110px;" })
+                                                            @Html.TextBoxFor(model => model.Endereco!.CEP, new { id = "CEP", name = "CEP", @class = "form-control form-control-sm cep", style = "width: 110px;" })
                                                             @Html.ValidationMessageFor(model => model.Endereco!.CEP, "", new { @class = "text-danger" })
                                                         </div>
                                                         <div class="d-inline-block">
@@ -96,37 +96,37 @@
                                                 <div class="row">
                                                     <div class="col-9">
                                                         @Html.LabelFor(model => model.Endereco!.Logradouro, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Endereco!.Logradouro, new { id = "txtLogradouro", name = "txtLogradouro", @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Logradouro, new { @class = "form-control form-control-sm" })
                                                         @Html.ValidationMessageFor(model => model.Endereco!.Logradouro, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-3">
                                                         @Html.LabelFor(model => model.Endereco!.Numero, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Endereco!.Numero, new { id = "txtNumero", name = "txtNumero", @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Numero, new { @class = "form-control form-control-sm" })
                                                         @Html.ValidationMessageFor(model => model.Endereco!.Numero, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6">
                                                         @Html.LabelFor(model => model.Endereco!.Complemento, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Endereco!.Complemento, new { id = "txtComplemento", name = "txtComplemento", @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Complemento, new { @class = "form-control form-control-sm" })
                                                     </div>
                                                     <div class="col-6">
                                                         @Html.LabelFor(model => model.Endereco!.Bairro, new { @class = "form-label" })
-                                                        @Html.TextBoxFor(model => model.Endereco!.Bairro, new { id = "txtBairro", name = "txtBairro", @class = "form-control form-control-sm" })
+                                                        @Html.TextBoxFor(model => model.Endereco!.Bairro, new { @class = "form-control form-control-sm" })
                                                         @Html.ValidationMessageFor(model => model.Endereco!.Bairro, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-3">
                                                         @Html.LabelFor(model => model.Endereco!.Ufs, new { @class = "form-label" })
-                                                        @Html.DropDownListFor(model => model.Endereco!.UFId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF('" + @controllerName + "', this.value)" })
-                                                        @Html.ValidationMessageFor(model => model.Endereco!.UFId, "", new { @class = "text-danger" })
+                                                        @Html.DropDownListFor(model => model.Endereco!.UFId, Model.Endereco!.Ufs, new { @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF('" + @controllerName + "', this.value)" })
                                                     </div>
                                                     <div class="col-9">
                                                         <label for="cmbCidade" class="form-label">Cidade</label>
                                                         <select name="cmbCidade" id="cmbCidade" class="form-select form-select-sm">
                                                             <option value="0">Selecione a UF</option>
                                                         </select>
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.CidadeId, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -160,11 +160,11 @@
                                                                 <div class="row">
                                                                     <div class="col-6">
                                                                         @Html.LabelFor(model => model.Telefone!.DDDNum, new { @class = "form-label" })
-                                                                        @Html.TextBoxFor(model => model.Telefone!.DDDNum, new { name = "txtNumeroTel", id = "txtNumeroTel", maxlength = "20", @class = "form-control form-control-sm" })
+                                                                        @Html.TextBoxFor(model => model.Telefone!.DDDNum, new { @class = "form-control form-control-sm", @onkeypress = "MaskItem(this, mphone);", @onblur = "MaskItem(this, mphone);" })
                                                                     </div>
                                                                     <div class="col-4">
                                                                         @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
-                                                                        @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { name = "cmbTipoTelefone", id = "cmbTipoTelefone", @class = "form-select form-select-sm" })
+                                                                        @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { @class = "form-select form-select-sm" })
                                                                     </div>
                                                                     <div class="col-2 text-center pt-2">
                                                                         <div class="pt-4"></div>
@@ -337,7 +337,7 @@
 </div>
 @section Scripts {
     <script src="~/js/pessoa.js" asp-append-version="true"></script>
-    <script src="~/js/cidade.js" asp-append-version="true"></script>
+    <script src="~/js/endereco.js" asp-append-version="true"></script>
     <script src="~/js/telefone.js" asp-append-version="true"></script>
     <script src="~/js/relacionamento.pessoa.js" asp-append-version="true"></script>
     <script type="text/javascript">

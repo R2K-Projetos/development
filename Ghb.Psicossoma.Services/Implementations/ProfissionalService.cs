@@ -170,7 +170,6 @@ namespace Ghb.Psicossoma.Services.Implementations
                     Sexo = dto.Sexo
                 };
 
-
                 ResultDto<PessoaDto> result = _pessoaService.Insert(pessoa);
                 PessoaDto? pessoaFound = result.Items.FirstOrDefault();
 
