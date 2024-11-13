@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
@@ -315,16 +316,17 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return Ok(obj);
         }
 
+        [HttpPost]
         public IActionResult RetiraEspecialidade(ProfissionalEspecialidadeViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.DeleteAsync($"Especialidade/RetiraEspecialidade/{obj.ProfissionalId}/{obj.EspecialidadeId}").Result;
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"Especialidade/RetiraEspecialidade/", obj).Result;
 
             if (message.IsSuccessStatusCode)
             {
                 string content = message.Content.ReadAsStringAsync().Result;
                 ResultModel<ProfissionalEspecialidadeViewModel>? model = JsonConvert.DeserializeObject<ResultModel<ProfissionalEspecialidadeViewModel>>(content);
             }
-            return Ok();
+            return Ok(obj);
         }
         #endregion
     }

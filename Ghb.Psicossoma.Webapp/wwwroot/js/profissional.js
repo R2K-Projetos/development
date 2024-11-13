@@ -23,6 +23,7 @@ function ListaEspecialidades(ProfissionalId) {
         async: true,
         success: function (response) {
             $('#listaEpecialidades').html(response);
+            $('#hdnProfissionalId').val(ProfissionalId);
         },
         failure: function (response) {
             alert('ajax.failure:\n'
@@ -45,11 +46,18 @@ function TrataVinculoEspecialidade(IdEspecialidade, Checked) {
     let Action = 'AdicionaEspecialidade';
     if (parseInt(Checked) == 1) {
         Action = 'RetiraEspecialidade';
-        sendType = 'DELETE';
+        sendType = 'POST';
     }
     var urlAjax = '/Profissional/' + Action;
 
     let ProfissionalId = $('#Id').val();
+    let ProfissionalId2 = $('#hdnProfissionalId').val();
+
+    alert(''
+        + 'ProfissionalId: ' + ProfissionalId + '\n'
+        + 'ProfissionalId(2): ' + ProfissionalId2 + '\n'
+    ); //return false;
+
 
     let model = {};
     model.Id = 0;

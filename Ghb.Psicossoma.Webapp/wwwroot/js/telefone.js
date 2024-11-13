@@ -251,22 +251,9 @@ function DeleteTelefone(Id, PessoaId) {
     model.DDDNum = '';
     model.Ativo = false;
 
-    var urlAjax = '/Telefone/Delete';
-
-    alert(''
-        + 'model.Id: ' + model.Id + '\n'
-        + 'model.PessoaId: ' + model.PessoaId + '\n'
-        + 'model.TipoTelefoneId: ' + model.TipoTelefoneId + '\n'
-        + 'model.Principal: ' + model.Principal + '\n'
-        + 'model.DDDNum: ' + model.DDDNum + '\n'
-        + 'model.Ativo: ' + model.Ativo + '\n'
-        + 'urlAjax: ' + urlAjax + '\n'
-    );
-    //return false;    
-
     $.ajax({
         type: 'POST',
-        url: urlAjax,
+        url: '/Telefone/Delete',
         data: model,
         dataType: "json",
         cache: false,

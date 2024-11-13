@@ -9,5 +9,7 @@ namespace Ghb.Psicossoma.Services.Abstractions
         ResultDto<EspecialidadeResponseDto> GetEspecialidadeDisponivel(string ProfissionalId);
 
         ResultDto<ProfissionalEspecialidadeDto> AdicionaEspecialidade(ProfissionalEspecialidadeDto dto);
+
+        ResultDto<ProfissionalEspecialidadeDto> RetiraEspecialidade(ProfissionalEspecialidadeDto dto);
     }
 }

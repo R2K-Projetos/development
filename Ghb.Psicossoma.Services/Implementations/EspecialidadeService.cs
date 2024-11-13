@@ -276,5 +276,39 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             return returnValue;
         }
+
+        public ResultDto<ProfissionalEspecialidadeDto> RetiraEspecialidade(ProfissionalEspecialidadeDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<ProfissionalEspecialidadeDto> returnValue = new();
+            string? deleteQuery = null;
+
+            try
+            {
+                deleteQuery = $@"DELETE FROM profissionalespecialidade
+                                  WHERE ProfissionalId = {dto.ProfissionalId}
+                                    AND EspecialidadeId = {dto.EspecialidadeId}; ";
+
+                _especialidadeRepository.Remove(deleteQuery);
+
+                var item = new ProfissionalEspecialidadeDto();
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", deleteQuery);
+                _logger.LogError(ex, "Erro na exclusão dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
     }
 }

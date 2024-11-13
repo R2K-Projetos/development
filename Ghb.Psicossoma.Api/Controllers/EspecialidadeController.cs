@@ -211,5 +211,37 @@ namespace Ghb.Psicossoma.Api.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Adiciona um Especialidade a um profissional
+        /// <param name="obj">Json contendo os dados da classe profissionalespecialidade></param>
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("RetiraEspecialidade")]
+        [SwaggerOperation(
+        Summary = "Retira uma Especialidade a um profissional",
+        Description = "Retira uma Especialidade a um profissional",
+        OperationId = "Especialidade.RetiraEspecialidade",
+        Tags = new[] { "Especialidade" })]
+        [ProducesResponseType(typeof(ResultDto<ProfissionalEspecialidadeDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<ProfissionalEspecialidadeDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<ProfissionalEspecialidadeDto> RetiraEspecialidade([FromBody] ProfissionalEspecialidadeDto obj)
+        {
+            ResultDto<ProfissionalEspecialidadeDto> result = new();
+
+            try
+            {
+                result = _especialidadeService.RetiraEspecialidade(obj);
+
+                if (!result.HasError)
+                    result.Message = "Especialidade retirada com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na exclusão da Especialidade", ex);
+            }
+
+            return Ok(result);
+        }
     }
 }
