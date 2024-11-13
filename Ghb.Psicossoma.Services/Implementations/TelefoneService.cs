@@ -98,7 +98,8 @@ namespace Ghb.Psicossoma.Services.Implementations
                                         ,tt.Nome as TipoTelefone
                                    FROM telefone t
                                   INNER JOIN TipoTelefone tt on tt.Id = t.TipoTelefoneId
-                                  WHERE t.PessoaId = {PessaoId};";
+                                  WHERE t.PessoaId = {PessaoId}
+                                  ORDER BY IF(t.Principal = 1, 1, 2), t.Dddnum;";
 
                 DataTable result = _telefoneRepository.GetAll(selectQuery);
                 List<TelefoneResponse> telefones = result.CreateListFromTable<TelefoneResponse>();
@@ -141,8 +142,18 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 Telefone? telefone = _mapper.Map<TelefoneDto, Telefone>(dto);
-                insertQuery = $@"INSERT INTO telefone (PessoaId, TipoTelefoneId, Principal, DDDNum, Ativo)
-                                 VALUES('{telefone.PessoaId}', '{telefone.TipoTelefoneId}', '{telefone.Principal}', '{telefone.DDDNum}', '{telefone.Ativo});";
+
+                insertQuery = "";
+                if (dto.Principal)
+                {
+                    insertQuery += $@"UPDATE telefone
+                                         SET Principal = 0
+                                       WHERE PessoaId = {telefone.PessoaId};";
+                }
+                insertQuery += $@"INSERT INTO telefone 
+                                 (PessoaId, TipoTelefoneId, Principal, DDDNum, Ativo)
+                                 VALUES 
+                                 ({telefone.PessoaId}, {telefone.TipoTelefoneId}, {telefone.Principal}, '{telefone.DDDNum}', {telefone.Ativo});";
 
                 long newId = _telefoneRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -178,7 +189,15 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 var telefone = _mapper.Map<TelefoneDto, Telefone>(dto);
-                updateQuery = $@"UPDATE telefone
+
+                updateQuery = "";
+                if (dto.Principal)
+                {
+                    updateQuery += $@"UPDATE telefone
+                                         SET Principal = 0
+                                       WHERE PessoaId = {telefone.PessoaId};";
+                }
+                updateQuery += $@"UPDATE telefone
                                     SET PessoaId = {telefone.PessoaId}
                                         ,TipoTelefoneId = {telefone.TipoTelefoneId}
                                         ,Principal = {telefone.Principal}
@@ -198,6 +217,39 @@ namespace Ghb.Psicossoma.Services.Implementations
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", updateQuery);
                 _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public ResultDto<TelefoneDto> Delete(string id)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<TelefoneDto> returnValue = new();
+            string? deleteQuery = null;
+
+            try
+            {
+                deleteQuery += $@"DELETE FROM telefone
+                                  WHERE Id = {id};";
+
+                _telefoneRepository.Remove(deleteQuery);
+
+                var item = new TelefoneDto();
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", deleteQuery);
+                _logger.LogError(ex, "Erro na exclusão dos dados");
             }
 
             elapsedTime.Stop();

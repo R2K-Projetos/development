@@ -125,6 +125,7 @@ function ListaTelefones() {
         success: function (retorno) {
             $('#listaTelefones').show();
             $('#listaTelefones').html(retorno);
+            FormTelefoneControl(0);
         },
         failure: function (retorno) {
             alert('ajax.failure:\n'
@@ -143,15 +144,23 @@ function ListaTelefones() {
 //=========================
 function EditTelefone(Id, PessoaId) {
 
+    let tituloForm = 'Edita';
+    let nomeBtn = 'Alterar';
+    if (parseInt(Id) == 0) {
+        tituloForm = 'Cadastra';
+        nomeBtn = 'Cadastrar';
+    }
     $.ajax({
         type: 'GET',
         url: 'ObterPartialFormTelefone',
-        data: { Id: Id },
+        data: { Id: Id, PessoaId: PessoaId },
         cache: false,
         async: true,
         success: function (retorno) {
             FormTelefoneControl(1);
             $('#formTelefone').html(retorno);
+            $("#tituloFormTelefone").html(tituloForm);
+            $("#btnSalvaTelefone").html(nomeBtn);
         },
         failure: function (retorno) {
             alert('ajax.failure:\n'
@@ -167,13 +176,24 @@ function EditTelefone(Id, PessoaId) {
         }
     });
 }
-function AtualizarTelefone(Id) {
+//=========================
+function CheckControl() {
+
+    $('#Principal_S').is(":checked") ? Principal = true : Principal = false;
+    $('#Ativo_S').is(":checked") ? Ativo = true : Ativo = false;
+    if (Principal && !Ativo) {
+        $('#Ativo_S').prop('checked', true);
+    }
+}
+function SalvaTelefone(Id) {
 
     let PessoaId = $('#PessoaId').val();
     let TipoTelefoneId = $('#TipoTelefoneId').val();
-    $('#Principal').is(":checked") ? Principal = 1 : Principal = 0;    
+    let Principal;
+    $('#Principal_S').is(":checked") ? Principal = true : Principal = false;
     let DDDNum = $('#DDDNum').val();
-    $('#Ativo').is(":checked") ? Ativo = 1 : Ativo = 0;
+    let Ativo;
+    $('#Ativo_S').is(":checked") ? Ativo = true : Ativo = false;
 
     let model = {};
     model.Id = Id;
@@ -183,17 +203,19 @@ function AtualizarTelefone(Id) {
     model.DDDNum = DDDNum;
     model.Ativo = Ativo;
 
-    //alert(''
-    //    + 'model.Id: ' + model.Id + '\n'
-    //    + 'model.PessoaId: ' + model.PessoaId + '\n'
-    //    + 'model.TipoTelefoneId: ' + model.TipoTelefoneId + '\n'
-    //    + 'model.Principal: ' + model.Principal + '\n'
-    //    + 'model.DDDNum: ' + model.DDDNum + '\n'
-    //    + 'model.Ativo: ' + model.Ativo + '\n'
-    //);
-    //return false;
+    var urlAjax = '/Telefone/';
+    Id == 0 ? urlAjax += 'Create' : urlAjax += 'Edit';
 
-    var urlAjax = '/Telefone/Edit';
+    alert(''
+        + 'model.Id: ' + model.Id + '\n'
+        + 'model.PessoaId: ' + model.PessoaId + '\n'
+        + 'model.TipoTelefoneId: ' + model.TipoTelefoneId + '\n'
+        + 'model.Principal: ' + model.Principal + '\n'
+        + 'model.DDDNum: ' + model.DDDNum + '\n'
+        + 'model.Ativo: ' + model.Ativo + '\n'
+        + 'urlAjax: ' + urlAjax + '\n'
+    );
+    //return false;    
 
     $.ajax({
         type: 'POST',
@@ -203,8 +225,54 @@ function AtualizarTelefone(Id) {
         cache: false,
         async: true,
         success: function (retorno) {
-            $('#formTelefone').hide();
             ListaTelefones();            
+        },
+        failure: function (retorno) {
+            alert('ajax.failure:\n'
+                + 'data: ' + retorno + '\n'
+            );
+        },
+        error: function (req, status, error) {
+            alert('ajax.error:\n'
+                + 'req: ' + req + '\n'
+                + 'status: ' + status + '\n'
+                + 'error: ' + error + '\n'
+            );
+        }
+    });
+}
+function DeleteTelefone(Id, PessoaId) {
+
+    let model = {};
+    model.Id = Id;
+    model.PessoaId = PessoaId;
+    model.TipoTelefoneId = 0;
+    model.Principal = false;
+    model.DDDNum = '';
+    model.Ativo = false;
+
+    var urlAjax = '/Telefone/Delete';
+
+    alert(''
+        + 'model.Id: ' + model.Id + '\n'
+        + 'model.PessoaId: ' + model.PessoaId + '\n'
+        + 'model.TipoTelefoneId: ' + model.TipoTelefoneId + '\n'
+        + 'model.Principal: ' + model.Principal + '\n'
+        + 'model.DDDNum: ' + model.DDDNum + '\n'
+        + 'model.Ativo: ' + model.Ativo + '\n'
+        + 'urlAjax: ' + urlAjax + '\n'
+    );
+    //return false;    
+
+    $.ajax({
+        type: 'POST',
+        url: urlAjax,
+        data: model,
+        dataType: "json",
+        cache: false,
+        async: true,
+        success: function (retorno) {
+            ListaTelefones();
         },
         failure: function (retorno) {
             alert('ajax.failure:\n'

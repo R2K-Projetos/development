@@ -117,7 +117,26 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public void Remove(string id)
     {
-        throw new NotImplementedException();
+        MySqlConnection? cn = null;
+
+        try
+        {
+            using (cn = new(_settings.ConnectionString))
+            {
+                cn.Open();
+
+                using MySqlCommand cmd = new(id, cn);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+        finally
+        {
+            cn.Close();
+        }
     }
 
     public long Remove(List<string> selectedIds)

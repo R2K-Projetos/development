@@ -8,5 +8,6 @@ namespace Ghb.Psicossoma.Services.Abstractions
     {
         ResultDto<TelefoneResponseDto> GetTelefone(string Id);
         ResultDto<TelefoneResponseDto> GetAllTelefonePessoa(string pessoaId);
+        ResultDto<TelefoneDto> Delete(string id);
     }
 }

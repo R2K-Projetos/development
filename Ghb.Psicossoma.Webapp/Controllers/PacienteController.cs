@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
@@ -227,20 +228,33 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return lista;
         }
 
-        public IActionResult ObterPartialFormTelefone(int id)
+        public IActionResult ObterPartialFormTelefone(int Id, int PessoaId)
         {
-            TelefoneViewModel? itemFound = null;
-            HttpResponseMessage message = _httpClient.GetAsync($"telefone/get/{id}").Result;
+            var item = new TelefoneViewModel();
 
-            if (message.IsSuccessStatusCode)
+            if (Id == 0) {
+                item.Id = Id;
+                item.PessoaId = PessoaId;
+                item.TipoTelefoneId = 0;
+                item.Principal = false;
+                item.DDDNum = string.Empty;
+                item.Ativo = true;
+                item.TiposTelefone = FillTipoTelefone();
+            }
+            else
             {
-                string content = message.Content.ReadAsStringAsync().Result;
-                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(content);
-                itemFound = model!.Items.FirstOrDefault()!;
-                itemFound.TiposTelefone = FillTipoTelefone();
+                HttpResponseMessage message = _httpClient.GetAsync($"telefone/get/{Id}").Result;
+
+                if (message.IsSuccessStatusCode)
+                {
+                    string content = message.Content.ReadAsStringAsync().Result;
+                    ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(content);
+                    item = model!.Items.FirstOrDefault()!;
+                    item.TiposTelefone = FillTipoTelefone();
+                }
             }            
 
-            return PartialView("~/Views/Shared/_PartialFormTelefone.cshtml", itemFound);
+            return PartialView("~/Views/Shared/_PartialFormTelefone.cshtml", item);
         }
 
         public IActionResult ObterPartialListaTelefones(int PessoaId)

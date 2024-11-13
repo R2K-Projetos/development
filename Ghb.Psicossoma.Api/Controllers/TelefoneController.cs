@@ -183,5 +183,37 @@ namespace Ghb.Psicossoma.Api.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Atualiza os dados de um Telefone
+        /// </summary>
+        /// <param name="obj">Json contendo os dados do telefone></param>
+        /// <returns></returns>
+        [HttpPost("Delete")]
+        [SwaggerOperation(
+        Summary = "Deleta um telefone",
+        Description = "Deleta um telefone",
+        OperationId = "Telefone.Delete",
+        Tags = new[] { "Telefone" })]
+        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<TelefoneDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<TelefoneDto> Delete([FromBody] TelefoneDto obj)
+        {
+            ResultDto<TelefoneDto> result = new();
+
+            try
+            {
+                result = _telefoneService.Delete(obj.Id.ToString());
+
+                if (!result.HasError)
+                    result.Message = "Telefone exclusão com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na exclusão do telefone", ex);
+            }
+
+            return Ok(result);
+        }
     }
 }

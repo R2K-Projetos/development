@@ -144,7 +144,7 @@
                                                 <div id="formTelefone" class="border border-secondary rounded">
                                                 </div>
                                                 <div id="btnNovoTelefone" class="text-center">
-                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="FormTelefoneControl(1);">
+                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="EditTelefone(0, @Model.PessoaId);">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                                             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
                                                         </svg>
@@ -290,6 +290,7 @@
 </div>
 @section Scripts {
     <script src="~/js/pessoa.js" asp-append-version="true"></script>
+    <script src="~/js/paciente.js" asp-append-version="true"></script>
     <script src="~/js/endereco.js" asp-append-version="true"></script>
     <script src="~/js/telefone.js" asp-append-version="true"></script>
     <script src="~/js/relacionamento.pessoa.js" asp-append-version="true"></script>

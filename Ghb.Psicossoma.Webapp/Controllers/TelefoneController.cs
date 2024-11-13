@@ -35,5 +35,31 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
             return Ok(obj);
         }
+
+        [HttpPost]
+        public ActionResult Create(TelefoneViewModel obj)
+        {
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"Telefone/create", obj).Result;
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(content);
+            }
+
+            return Ok(obj);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(TelefoneViewModel obj)
+        {
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"Telefone/Delete", obj).Result;
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(content);
+            }
+
+            return Ok(obj);
+        }
     }
 }

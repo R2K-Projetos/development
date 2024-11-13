@@ -9,13 +9,12 @@
 
     var Id = Model.Id;
 }
-@* <form asp-action="Edit" asp-controller="Telefone" method="post"> *@
 <div class="card">
     <div class="card-body shadow">
         <div class="card-title border-bottom border-secondary">
             <div class="row">
                 <div class="col-10">
-                    <h5>Editar: Telefone</h5>
+                    <h5><span id="tituloFormTelefone"></span>: Telefone</h5>
                 </div>
                 <div class="col-2 text-end">
                     <button type="button" id="closeFormTelefone" class="btn-close" onclick="FormTelefoneControl(0);"></button>
@@ -34,29 +33,27 @@
                 <div class="col-3">
                     @Html.LabelFor(model => model.DDDNum, new { @class = "form-label" })
                     @Html.TextBoxFor(model => model.DDDNum, new { @class = "form-control form-control-sm", @onkeypress = "MaskItem(this, mphone);", @onblur = "MaskItem(this, mphone);" })
-                    @Html.ValidationMessageFor(model => model.DDDNum, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-3">
                     @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })
                     @Html.DropDownListFor(model => model.TipoTelefoneId, Model.TiposTelefone, new { @class = "form-select form-select-sm" })
-                    @Html.ValidationMessageFor(model => model.TipoTelefoneId, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-3 text-center">
                     <div class="ps-1 pb-2">Principal</div>
                     <div class="btn-group ps-1" role="group" aria-label="Telefone Principal">
-                        <input type="radio" class="btn-check" name="Principal" id="Principal" value="1" autocomplete="off" @radPrincipal_Sim />
-                        <label class="btn btn-outline-secondary btn-sm" for="Principal">Sim</label>
-                        <input type="radio" class="btn-check" name="Principal" id="Principal" value="0" autocomplete="off" @radPrincipal_Nao />
-                        <label class="btn btn-outline-secondary btn-sm" for="Principal">Não</label>
+                        <input type="radio" class="btn-check" name="Principal" id="Principal_S" value="1" autocomplete="off" @radPrincipal_Sim onclick="CheckControl();" />
+                        <label class="btn btn-outline-secondary btn-sm" for="Principal_S">Sim</label>
+                        <input type="radio" class="btn-check" name="Principal" id="Principal_N" value="0" autocomplete="off" @radPrincipal_Nao onclick="CheckControl();" />
+                        <label class="btn btn-outline-secondary btn-sm" for="Principal_N">Não</label>
                     </div>
                 </div>
                 <div class="col-3 text-center">
                     <div class="ps-1 pb-2">Ativo</div>
                     <div class="btn-group ps-1" role="group" aria-label="Telefone Ativo">
-                        <input type="radio" class="btn-check" name="Ativo" id="Ativo" value="1" autocomplete="off" @radAtivo_Sim />
-                        <label class="btn btn-outline-secondary btn-sm" for="Ativo">Sim</label>
-                        <input type="radio" class="btn-check" name="Ativo" id="Ativo" value="0" autocomplete="off" @radAtivo_Nao />
-                        <label class="btn btn-outline-secondary btn-sm" for="Ativo">Não</label>
+                        <input type="radio" class="btn-check" name="Ativo" id="Ativo_S" value="1" autocomplete="off" @radAtivo_Sim onclick="CheckControl();" />
+                        <label class="btn btn-outline-secondary btn-sm" for="Ativo_S">Sim</label>
+                        <input type="radio" class="btn-check" name="Ativo" id="Ativo_N" value="0" autocomplete="off" @radAtivo_Nao onclick="CheckControl();" />
+                        <label class="btn btn-outline-secondary btn-sm" for="Ativo_N">Não</label>
                     </div>
                 </div>                
             </div>
@@ -64,10 +61,9 @@
         <div class="card-body">
             <div class="row border-top border-secondary">
                 <div class="col-12 text-center pt-2">
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="AtualizarTelefone(@Id);">Alterar</button>
+                    <button type="button" id="btnSalvaTelefone" class="btn btn-secondary btn-sm" onclick="SalvaTelefone(@Id);">Alterar</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@* </form> *@
