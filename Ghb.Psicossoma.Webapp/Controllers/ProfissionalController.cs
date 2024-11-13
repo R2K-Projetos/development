@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using System.Reflection;
 
 namespace Ghb.Psicossoma.Webapp.Controllers
 {
@@ -103,8 +103,11 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
                 itemFound.OpcoesSexo = FillSexoDropDown();
 
-                itemFound.Endereco = new();
                 itemFound.Endereco = GetEnderecoPessoa(itemFound.PessoaId);
+                if (itemFound.Endereco == null)
+                {
+                    itemFound.Endereco = new();
+                }
                 itemFound.Endereco.Ufs = FillUf();
 
                 itemFound.Telefone = new();
@@ -272,6 +275,12 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 string content = message.Content.ReadAsStringAsync().Result;
                 ResultModel<TelefoneViewModel>? model = JsonConvert.DeserializeObject<ResultModel<TelefoneViewModel>>(content);
                 itemFound = model!.Items.FirstOrDefault()!;
+
+                if (itemFound == null)
+                {
+                    var modelTelefone = new TelefoneViewModel();
+                    itemFound = modelTelefone;
+                }
                 itemFound.TiposTelefone = FillTipoTelefone();
             }
 
@@ -282,7 +291,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         {
             var lista = GetTelefonePessoa(PessoaId);
 
-            return PartialView("~/Views/Profissional/_PartialProfissionalEspecialidades.cshtml", lista);       
+            return PartialView("~/Views/Shared/_PartialListaTelefones.cshtml", lista);
         }
         #endregion
 

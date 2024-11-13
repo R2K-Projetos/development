@@ -123,17 +123,19 @@ function ListaTelefones() {
         cache: false,
         async: true,
         success: function (retorno) {
-            $('#listaTelefones').show();
             $('#listaTelefones').html(retorno);
+            $('#listaTelefones').show();
             FormTelefoneControl(0);
         },
         failure: function (retorno) {
-            alert('ajax.failure:\n'
-                + 'data: ' + retorno + '\n'
+            alert(''
+                + 'ajax.failure:telefone.js/01\n'
+                + 'retorno: ' + retorno + '\n'
             );
         },
         error: function (req, status, error) {
-            alert('ajax.error:\n'
+            alert(''
+                + 'ajax.error:telefone.js/01\n'
                 + 'req: ' + req + '\n'
                 + 'status: ' + status + '\n'
                 + 'error: ' + error + '\n'
@@ -156,19 +158,21 @@ function EditTelefone(Id, PessoaId) {
         data: { Id: Id, PessoaId: PessoaId },
         cache: false,
         async: true,
-        success: function (retorno) {
-            FormTelefoneControl(1);
+        success: function (retorno) {            
             $('#formTelefone').html(retorno);
+            FormTelefoneControl(1);
             $("#tituloFormTelefone").html(tituloForm);
             $("#btnSalvaTelefone").html(nomeBtn);
         },
         failure: function (retorno) {
-            alert('ajax.failure:\n'
-                + 'data: ' + retorno + '\n'
+            alert(''
+                + 'ajax.failure:telefone.js/02\n'
+                + 'retorno: ' + retorno + '\n'
             );
         },
         error: function (req, status, error) {
-            alert('ajax.error:\n'
+            alert(''
+                + 'ajax.error:telefone.js/02\n'
                 + 'req: ' + req + '\n'
                 + 'status: ' + status + '\n'
                 + 'error: ' + error + '\n'
@@ -206,15 +210,15 @@ function SalvaTelefone(Id) {
     var urlAjax = '/Telefone/';
     Id == 0 ? urlAjax += 'Create' : urlAjax += 'Edit';
 
-    alert(''
-        + 'model.Id: ' + model.Id + '\n'
-        + 'model.PessoaId: ' + model.PessoaId + '\n'
-        + 'model.TipoTelefoneId: ' + model.TipoTelefoneId + '\n'
-        + 'model.Principal: ' + model.Principal + '\n'
-        + 'model.DDDNum: ' + model.DDDNum + '\n'
-        + 'model.Ativo: ' + model.Ativo + '\n'
-        + 'urlAjax: ' + urlAjax + '\n'
-    );
+    //alert(''
+    //    + 'model.Id: ' + model.Id + '\n'
+    //    + 'model.PessoaId: ' + model.PessoaId + '\n'
+    //    + 'model.TipoTelefoneId: ' + model.TipoTelefoneId + '\n'
+    //    + 'model.Principal: ' + model.Principal + '\n'
+    //    + 'model.DDDNum: ' + model.DDDNum + '\n'
+    //    + 'model.Ativo: ' + model.Ativo + '\n'
+    //    + 'urlAjax: ' + urlAjax + '\n'
+    //);
     //return false;    
 
     $.ajax({
@@ -228,12 +232,14 @@ function SalvaTelefone(Id) {
             ListaTelefones();            
         },
         failure: function (retorno) {
-            alert('ajax.failure:\n'
-                + 'data: ' + retorno + '\n'
+            alert(''
+                + 'ajax.failure:telefone.js/03\n'
+                + 'retorno: ' + retorno + '\n'
             );
         },
         error: function (req, status, error) {
-            alert('ajax.error:\n'
+            alert(''
+                + 'ajax.error:telefone.js/03\n'
                 + 'req: ' + req + '\n'
                 + 'status: ' + status + '\n'
                 + 'error: ' + error + '\n'
@@ -262,12 +268,14 @@ function DeleteTelefone(Id, PessoaId) {
             ListaTelefones();
         },
         failure: function (retorno) {
-            alert('ajax.failure:\n'
-                + 'data: ' + retorno + '\n'
+            alert(''
+                + 'ajax.failure:telefone.js/04\n'
+                + 'retorno: ' + retorno + '\n'
             );
         },
         error: function (req, status, error) {
-            alert('ajax.error:\n'
+            alert(''
+                + 'ajax.error:telefone.js/04\n'
                 + 'req: ' + req + '\n'
                 + 'status: ' + status + '\n'
                 + 'error: ' + error + '\n'

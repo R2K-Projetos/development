@@ -26,12 +26,14 @@ function ListaEspecialidades(ProfissionalId) {
             $('#hdnProfissionalId').val(ProfissionalId);
         },
         failure: function (response) {
-            alert('ajax.failure:\n'
+            alert(''
+                + 'ajax.failure:profissional.js/01\n'
                 + 'response: ' + response + '\n'
             );
         },
         error: function (req, status, error) {
-            alert('ajax.error:\n'
+            alert(''
+                + 'ajax.error:profissional.js/01\n'
                 + 'req: ' + req + '\n'
                 + 'status: ' + status + '\n'
                 + 'error: ' + error + '\n'
@@ -53,12 +55,6 @@ function TrataVinculoEspecialidade(IdEspecialidade, Checked) {
     let ProfissionalId = $('#Id').val();
     let ProfissionalId2 = $('#hdnProfissionalId').val();
 
-    alert(''
-        + 'ProfissionalId: ' + ProfissionalId + '\n'
-        + 'ProfissionalId(2): ' + ProfissionalId2 + '\n'
-    ); //return false;
-
-
     let model = {};
     model.Id = 0;
     model.ProfissionalId = ProfissionalId;
@@ -75,12 +71,14 @@ function TrataVinculoEspecialidade(IdEspecialidade, Checked) {
             $('#nav-especialidade-tab').trigger('click');
         },
         failure: function (response) {
-            alert('ajax.failure:\n'
+            alert(''
+                + 'ajax.failure:profissional.js/02\n'
                 + 'response: ' + response + '\n'
             );
         },
         error: function (req, status, error) {
-            alert('ajax.error:\n'
+            alert(''
+                + 'ajax.error:profissional.js/02\n'
                 + 'req: ' + req + '\n'
                 + 'status: ' + status + '\n'
                 + 'error: ' + error + '\n'
