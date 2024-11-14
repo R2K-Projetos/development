@@ -9,13 +9,10 @@ namespace Ghb.Psicossoma.Webapp.Models
 
         public int PessoaId { get; set; }
 
-        [Required(ErrorMessage = "{0} é um campo obrigatório")]
         public int TipoTelefoneId { get; set; }
 
         public bool Principal { get; set; }
 
-        [Required(ErrorMessage = "{0} é um campo obrigatório")]
-        [StringLength(20, MinimumLength = 10, ErrorMessage = "{0} deve possuir pelo menos {2} caracteres")]
         [Display(Name = "Número")]
         public string DDDNum { get; set; } = string.Empty;
 
@@ -23,6 +20,7 @@ namespace Ghb.Psicossoma.Webapp.Models
 
         public string? TipoTelefone { get; set; } = string.Empty;
 
+        [Display(Name = "Tipo")]
         public IEnumerable<SelectListItem> TiposTelefone { get; set; } = [];
     }
 }

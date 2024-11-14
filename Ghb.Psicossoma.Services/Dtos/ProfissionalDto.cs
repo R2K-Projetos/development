@@ -9,7 +9,5 @@
         public string Numero { get; set; } = string.Empty;
 
         public bool IsAtivo { get; set; } = false;
-
-        public EnderecoDto? Endereco { get; set; }
     }
 }

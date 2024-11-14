@@ -7,11 +7,11 @@ function CarregaListaCidadesUF(Entidade, ufId) {
     let link = '/' + Entidade + '/FillCidadesUF?ufId=' + ufId;
     $(document).ready(function () {
 
-        $('select#cmbCidade').empty();
+        $('select#Endereco_CidadeId').empty();
         $.getJSON(link, function (data) {
-            $('select#cmbCidade').append('<option value="0">[Selecione]</option>');
+            $('select#Endereco_CidadeId').append('<option value="0">[Selecione]</option>');
             $.each(data, function (i, item) {
-                $('select#cmbCidade').append('<option value="' + item.id + '">' + item.nome + '</option>');
+                $('select#Endereco_CidadeId').append('<option value="' + item.id + '">' + item.nome + '</option>');
             });
         });
     });

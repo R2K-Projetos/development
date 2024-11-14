@@ -97,16 +97,16 @@ namespace Ghb.Psicossoma.Api.Controllers
         Tags = new[] { "Paciente" })]
         [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<PacienteResponseDto> Create([FromBody] PacienteResponseDto obj)
+        public ActionResult<PacienteDto> Create([FromBody] PacienteDto obj)
         {
-            ResultDto<PacienteResponseDto> result = new();
+            ResultDto<PacienteDto> result = new();
 
             try
             {
-                //obj.Id = 0;
-                //result = _pacienteService.Insert(obj);
+                obj.Id = 0;
+                result = _pacienteService.Insert(obj);
 
-                //if (!result.HasError)
+                if (!result.HasError)
                     result.Message = "Paciente criado com sucesso!";
             }
             catch (Exception ex)

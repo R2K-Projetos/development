@@ -86,8 +86,7 @@
                                                             CEP:
                                                         </div>
                                                         <div class="d-inline-block">
-                                                            @Html.TextBoxFor(model => model.Endereco!.CEP, new { @class = "form-control form-control-sm cep", style = "width: 110px;" })
-                                                            @Html.ValidationMessageFor(model => model.Endereco!.CEP, "", new { @class = "text-danger" })
+                                                            @Html.TextBoxFor(model => model.Endereco!.CEP, new { @class = "form-control form-control-sm cep", style = "width: 110px;" }) 
                                                         </div>
                                                         <div class="d-inline-block">
                                                             <input type="button" name="btAutoCmpletar" id="btAutoCmpletar" class="btn btn-secondary btn-sm" value="Auto completar" onclick="CarregaCamposBuscaCEP(document.getElementById('CEP').value);" />
@@ -97,6 +96,9 @@
                                                                 <img src="~/img/iconCorreios.png" alt="Busca de endere�o nos correios" style=" width: auto; height: 18px;" />
                                                             </div>
                                                         </div>
+                                                        <div class="d-inline-block">
+                                                            @Html.ValidationMessageFor(model => model.Endereco!.CEP, "", new { @class = "text-danger" })
+                                                        </div>                                                        
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -115,7 +117,6 @@
                                                     <div class="col-6">
                                                         @Html.LabelFor(model => model.Endereco!.Complemento, new { @class = "form-label" })
                                                         @Html.TextBoxFor(model => model.Endereco!.Complemento, new { @class = "form-control form-control-sm" })
-                                                        @Html.ValidationMessageFor(model => model.Endereco!.Complemento, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-6">
                                                         @Html.LabelFor(model => model.Endereco!.Bairro, new { @class = "form-label" })
@@ -129,10 +130,10 @@
                                                         @Html.DropDownListFor(model => model.Endereco!.UFId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF('" + @controllerName + "', this.value)" })
                                                     </div>
                                                     <div class="col-9">
-                                                        <label for="cmbCidade" class="form-label">Cidade</label>
-                                                        <select name="cmbCidade" id="cmbCidade" class="form-select form-select-sm">
+                                                        <label for="Endereco_CidadeId" class="form-label">Cidade</label>
+                                                        <select name="Endereco.CidadeId" id="Endereco_CidadeId" class="form-select form-select-sm">
                                                             <option value="0">Selecione a UF</option>
-                                                        </select>                                                        
+                                                        </select>   
                                                         @Html.ValidationMessageFor(model => model.Endereco!.CidadeId, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>

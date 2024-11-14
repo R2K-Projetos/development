@@ -29,6 +29,7 @@ namespace Ghb.Psicossoma.Webapp.Models
         public IEnumerable<SelectListItem> OpcoesSexo { get; set; } = [];
 
         [StringLength(80)]
+        [EmailAddress(ErrorMessage = "Endereço de email inválido")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
@@ -45,7 +46,6 @@ namespace Ghb.Psicossoma.Webapp.Models
 
         public List<TelefoneViewModel>? TelefonesPessoa { get; set; }
 
-        [Required(ErrorMessage = "{0} é um campo obrigatório")]
         [Display(Name = "Tipo")]
         public IEnumerable<SelectListItem> TiposTelefone { get; set; } = [];
 

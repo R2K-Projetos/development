@@ -107,7 +107,7 @@ namespace Ghb.Psicossoma.Api.Controllers
                 result = _profissionalService.Insert(profissionalInfo);
 
                 if (!result.HasError)
-                    result.Message = "Profissional criada com sucesso!";
+                    result.Message = "Profissional criado com sucesso!";
             }
             catch (Exception ex)
             {

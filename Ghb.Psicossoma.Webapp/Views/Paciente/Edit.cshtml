@@ -98,6 +98,9 @@
                                                                 <img src="~/img/iconCorreios.png" alt="Busca de endere�o nos correios" style=" width: auto; height: 18px;" />
                                                             </div>
                                                         </div>
+                                                        <div class="d-inline-block">
+                                                            @Html.ValidationMessageFor(model => model.Endereco!.CEP, "", new { @class = "text-danger" })
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -126,10 +129,11 @@
                                                         @Html.DropDownListFor(model => model.Endereco!.UFId, Model.Endereco!.Ufs, new { name = "cmbUF", id = "cmbUF", @class = "form-select form-select-sm", onchange = "CarregaListaCidadesUF('" + @controllerName + "', this.value)" })
                                                     </div>
                                                     <div class="col-9">
-                                                        <label for="cmbCidade" class="form-label">Cidade</label>
-                                                        <select name="cmbCidade" id="cmbCidade" class="form-select form-select-sm">
+                                                        <label for="Endereco_CidadeId" class="form-label">Cidade</label>
+                                                        <select name="Endereco.CidadeId" id="Endereco_CidadeId" class="form-select form-select-sm">
                                                             <option value="0">Selecione a UF</option>
                                                         </select>
+                                                        @Html.ValidationMessageFor(model => model.Endereco!.CidadeId, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -298,7 +302,7 @@
         //=== OnLoad ===
         CarregaListaCidadesUF('@controllerName', '@UFId');
         setTimeout(function () {
-            $("#cmbCidade option[value='@CidadeId']").attr("selected", true);
+            $("#Endereco_CidadeId option[value='@CidadeId']").attr("selected", true);
         }, 200);
         $('#formTelefone').hide();
         $('#listaTelefones').hide();

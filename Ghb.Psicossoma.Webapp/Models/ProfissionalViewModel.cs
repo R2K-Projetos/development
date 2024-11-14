@@ -15,8 +15,9 @@ namespace Ghb.Psicossoma.Webapp.Models
         [Display(Name = "Registro")]
         public string RegistroProfissional { get; set; } = string.Empty;
 
-        public bool IsAtivo { get; set; } = false;
+        public bool IsAtivo { get; set; } = true;
 
+        [Required(ErrorMessage = "{0} é um campo obrigatório")]
         public int RegistroProfissionalId { get; set; }
 
         [Required(ErrorMessage = "{0} é um campo obrigatório")]

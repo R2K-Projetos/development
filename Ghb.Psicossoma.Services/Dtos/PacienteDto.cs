@@ -1,11 +1,9 @@
-﻿using Ghb.Psicossoma.SharedAbstractions.Services.Dtos.Base;
-
-namespace Ghb.Psicossoma.Services.Dtos
+﻿namespace Ghb.Psicossoma.Services.Dtos
 {
-    public class PacienteDto : BaseDto
+    public class PacienteDto : PessoaDto
     {
         public int PessoaId { get; set; }
 
-        public bool Ativo { get; set; }
+        public bool IsAtivo { get; set; }
     }
 }

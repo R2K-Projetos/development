@@ -58,13 +58,41 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public IActionResult Create(PacienteViewModel obj)
         {
-            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"paciente/create", obj).Result;
+            //HttpResponseMessage message = _httpClient.PostAsJsonAsync($"paciente/create", obj).Result;
 
-            if (message.IsSuccessStatusCode)
+            //if (message.IsSuccessStatusCode)
+            //{
+            //    string content = message.Content.ReadAsStringAsync().Result;
+            //    ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
+            //}
+
+            //return View(obj);
+
+            if (ModelState.IsValid || 1 == 1)
             {
+                PacienteViewModel? result = null;
+                HttpResponseMessage message = _httpClient.PostAsJsonAsync($"paciente/create", obj).Result;
                 string content = message.Content.ReadAsStringAsync().Result;
-                ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
+                ResultModel<PacienteViewModel>? response = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
+
+                if (message.IsSuccessStatusCode)
+                {
+                    if (!response?.HasError ?? false)
+                    {
+                        result = response?.Items.FirstOrDefault()!;
+                    }
+                    else
+                    {
+                        //TODO: Determinar como serão exibidas mensagens de erro ao usuário
+                        //Aqui, como não há associação com Pessoa, a API retorna erro, na propriedade message.
+                    }
+                }
             }
+            obj.OpcoesSexo = FillSexoDropDown();
+            obj.Endereco = new();
+            obj.Endereco.Ufs = FillUf();
+            obj.Telefone = new();
+            obj.TiposTelefone = FillTipoTelefone();
 
             return View(obj);
         }
