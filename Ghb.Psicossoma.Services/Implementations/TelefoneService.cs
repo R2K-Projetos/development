@@ -151,7 +151,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                       WHERE PessoaId = {telefone.PessoaId};";
                 }
                 insertQuery += $@"INSERT INTO telefone 
-                                 (PessoaId, TipoTelefoneId, Principal, DDDNumero, Ativo)
+                                 (PessoaId, TipoTelefoneId, Principal, DDDNum, Ativo)
                                  VALUES 
                                  ({telefone.PessoaId}, {telefone.TipoTelefoneId}, {telefone.Principal}, '{telefone.DDDNum}', {telefone.Ativo});";
 

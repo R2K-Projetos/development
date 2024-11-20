@@ -5,6 +5,8 @@ namespace Ghb.Psicossoma.Webapp.Models
 {
     public class EnderecoViewModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
         [StringLength(10, MinimumLength = 9, ErrorMessage = "{0} deve possuir pelo menos {2} caracteres")]
         [Display(Name = "CEP")]
@@ -33,12 +35,14 @@ namespace Ghb.Psicossoma.Webapp.Models
         [Display(Name = "UF")]
         public IEnumerable<SelectListItem> Ufs { get; set; } = [];
 
-        public bool Ativo { get; set; } = true;
-
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
         [Display(Name = "Cidade")]
+        public IEnumerable<SelectListItem> Cidades { get; set; } = [];
+
         public int CidadeId { get; set; }
 
         public int UFId { get; set; }
+
+        public bool Ativo { get; set; } = true;
     }
 }

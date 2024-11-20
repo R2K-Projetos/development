@@ -128,17 +128,17 @@ namespace Ghb.Psicossoma.Api.Controllers
         Description = "Atualiza os dados de um Paciente",
         OperationId = "Paciente.Update",
         Tags = new[] { "Paciente" })]
-        [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<PacienteResponseDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<PacienteResponseDto> Update([FromBody] PacienteResponseDto obj)
+        [ProducesResponseType(typeof(ResultDto<PacienteDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<PacienteDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<PacienteDto> Update([FromBody] PacienteDto obj)
         {
-            ResultDto<PacienteResponseDto> result = new();
+            ResultDto<PacienteDto> result = new();
 
             try
             {
-                //result = _pacienteService.Update(obj);
+                result = _pacienteService.Update(obj);
 
-                //if (!result.HasError)
+                if (!result.HasError)
                     result.Message = "Paciente alterado com sucesso!";
             }
             catch (Exception ex)

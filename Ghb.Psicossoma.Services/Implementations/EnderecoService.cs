@@ -2,6 +2,7 @@
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
@@ -160,6 +161,57 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<EnderecoDto> Update(EnderecoDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<EnderecoDto> returnValue = new();
+            string? updateQuery = null;
+
+            try
+            {
+                Endereco? endereco = _mapper.Map<EnderecoDto, Endereco>(dto);
+
+                ResultDto<EnderecoDto> enderecoFound = Get(dto.Id.ToString());
+                if (enderecoFound.Items.Any() == true)
+                {
+                    updateQuery = $@"UPDATE endereco
+                                     SET CidadeId = {endereco.CidadeId},
+                                     Cep = '{endereco.Cep}',
+                                     Logradouro = '{endereco.Logradouro}',
+                                     Numero = '{endereco.Numero}',
+                                     Complemento = '{endereco.Complemento}',
+                                     Bairro = '{endereco.Bairro}',
+                                     Ativo = {endereco.Ativo} 
+                                     WHERE PessoaId = {endereco.PessoaId};";
+                
+                    _enderecoRepository.Update(updateQuery);
+                }
+                else
+                {
+                    ResultDto<EnderecoDto> enderecoNew = Insert(dto);
+                }
+
+                EnderecoDto? item = _mapper.Map<Endereco, EnderecoDto>(endereco);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", updateQuery);
                 _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
