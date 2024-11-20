@@ -103,10 +103,9 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 itemFound.OpcoesSexo = FillSexoDropDown();
 
                 itemFound.Endereco = GetEnderecoPessoa(itemFound.PessoaId);
-                if (itemFound.Endereco == null)
-                {
+                if (itemFound.Endereco is null)
                     itemFound.Endereco = new();
-                }
+
                 itemFound.Endereco.Ufs = FillUf();
 
                 itemFound.Telefone = new();
@@ -119,7 +118,21 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return View(itemFound);
         }
 
+        [HttpPost]
+        public ActionResult Edit(ProfissionalViewModel obj)
+        {
+            HttpResponseMessage message = _httpClient.PostAsJsonAsync($"profissional/update", obj).Result;
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<ProfissionalViewModel>? model = JsonConvert.DeserializeObject<ResultModel<ProfissionalViewModel>>(content);
+            }
+
+            return View(obj);
+        }
+
         #region Profissional
+
         private List<SelectListItem> FillSexoDropDown()
         {
             List<SelectListItem> sexo = new()

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
+using Ghb.Psicossoma.Services.Implementations;
 
 namespace Ghb.Psicossoma.Api.Controllers
 {
@@ -112,6 +113,38 @@ namespace Ghb.Psicossoma.Api.Controllers
             catch (Exception ex)
             {
                 result.BindError(500, "Erro na criação de profissional", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Atualiza os dados de um profissional
+        /// </summary>
+        /// <param name="obj">Json contendo os dados do profissional></param>
+        /// <returns></returns>
+        [HttpPost("Update")]
+        [SwaggerOperation(
+        Summary = "Atualiza os dados de um profissional",
+        Description = "Atualiza os dados de um profissional",
+        OperationId = "Profissional.Update",
+        Tags = new[] { "Profissional" })]
+        [ProducesResponseType(typeof(ResultDto<ProfissionalDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<ProfissionalDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<ProfissionalDto> Update([FromBody] ProfissionalDto obj)
+        {
+            ResultDto<ProfissionalDto> result = new();
+
+            try
+            {
+                result = _profissionalService.Update(obj);
+
+                if (!result.HasError)
+                    result.Message = "Profissional alterado com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na alteração do Profissional", ex);
             }
 
             return Ok(result);

@@ -206,7 +206,6 @@ namespace Ghb.Psicossoma.Services.Implementations
                     ResultDto<TelefoneDto> resultTelefone = _telefoneService.Insert(telefone);
                 }
 
-
                 Paciente paciente = _mapper.Map<PacienteDto, Paciente>(dto);
                 insertQuery = $@"INSERT INTO paciente (Id, PessoaId, Ativo)
                                  VALUES (null, {pessoaFound?.Id}, true);";
