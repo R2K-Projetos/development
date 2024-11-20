@@ -19,5 +19,7 @@ namespace Ghb.Psicossoma.Services.Dtos
         public bool Ativo { get; set; }
 
         public EnderecoDto? Endereco { get; set; }
+
+        public TelefoneDto? Telefone { get; set; }
     }
 }

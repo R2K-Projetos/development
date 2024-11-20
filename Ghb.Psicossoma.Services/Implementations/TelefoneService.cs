@@ -147,11 +147,11 @@ namespace Ghb.Psicossoma.Services.Implementations
                 if (dto.Principal)
                 {
                     insertQuery += $@"UPDATE telefone
-                                         SET Principal = 0
-                                       WHERE PessoaId = {telefone.PessoaId};";
+                                      SET Principal = 0
+                                      WHERE PessoaId = {telefone.PessoaId};";
                 }
                 insertQuery += $@"INSERT INTO telefone 
-                                 (PessoaId, TipoTelefoneId, Principal, DDDNum, Ativo)
+                                 (PessoaId, TipoTelefoneId, Principal, DDDNumero, Ativo)
                                  VALUES 
                                  ({telefone.PessoaId}, {telefone.TipoTelefoneId}, {telefone.Principal}, '{telefone.DDDNum}', {telefone.Ativo});";
 

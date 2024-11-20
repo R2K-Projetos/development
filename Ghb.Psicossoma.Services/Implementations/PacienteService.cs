@@ -18,12 +18,14 @@ namespace Ghb.Psicossoma.Services.Implementations
         private readonly IPacienteRepository _pacienteRepository;
         private readonly IPessoaService _pessoaService;
         private readonly IEnderecoService _enderecoService;
+        private readonly ITelefoneService _telefoneService;
         private readonly IConfiguration _configuration;
         private readonly ILogger<PacienteService> _logger;
 
         public PacienteService(IPacienteRepository pacienteRepository,
                                IPessoaService pessoaService,
                                IEnderecoService enderecoService,
+                               ITelefoneService telefoneService,
                                ILogger<PacienteService> logger,
                                IMapper mapper,
                                IConfiguration configuration) : base(pacienteRepository, mapper)
@@ -31,6 +33,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             _pacienteRepository = pacienteRepository;
             _pessoaService = pessoaService;
             _enderecoService = enderecoService;
+            _telefoneService = telefoneService;
             _configuration = configuration;
             _logger = logger;
         }
@@ -184,6 +187,15 @@ namespace Ghb.Psicossoma.Services.Implementations
                 };
 
                 ResultDto<EnderecoDto> resultEndereco = _enderecoService.Insert(endereco);
+
+                TelefoneDto telefone = new()
+                {
+                    DDDNum = dto.Telefone.DDDNum,
+                    TipoTelefoneId = dto.Telefone.TipoTelefoneId,
+                    PessoaId = pessoaFound.Id
+                };
+
+                ResultDto<TelefoneDto> resultTelefone = _telefoneService.Insert(telefone);
 
                 Paciente paciente = _mapper.Map<PacienteDto, Paciente>(dto);
                 insertQuery = $@"INSERT INTO paciente (Id, PessoaId, Ativo)
