@@ -58,16 +58,6 @@ namespace Ghb.Psicossoma.Webapp.Controllers
         [HttpPost]
         public IActionResult Create(PacienteViewModel obj)
         {
-            //HttpResponseMessage message = _httpClient.PostAsJsonAsync($"paciente/create", obj).Result;
-
-            //if (message.IsSuccessStatusCode)
-            //{
-            //    string content = message.Content.ReadAsStringAsync().Result;
-            //    ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
-            //}
-
-            //return View(obj);
-
             if (ModelState.IsValid || 1 == 1)
             {
                 PacienteViewModel? result = null;
