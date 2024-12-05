@@ -42,7 +42,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                 selectQuery = $@"SELECT t.Id
                                         ,t.TipoTelefoneId
                                         ,t.Principal
-                                        ,t.DDDNum
+                                        ,t.DDDNumero
                                         ,t.Ativo
                                         ,tt.Nome as TipoTelefone
                                    FROM telefone t
@@ -93,7 +93,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                         ,t.PessoaId                                        
                                         ,t.TipoTelefoneId
                                         ,t.Principal
-                                        ,t.DDDNum
+                                        ,t.DDDNumero
                                         ,t.Ativo
                                         ,tt.Nome as TipoTelefone
                                    FROM telefone t
@@ -151,9 +151,9 @@ namespace Ghb.Psicossoma.Services.Implementations
                                       WHERE PessoaId = {telefone.PessoaId};";
                 }
                 insertQuery += $@"INSERT INTO telefone 
-                                 (PessoaId, TipoTelefoneId, Principal, DDDNum, Ativo)
+                                 (PessoaId, TipoTelefoneId, Principal, DDDNumero, Ativo)
                                  VALUES 
-                                 ({telefone.PessoaId}, {telefone.TipoTelefoneId}, {telefone.Principal}, '{telefone.DDDNum}', {telefone.Ativo});";
+                                 ({telefone.PessoaId}, {telefone.TipoTelefoneId}, {telefone.Principal}, '{telefone.DDDNumero}', {telefone.Ativo});";
 
                 long newId = _telefoneRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -201,7 +201,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                     SET PessoaId = {telefone.PessoaId}
                                         ,TipoTelefoneId = {telefone.TipoTelefoneId}
                                         ,Principal = {telefone.Principal}
-                                        ,DDDNum = '{telefone.DDDNum}'
+                                        ,DDDNumero = '{telefone.DDDNumero}'
                                         ,Ativo = {telefone.Ativo}
                                   WHERE Id = {telefone.Id};";
 

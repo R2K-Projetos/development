@@ -195,7 +195,7 @@ function SalvaTelefone(Id) {
     let TipoTelefoneId = $('#TipoTelefoneId').val();
     let Principal;
     $('#Principal_S').is(":checked") ? Principal = true : Principal = false;
-    let DDDNum = $('#DDDNum').val();
+    let DDDNumero = $('#DDDNumero').val();
     let Ativo;
     $('#Ativo_S').is(":checked") ? Ativo = true : Ativo = false;
 
@@ -204,7 +204,7 @@ function SalvaTelefone(Id) {
     model.PessoaId = PessoaId;
     model.TipoTelefoneId = TipoTelefoneId;
     model.Principal = Principal;
-    model.DDDNum = DDDNum;
+    model.DDDNumero = DDDNumero;
     model.Ativo = Ativo;
 
     var urlAjax = '/Telefone/';
@@ -215,7 +215,7 @@ function SalvaTelefone(Id) {
     //    + 'model.PessoaId: ' + model.PessoaId + '\n'
     //    + 'model.TipoTelefoneId: ' + model.TipoTelefoneId + '\n'
     //    + 'model.Principal: ' + model.Principal + '\n'
-    //    + 'model.DDDNum: ' + model.DDDNum + '\n'
+    //    + 'model.DDDNumero: ' + model.DDDNumero + '\n'
     //    + 'model.Ativo: ' + model.Ativo + '\n'
     //    + 'urlAjax: ' + urlAjax + '\n'
     //);
@@ -254,7 +254,7 @@ function DeleteTelefone(Id, PessoaId) {
     model.PessoaId = PessoaId;
     model.TipoTelefoneId = 0;
     model.Principal = false;
-    model.DDDNum = '';
+    model.DDDNumero = '';
     model.Ativo = false;
 
     $.ajax({

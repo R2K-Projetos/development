@@ -165,8 +165,30 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 var encaminhamento = _mapper.Map<EncaminhamentoDto, Encaminhamento>(dto);
-                insertQuery = $@"INSERT INTO encaminhamento(Id, PacienteId, EspecialidadeId, ConvenioId, CidId, TotalSessoes, MaximoSessoes, QuantidadeSessoes, SolicitacaoMedica, Observacao, Ativo)
-                                 VALUES(null, {encaminhamento.PacienteId}, {encaminhamento.EspecialidadeId}, {encaminhamento.ConvenioId}, {encaminhamento.CidId}, {encaminhamento.TotalSessoes}, {encaminhamento.MaximoSessoes}, {encaminhamento.QuantidadeSessoes}, {encaminhamento.SolicitacaoMedica}, '{encaminhamento.Observacao}', {encaminhamento.Ativo});";
+                insertQuery = $@"INSERT INTO encaminhamento 
+                                 (Id,  
+                                 PacienteId,  
+                                 EspecialidadeId,  
+                                 ConvenioId,  
+                                 CidId,  
+                                 TotalSessoes,  
+                                 MaximoSessoes,  
+                                 QuantidadeSessoes,  
+                                 SolicitacaoMedica,  
+                                 Observacao,  
+                                 Ativo)
+                                 VALUES
+                                 (null,  
+                                 {encaminhamento.PacienteId},  
+                                 {encaminhamento.EspecialidadeId},  
+                                 {encaminhamento.ConvenioId},  
+                                 {encaminhamento.CidId},  
+                                 {encaminhamento.TotalSessoes},  
+                                 {encaminhamento.MaximoSessoes},  
+                                 {encaminhamento.QuantidadeSessoes},  
+                                 {encaminhamento.SolicitacaoMedica},  
+                                 '{encaminhamento.Observacao}',  
+                                 {encaminhamento.Ativo});";
 
                 long newId = _encaminhamentoRepository.Insert(insertQuery);
                 if (newId > 0)

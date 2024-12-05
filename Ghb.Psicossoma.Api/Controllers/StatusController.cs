@@ -30,13 +30,13 @@ namespace Ghb.Psicossoma.Api.Controllers
         [SwaggerOperation(
         Summary = "Lista todos os status de acesso cadastrados",
         Description = "Lista todos os status de acesso cadastrados",
-        OperationId = "Status.GetAll",
-        Tags = new[] { "Status" })]
-        [ProducesResponseType(typeof(ResultDto<StatusDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<StatusDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<StatusDto> GetAll()
+        OperationId = "StatusUsuario.GetAll",
+        Tags = new[] { "StatusUsuario" })]
+        [ProducesResponseType(typeof(ResultDto<StatusUsuarioDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<StatusUsuarioDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<StatusUsuarioDto> GetAll()
         {
-            ResultDto<StatusDto> result = new();
+            ResultDto<StatusUsuarioDto> result = new();
 
             try
             {

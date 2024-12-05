@@ -14,7 +14,7 @@ namespace Ghb.Psicossoma.Webapp.Models
         public bool Principal { get; set; }
 
         [Display(Name = "Número")]
-        public string DDDNum { get; set; } = string.Empty;
+        public string DDDNumero { get; set; } = string.Empty;
 
         public bool Ativo { get; set; } = true;
 

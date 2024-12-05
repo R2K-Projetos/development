@@ -191,11 +191,11 @@ namespace Ghb.Psicossoma.Services.Implementations
                     ResultDto<EnderecoDto> resultEndereco = _enderecoService.Insert(endereco);
                 }
 
-                if (dto.Telefone is not null && !string.IsNullOrWhiteSpace(dto.Telefone.DDDNum))
+                if (dto.Telefone is not null && !string.IsNullOrWhiteSpace(dto.Telefone.DDDNumero))
                 {
                     TelefoneDto telefone = new()
                     {
-                        DDDNum = dto.Telefone.DDDNum,
+                        DDDNumero = dto.Telefone.DDDNumero,
                         TipoTelefoneId = dto.Telefone.TipoTelefoneId,
                         PessoaId = pessoaFound.Id
                     };
@@ -270,11 +270,11 @@ namespace Ghb.Psicossoma.Services.Implementations
                     ResultDto<EnderecoDto> resultEndereco = _enderecoService.Update(endereco);
                 }
 
-                if (dto.Telefone is not null && !string.IsNullOrWhiteSpace(dto.Telefone.DDDNum))
+                if (dto.Telefone is not null && !string.IsNullOrWhiteSpace(dto.Telefone.DDDNumero))
                 {
                     TelefoneDto telefone = new()
                     {
-                        DDDNum = dto.Telefone.DDDNum,
+                        DDDNumero = dto.Telefone.DDDNumero,
                         TipoTelefoneId = dto.Telefone.TipoTelefoneId,
                         PessoaId = dto.PessoaId
                     };

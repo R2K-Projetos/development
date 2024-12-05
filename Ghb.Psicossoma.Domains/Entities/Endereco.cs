@@ -8,7 +8,7 @@ namespace Ghb.Psicossoma.Domains.Entities
 
         public int CidadeId { get; set; }
 
-        public string Cep { get; set; } = string.Empty;
+        public string CEP { get; set; } = string.Empty;
 
         public string Logradouro { get; set; } = string.Empty;
 

@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class StatusService : BaseService<StatusDto, Status>, IStatusService
+    public class StatusService : BaseService<StatusUsuarioDto, StatusUsuario>, IStatusService
     {
         private readonly IStatusRepository _statusRepository;
         private readonly IConfiguration _configuration;
@@ -28,26 +28,26 @@ namespace Ghb.Psicossoma.Services.Implementations
             _logger = logger;
         }
 
-        public override ResultDto<StatusDto> GetAll()
+        public override ResultDto<StatusUsuarioDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<StatusDto> returnValue = new();
+            ResultDto<StatusUsuarioDto> returnValue = new();
 
             try
             {
                 string selectQuery = $@"SELECT Id, Descricao FROM status;";
 
                 DataTable result = _statusRepository.GetAll(selectQuery);
-                List<Status> list = result.CreateListFromTable<Status>();
+                List<StatusUsuario> list = result.CreateListFromTable<StatusUsuario>();
 
                 if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Status>, IEnumerable<StatusDto>>(list ?? Enumerable.Empty<Status>());
+                    returnValue.Items = _mapper.Map<IEnumerable<StatusUsuario>, IEnumerable<StatusUsuarioDto>>(list ?? Enumerable.Empty<StatusUsuario>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }

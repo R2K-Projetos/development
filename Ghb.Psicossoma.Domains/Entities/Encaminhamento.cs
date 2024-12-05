@@ -11,7 +11,7 @@ namespace Ghb.Psicossoma.Domains.Entities
         public int TotalSessoes { get; set; }
         public int MaximoSessoes { get; set; }
         public int QuantidadeSessoes { get; set; }
-        public int SolicitacaoMedica { get; set; }
+        public bool SolicitacaoMedica { get; set; }
         public string Observacao { get; set; } = string.Empty;
         public bool Ativo { get; set; }
     }

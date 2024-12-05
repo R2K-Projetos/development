@@ -145,7 +145,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 Endereco? endereco = _mapper.Map<EnderecoDto, Endereco>(dto);
                 insertQuery = $@"INSERT INTO endereco(Id, PessoaId, CidadeId, Cep, Logradouro, Numero, Complemento, Bairro, Ativo)
-                                 VALUES(null, {endereco.PessoaId}, {endereco.CidadeId}, '{endereco.Cep}', '{endereco.Logradouro}', '{endereco.Numero}', '{endereco.Complemento}', '{endereco.Bairro}', true);";
+                                 VALUES(null, {endereco.PessoaId}, {endereco.CidadeId}, '{endereco.CEP}', '{endereco.Logradouro}', '{endereco.Numero}', '{endereco.Complemento}', '{endereco.Bairro}', true);";
 
                 long newId = _enderecoRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -187,7 +187,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                 {
                     updateQuery = $@"UPDATE endereco
                                      SET CidadeId = {endereco.CidadeId},
-                                     Cep = '{endereco.Cep}',
+                                     Cep = '{endereco.CEP}',
                                      Logradouro = '{endereco.Logradouro}',
                                      Numero = '{endereco.Numero}',
                                      Complemento = '{endereco.Complemento}',

@@ -29,7 +29,7 @@ public class AutoMapperConfiguration : Profile
         CreateMap<ProntuarioHistorico, ProntuarioHistoricoDto>().ReverseMap();
         CreateMap<Prontuario, ProntuarioDto>().ReverseMap();
         CreateMap<RegistroProfissional, RegistroProfissionalDto>().ReverseMap();
-        CreateMap<Status, StatusDto>().ReverseMap();
+        CreateMap<StatusUsuario, StatusUsuarioDto>().ReverseMap();
         CreateMap<Telefone, TelefoneDto>().ReverseMap();
         CreateMap<TipoArquivo, TipoArquivoDto>().ReverseMap();
         CreateMap<TipoTelefone, TipoTelefoneDto>().ReverseMap();

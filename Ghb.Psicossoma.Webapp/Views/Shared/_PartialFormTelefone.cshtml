@@ -31,8 +31,8 @@
                 </div>                
                 @Html.HiddenFor(model => model.PessoaId)
                 <div class="col-3">
-                    @Html.LabelFor(model => model.DDDNum, new { @class = "form-label" })
-                    @Html.TextBoxFor(model => model.DDDNum, new { @class = "form-control form-control-sm", @onkeypress = "MaskItem(this, mphone);", @onblur = "MaskItem(this, mphone);" })
+                    @Html.LabelFor(model => model.DDDNumero, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.DDDNumero, new { @class = "form-control form-control-sm", @onkeypress = "MaskItem(this, mphone);", @onblur = "MaskItem(this, mphone);" })
                 </div>
                 <div class="col-3">
                     @Html.LabelFor(model => model.TiposTelefone, new { @class = "form-label" })

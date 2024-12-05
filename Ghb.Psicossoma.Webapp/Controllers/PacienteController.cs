@@ -257,7 +257,7 @@ namespace Ghb.Psicossoma.Webapp.Controllers
                 item.PessoaId = PessoaId;
                 item.TipoTelefoneId = 0;
                 item.Principal = false;
-                item.DDDNum = string.Empty;
+                item.DDDNumero = string.Empty;
                 item.Ativo = true;
                 item.TiposTelefone = FillTipoTelefone();
             }

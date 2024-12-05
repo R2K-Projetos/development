@@ -2,8 +2,8 @@
 
 namespace Ghb.Psicossoma.Services.Dtos
 {
-    public class StatusDto : BaseDto
+    public class TipoAcomodacaoDto : BaseDto
     {
-        public string Descricao { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
     }
 }
