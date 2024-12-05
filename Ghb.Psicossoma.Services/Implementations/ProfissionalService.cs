@@ -18,12 +18,14 @@ namespace Ghb.Psicossoma.Services.Implementations
         private readonly IProfissionalRepository _profissionalRepository;
         private readonly IPessoaService _pessoaService;
         private readonly IEnderecoService _enderecoService;
+        private readonly ITelefoneService _telefoneService;
         private readonly IConfiguration _configuration;
         private readonly ILogger<ProfissionalService> _logger;
 
         public ProfissionalService(IProfissionalRepository profissionalRepository,
                                    IPessoaService pessoaService,
                                    IEnderecoService enderecoService,
+                                   ITelefoneService telefoneService,
                                    ILogger<ProfissionalService> logger,
                                    IMapper mapper,
                                    IConfiguration configuration) : base(profissionalRepository, mapper)
@@ -32,6 +34,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             _profissionalRepository = profissionalRepository;
             _pessoaService = pessoaService;
             _enderecoService = enderecoService;
+            _telefoneService = telefoneService;
             _configuration = configuration;
         }
 
@@ -173,17 +176,32 @@ namespace Ghb.Psicossoma.Services.Implementations
                 ResultDto<PessoaDto> result = _pessoaService.Insert(pessoa);
                 PessoaDto? pessoaFound = result.Items.FirstOrDefault();
 
-                EnderecoDto endereco = new()
+                if (dto.Endereco is not null)
                 {
-                    Bairro = dto.Endereco.Bairro,
-                    CEP = dto.Endereco.CEP,
-                    Complemento = dto.Endereco.Complemento,
-                    Logradouro = dto.Endereco.Logradouro,
-                    Numero = dto.Endereco.Numero,
-                    PessoaId = pessoaFound.Id
-                };
+                    EnderecoDto endereco = new()
+                    {
+                        Bairro = dto.Endereco.Bairro,
+                        CEP = dto.Endereco.CEP,
+                        Complemento = dto.Endereco.Complemento,
+                        Logradouro = dto.Endereco.Logradouro,
+                        Numero = dto.Endereco.Numero,
+                        PessoaId = pessoaFound.Id
+                    };
 
-                ResultDto<EnderecoDto> resultEndereco = _enderecoService.Insert(endereco);
+                    ResultDto<EnderecoDto> resultEndereco = _enderecoService.Insert(endereco);
+                }
+
+                if (dto.Telefone is not null && !string.IsNullOrWhiteSpace(dto.Telefone.DDDNum))
+                {
+                    TelefoneDto telefone = new()
+                    {
+                        DDDNum = dto.Telefone.DDDNum,
+                        TipoTelefoneId = dto.Telefone.TipoTelefoneId,
+                        PessoaId = pessoaFound.Id
+                    };
+
+                    ResultDto<TelefoneDto> resultTelefone = _telefoneService.Insert(telefone);
+                }
 
                 Profissional profissional = _mapper.Map<ProfissionalDto, Profissional>(dto);
                 insertQuery = $@"INSERT INTO profissional(Id, PessoaId, RegistroProfissionalId, Numero, Ativo)
@@ -203,6 +221,85 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<ProfissionalDto> Update(ProfissionalDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<ProfissionalDto> returnValue = new();
+            string? updateQuery = null;
+
+            try
+            {
+                PessoaDto pessoa = new()
+                {
+                    Id = dto.PessoaId,
+                    Cpf = dto.Cpf,
+                    DataNascimento = dto.DataNascimento,
+                    Email = dto.Email,
+                    Ativo = true,
+                    Nome = dto.Nome,
+                    NomeReduzido = dto.NomeReduzido,
+                    Sexo = dto.Sexo
+                };
+                ResultDto<PessoaDto> result = _pessoaService.Update(pessoa);
+
+                if (dto.Endereco is not null)
+                {
+                    EnderecoDto endereco = new()
+                    {
+                        Id = dto.Endereco.Id,
+                        Bairro = dto.Endereco.Bairro,
+                        CEP = dto.Endereco.CEP,
+                        Complemento = dto.Endereco.Complemento,
+                        Logradouro = dto.Endereco.Logradouro,
+                        Numero = dto.Endereco.Numero,
+                        UFId = dto.Endereco.UFId,
+                        CidadeId = dto.Endereco.CidadeId,
+                        PessoaId = dto.PessoaId
+                    };
+                    ResultDto<EnderecoDto> resultEndereco = _enderecoService.Update(endereco);
+                }
+
+                if (dto.Telefone is not null && !string.IsNullOrWhiteSpace(dto.Telefone.DDDNum))
+                {
+                    TelefoneDto telefone = new()
+                    {
+                        DDDNum = dto.Telefone.DDDNum,
+                        TipoTelefoneId = dto.Telefone.TipoTelefoneId,
+                        PessoaId = dto.PessoaId
+                    };
+
+                    ResultDto<TelefoneDto> resultTelefone = _telefoneService.Update(telefone);
+                }
+
+                updateQuery = $@"UPDATE profissional
+                                 SET Numero = {dto.Numero},
+                                 RegistroProfissionalId = {dto.RegistroProfissionalId}
+                                 WHERE Id = {dto.Id};";
+
+                _profissionalRepository.Update(updateQuery);
+
+                Profissional profissional = _mapper.Map<ProfissionalDto, Profissional>(dto);
+                ProfissionalDto item = _mapper.Map<Profissional, ProfissionalDto>(profissional);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", updateQuery);
                 _logger.LogError(ex, "Erro na gravação dos dados");
             }
 

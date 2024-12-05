@@ -100,7 +100,10 @@ namespace Ghb.Psicossoma.Webapp.Controllers
 
                 itemFound.OpcoesSexo = FillSexoDropDown();
 
-                itemFound.Endereco = GetEnderecoPessoa(itemFound.PessoaId);                
+                itemFound.Endereco = GetEnderecoPessoa(itemFound.PessoaId);
+                if (itemFound.Endereco is null)
+                    itemFound.Endereco = new();
+
                 itemFound.Endereco.Ufs = FillUf();
 
                 itemFound.Telefone = new();

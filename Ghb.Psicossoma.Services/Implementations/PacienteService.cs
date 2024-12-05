@@ -2,6 +2,7 @@
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Ghb.Psicossoma.Repositories.Abstractions;
+using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
@@ -18,12 +19,14 @@ namespace Ghb.Psicossoma.Services.Implementations
         private readonly IPacienteRepository _pacienteRepository;
         private readonly IPessoaService _pessoaService;
         private readonly IEnderecoService _enderecoService;
+        private readonly ITelefoneService _telefoneService;
         private readonly IConfiguration _configuration;
         private readonly ILogger<PacienteService> _logger;
 
         public PacienteService(IPacienteRepository pacienteRepository,
                                IPessoaService pessoaService,
                                IEnderecoService enderecoService,
+                               ITelefoneService telefoneService,
                                ILogger<PacienteService> logger,
                                IMapper mapper,
                                IConfiguration configuration) : base(pacienteRepository, mapper)
@@ -31,6 +34,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             _pacienteRepository = pacienteRepository;
             _pessoaService = pessoaService;
             _enderecoService = enderecoService;
+            _telefoneService = telefoneService;
             _configuration = configuration;
             _logger = logger;
         }
@@ -173,17 +177,34 @@ namespace Ghb.Psicossoma.Services.Implementations
                 ResultDto<PessoaDto> result = _pessoaService.Insert(pessoa);
                 PessoaDto? pessoaFound = result.Items.FirstOrDefault();
 
-                EnderecoDto endereco = new()
+                if (dto.Endereco is not null)
                 {
-                    Bairro = dto.Endereco.Bairro,
-                    CEP = dto.Endereco.CEP,
-                    Complemento = dto.Endereco.Complemento,
-                    Logradouro = dto.Endereco.Logradouro,
-                    Numero = dto.Endereco.Numero,
-                    PessoaId = pessoaFound.Id
-                };
+                    EnderecoDto endereco = new()
+                    {
+                        Bairro = dto.Endereco.Bairro,
+                        CEP = dto.Endereco.CEP,
+                        Complemento = dto.Endereco.Complemento,
+                        Logradouro = dto.Endereco.Logradouro,
+                        Numero = dto.Endereco.Numero,
+                        UFId = dto.Endereco.UFId,
+                        CidadeId = dto.Endereco.CidadeId,
+                        PessoaId = pessoaFound.Id
+                    };
 
-                ResultDto<EnderecoDto> resultEndereco = _enderecoService.Insert(endereco);
+                    ResultDto<EnderecoDto> resultEndereco = _enderecoService.Insert(endereco);
+                }
+
+                if (dto.Telefone is not null && !string.IsNullOrWhiteSpace(dto.Telefone.DDDNum))
+                {
+                    TelefoneDto telefone = new()
+                    {
+                        DDDNum = dto.Telefone.DDDNum,
+                        TipoTelefoneId = dto.Telefone.TipoTelefoneId,
+                        PessoaId = pessoaFound.Id
+                    };
+
+                    ResultDto<TelefoneDto> resultTelefone = _telefoneService.Insert(telefone);
+                }
 
                 Paciente paciente = _mapper.Map<PacienteDto, Paciente>(dto);
                 insertQuery = $@"INSERT INTO paciente (Id, PessoaId, Ativo)
@@ -203,6 +224,78 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<PacienteDto> Update(PacienteDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<PacienteDto> returnValue = new();
+            string? updateQuery = null;
+
+            try
+            {
+                PessoaDto pessoa = new()
+                {
+                    Id = dto.PessoaId,
+                    Cpf = dto.Cpf,
+                    DataNascimento = dto.DataNascimento,
+                    Email = dto.Email,
+                    Ativo = true,
+                    Nome = dto.Nome,
+                    NomeReduzido = dto.NomeReduzido,
+                    Sexo = dto.Sexo
+                };
+                ResultDto<PessoaDto> result = _pessoaService.Update(pessoa);
+
+                if (dto.Endereco is not null)
+                {
+                    EnderecoDto endereco = new()
+                    {
+                        Id = dto.Endereco.Id,
+                        Bairro = dto.Endereco.Bairro,
+                        CEP = dto.Endereco.CEP,
+                        Complemento = dto.Endereco.Complemento,
+                        Logradouro = dto.Endereco.Logradouro,
+                        Numero = dto.Endereco.Numero,
+                        UFId = dto.Endereco.UFId,
+                        CidadeId = dto.Endereco.CidadeId,
+                        PessoaId = dto.PessoaId
+                    };
+                    ResultDto<EnderecoDto> resultEndereco = _enderecoService.Update(endereco);
+                }
+
+                if (dto.Telefone is not null && !string.IsNullOrWhiteSpace(dto.Telefone.DDDNum))
+                {
+                    TelefoneDto telefone = new()
+                    {
+                        DDDNum = dto.Telefone.DDDNum,
+                        TipoTelefoneId = dto.Telefone.TipoTelefoneId,
+                        PessoaId = dto.PessoaId
+                    };
+
+                    ResultDto<TelefoneDto> resultTelefone = _telefoneService.Update(telefone);
+                }
+
+                var paciente = _mapper.Map<PacienteDto, Paciente>(dto);
+                var item = _mapper.Map<Paciente, PacienteDto>(paciente);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", updateQuery);
                 _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
