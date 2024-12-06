@@ -181,7 +181,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  (null,  
                                  {encaminhamento.PacienteId},  
                                  {encaminhamento.EspecialidadeId},  
-                                 {encaminhamento.ConvenioId},  
+                                 {encaminhamento.PlanoSaudeId},  
                                  {encaminhamento.CidId},  
                                  {encaminhamento.TotalSessoes},  
                                  {encaminhamento.MaximoSessoes},  

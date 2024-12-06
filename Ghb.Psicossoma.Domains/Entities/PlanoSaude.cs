@@ -6,8 +6,8 @@ namespace Ghb.Psicossoma.Domains.Entities
     {
         public int ConvenioId { get; set; }
         public int TipoAcomodacaoId { get; set; }
-        public int ProdutoPlanoId { get; set; }
         public string Nome { get; set; } = string.Empty;
+        public string ProdutoPlano { get; set; } = string.Empty;
         public bool Acompanhante { get; set; }
         public string CodIdent { get; set; } = string.Empty;
         public string CNS { get; set; } = string.Empty;

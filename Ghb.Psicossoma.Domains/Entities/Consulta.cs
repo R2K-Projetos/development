@@ -4,7 +4,7 @@ namespace Ghb.Psicossoma.Domains.Entities
 {
     public class Consulta : BaseEntity
     {
-        public int AgendaProfissionalId { get; set; }
+        public int ProfissionalId { get; set; }
         public int PacienteId { get; set; }
         public int EncaminhamentoId { get; set; }
         public int ProcedimentoDetalheId { get; set; }

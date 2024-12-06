@@ -6,7 +6,7 @@ namespace Ghb.Psicossoma.Services.Dtos
     {
         public int PacienteId { get; set; }
         public int EspecialidadeId { get; set; }
-        public int ConvenioId { get; set; }
+        public int PlanoSaudeId { get; set; }
         public int CidId { get; set; }
         public int TotalSessoes { get; set; }
         public int MaximoSessoes { get; set; }
