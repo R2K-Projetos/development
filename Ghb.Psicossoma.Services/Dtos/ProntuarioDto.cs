@@ -8,7 +8,7 @@ namespace Ghb.Psicossoma.Services.Dtos
         public int ProfissionalId { get; set; }
         public int PacienteId { get; set; }
         public string DescricaoGeral { get; set; } = string.Empty;
-        public DateTime Data { get; set; }
+        public DateTime DataEntrada { get; set; }
         public bool Ativo { get; set; }
     }
 }

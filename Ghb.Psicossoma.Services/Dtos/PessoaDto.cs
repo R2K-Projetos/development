@@ -8,7 +8,7 @@ namespace Ghb.Psicossoma.Services.Dtos
 
         public string NomeReduzido { get; set; } = string.Empty;
 
-        public string Cpf { get; set; } = string.Empty;
+        public string CPF { get; set; } = string.Empty;
 
         public string Sexo { get; set; } = string.Empty;
 

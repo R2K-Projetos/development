@@ -4,7 +4,6 @@ namespace Ghb.Psicossoma.Domains.Entities
 {
     public class Arquivo : BaseEntity
     {
-        public int ProfissionalId { get; set; }
         public int TipoArquivoId { get; set; }
         public int IdTabela { get; set; }
         public string Tabela { get; set; } = string.Empty;

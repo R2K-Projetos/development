@@ -2,9 +2,9 @@
 
 namespace Ghb.Psicossoma.Domains.Entities
 {
-    public class FuncionalidadesPerfilUsuario : BaseEntity
+    public class FuncionalidadePerfilUsuario : BaseEntity
     {
-        public int FuncionalidadesId { get; set; }
+        public int FuncionalidadeId { get; set; }
         public int PerfilUsuarioId { get; set; }
         public bool Ativo { get; set; }
     }

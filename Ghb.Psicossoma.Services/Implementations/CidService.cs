@@ -167,7 +167,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                 insertQuery = $@"INSERT INTO cid 
                                  (Codigo, Descricao)
                                  VALUES 
-                                 ('{entidade.Codigo}', '{entidade.Descricao}');";
+                                 ('{entidade.Codigo}', '{entidade.Nome}');";
 
                 long newId = _cidRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -204,7 +204,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<CidDto, Cid>(dto);
                 updateQuery = $@"UPDATE cid 
-                                 SET Codigo = '{entidade.Codigo}', Descricao = '{entidade.Descricao}'
+                                 SET Codigo = '{entidade.Codigo}', Descricao = '{entidade.Nome}'
                                  WHERE id = {entidade.Id};";
 
                 _cidRepository.Update(updateQuery);

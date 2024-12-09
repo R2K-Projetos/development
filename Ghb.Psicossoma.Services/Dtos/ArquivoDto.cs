@@ -4,7 +4,6 @@ namespace Ghb.Psicossoma.Services.Dtos
 {
     public class ArquivoDto : BaseDto
     {
-        public int ProfissionalId { get; set; }
         public int TipoArquivoId { get; set; }
         public int IdTabela { get; set; }
         public string Tabela { get; set; } = string.Empty;

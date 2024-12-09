@@ -164,7 +164,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 PessoaDto pessoa = new()
                 {
-                    Cpf = dto.Cpf,
+                    CPF = dto.CPF,
                     DataNascimento = dto.DataNascimento,
                     Email = dto.Email,
                     Ativo = dto.IsAtivo,
@@ -243,7 +243,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                 PessoaDto pessoa = new()
                 {
                     Id = dto.PessoaId,
-                    Cpf = dto.Cpf,
+                    CPF = dto.CPF,
                     DataNascimento = dto.DataNascimento,
                     Email = dto.Email,
                     Ativo = true,
