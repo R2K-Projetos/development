@@ -14,12 +14,10 @@ namespace Ghb.Psicossoma.Api.Controllers
     public class ConvenioController : BaseApiController
     {
         private readonly IConvenioService _convenioService;
-        private readonly IConfiguration _configuration;
 
-        public ConvenioController(IConvenioService convenioService, IConfiguration configuration)
+        public ConvenioController(IConvenioService convenioService)
         {
             _convenioService = convenioService;
-            _configuration = configuration;
         }
 
         /// <summary>
@@ -32,11 +30,11 @@ namespace Ghb.Psicossoma.Api.Controllers
         Description = "Busca os dados de um determinado convênio",
         OperationId = "Convenio.Get",
         Tags = new[] { "Convenio" })]
-        [ProducesResponseType(typeof(ResultDto<ConvenioResponseDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<ConvenioResponseDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<ConvenioResponseDto> Get(int id)
+        [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<ConvenioDto> Get(int id)
         {
-            ResultDto<ConvenioResponseDto> result = new();
+            ResultDto<ConvenioDto> result = new();
 
             try
             {
@@ -63,11 +61,11 @@ namespace Ghb.Psicossoma.Api.Controllers
         Description = "Lista todos os convênios cadastrados",
         OperationId = "Convenio.GetAll",
         Tags = new[] { "Convenio" })]
-        [ProducesResponseType(typeof(ResultDto<ConvenioResponseDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<ConvenioResponseDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<ConvenioResponseDto> GetAll()
+        [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<ConvenioDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<ConvenioDto> GetAll()
         {
-            ResultDto<ConvenioResponseDto> result = new();
+            ResultDto<ConvenioDto> result = new();
 
             try
             {

@@ -12,41 +12,47 @@ using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class ProntuarioService : BaseService<ProntuarioDto, Prontuario>, IProntuarioService
+    public class LaudoAnamneseService : BaseService<LaudoAnamneseDto, LaudoAnamnese>, ILaudoAnamneseService
     {
-        private readonly IProntuarioRepository _prontuarioRepository;
-        private readonly ILogger<ProntuarioService> _logger;
+        private readonly ILaudoAnamneseRepository _laudoAnamneseRepository;
+        private readonly ILogger<LaudoAnamneseService> _logger;
 
-        public ProntuarioService(IProntuarioRepository prontuarioRepository,
-                                 ILogger<ProntuarioService> logger,
-                                 IMapper mapper) : base(prontuarioRepository, mapper)
+        public LaudoAnamneseService(ILaudoAnamneseRepository laudoAnamneseRepository,
+                       ILogger<LaudoAnamneseService> logger,
+                       IMapper mapper) : base(laudoAnamneseRepository, mapper)
         {
-            _prontuarioRepository = prontuarioRepository;
+            _laudoAnamneseRepository = laudoAnamneseRepository;
             _logger = logger;
         }
 
-        public override ResultDto<ProntuarioDto> GetAll()
+        public override ResultDto<LaudoAnamneseDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<LaudoAnamneseDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"SELECT Id, EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo
-                                 FROM prontuario;";
+                selectQuery = $@"select Id
+                                        ,EspecialidadeId
+                                        ,PacienteId
+                                        ,Descricao
+                                        ,Tipo
+                                        ,Ativo
+                                   FROM laudoanamnese
+                                  order by Tipo";
 
-                DataTable result = _prontuarioRepository.GetAll(selectQuery);
-                List<Prontuario> list = result.CreateListFromTable<Prontuario>();
+                DataTable result = _laudoAnamneseRepository.GetAll(selectQuery);
+                List<LaudoAnamnese> laudoAnamneses = result.CreateListFromTable<LaudoAnamnese>();
 
-                if (list?.Count > 0)
+                if (laudoAnamneses?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Prontuario>, IEnumerable<ProntuarioDto>>(list ?? Enumerable.Empty<Prontuario>());
+                    returnValue.TotalItems = laudoAnamneses.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<LaudoAnamnese>, IEnumerable<LaudoAnamneseDto>>(laudoAnamneses ?? Enumerable.Empty<LaudoAnamnese>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -68,29 +74,34 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Get(string id)
+        public override ResultDto<LaudoAnamneseDto> Get(string id)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<LaudoAnamneseDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"SELECT Id, EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo
-                                 FROM prontuario
-                                 WHERE Id = {id};";
+                selectQuery = $@"select Id
+                                        ,EspecialidadeId
+                                        ,PacienteId
+                                        ,Descricao
+                                        ,Tipo
+                                        ,Ativo
+                                   FROM laudoanamnese
+                                  WHERE Id = {id};";
 
-                DataTable result = _prontuarioRepository.Get(selectQuery);
-                List<Prontuario> item = result.CreateListFromTable<Prontuario>();
+                DataTable result = _laudoAnamneseRepository.Get(selectQuery);
+                List<LaudoAnamnese> laudoAnamnese = result.CreateListFromTable<LaudoAnamnese>();
 
-                if (item?.Count > 0)
+                if (laudoAnamnese?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = item.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Prontuario>, IEnumerable<ProntuarioDto>>(item ?? Enumerable.Empty<Prontuario>());
+                    returnValue.TotalItems = laudoAnamnese.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<LaudoAnamnese>, IEnumerable<LaudoAnamneseDto>>(laudoAnamnese ?? Enumerable.Empty<LaudoAnamnese>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -112,27 +123,27 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Insert(ProntuarioDto dto)
+        public override ResultDto<LaudoAnamneseDto> Insert(LaudoAnamneseDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<LaudoAnamneseDto> returnValue = new();
             string? insertQuery = null;
 
             try
             {
-                var entidade = _mapper.Map<ProntuarioDto, Prontuario>(dto);
-                insertQuery = $@"INSERT INTO prontuario 
-                                 (EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo)
+                var entidade = _mapper.Map<LaudoAnamneseDto, LaudoAnamnese>(dto);
+                insertQuery = $@"INSERT INTO laudoanamnese 
+                                 (EspecialidadeId, PacienteId, Descricao, Tipo, Ativo)
                                  VALUES 
-                                 ({entidade.EncaminhamentoId}, {entidade.ProfissionalId}, {entidade.PacienteId}, '{entidade.DescricaoGeral}', '{entidade.DataEntrada:yyyy-MM-dd}', true);";
+                                 ({entidade.EspecialidadeId}, {entidade.PacienteId}, '{entidade.Descricao}', '{entidade.Tipo}', {entidade.Ativo});";
 
-                long newId = _prontuarioRepository.Insert(insertQuery);
+                long newId = _laudoAnamneseRepository.Insert(insertQuery);
                 if (newId > 0)
                     entidade.Id = (int)newId;
 
-                var item = _mapper.Map<Prontuario, ProntuarioDto>(entidade);
+                var item = _mapper.Map<LaudoAnamnese, LaudoAnamneseDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;
@@ -151,28 +162,26 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Update(ProntuarioDto dto)
+        public override ResultDto<LaudoAnamneseDto> Update(LaudoAnamneseDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<LaudoAnamneseDto> returnValue = new();
             string? updateQuery = null;
 
             try
             {
-                var entidade = _mapper.Map<ProntuarioDto, Prontuario>(dto);
-                updateQuery = $@"UPDATE prontuario 
-                                 SET EncaminhamentoId = '{entidade.EncaminhamentoId}'
-                                 ,ProfissionalId = '{entidade.ProfissionalId}'
-                                 ,PacienteId = '{entidade.PacienteId}'
-                                 ,DescricaoGeral = '{entidade.DescricaoGeral}'
-                                 ,DataEntrada = '{entidade.DataEntrada:yyyy-MM-dd}'
+                var entidade = _mapper.Map<LaudoAnamneseDto, LaudoAnamnese>(dto);
+                updateQuery = $@"UPDATE laudoanamnese 
+                                 SET EspecialidadeId = {entidade.EspecialidadeId}
+                                 ,Descricao = '{entidade.Descricao}' 
+                                 ,Tipo = '{entidade.Tipo}' 
                                  ,Ativo = {entidade.Ativo}
                                  WHERE id = {entidade.Id};";
 
-                _prontuarioRepository.Update(updateQuery);
-                var item = _mapper.Map<Prontuario, ProntuarioDto>(entidade);
+                _laudoAnamneseRepository.Update(updateQuery);
+                var item = _mapper.Map<LaudoAnamnese, LaudoAnamneseDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;

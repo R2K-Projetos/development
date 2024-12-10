@@ -14,6 +14,6 @@ namespace Ghb.Psicossoma.Webapp.Models
         [Required(ErrorMessage = "{0} é um campo obrigatório")]
         [Display(Name = "Descrição")]
         [StringLength(200, MinimumLength = 2, ErrorMessage = "{0} deve possuir pelo menos {2} caracteres")]
-        public string Descricao { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
     }
 }

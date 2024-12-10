@@ -39,7 +39,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo, DataCadastro
                                  FROM pessoa
                                  WHERE id = {id};";
 
@@ -128,7 +128,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo, DataCadastro
                                  FROM pessoa;";
 
                 DataTable result = _pessoaRepository.GetAll(selectQuery);
@@ -173,9 +173,17 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 Pessoa? pessoa = _mapper.Map<PessoaDto, Pessoa>(dto);
                 insertQuery = $@"INSERT INTO pessoa 
-                                (Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo)
+                                (Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo, DataCadastro)
                                  VALUES
-                                (null, '{pessoa.Nome}', '{pessoa.NomeReduzido}', '{pessoa.CPF}', '{pessoa.Sexo}', '{pessoa.Email.ToLower()}', '{pessoa.DataNascimento:yyyy-MM-dd}', {pessoa.Ativo});";
+                                (null
+                                ,'{pessoa.Nome}'
+                                ,'{pessoa.NomeReduzido}'
+                                ,'{pessoa.CPF}'
+                                ,'{pessoa.Sexo}'
+                                ,'{pessoa.Email.ToLower()}'
+                                ,'{pessoa.DataNascimento:yyyy-MM-dd}'
+                                ,true
+                                ,now());";
 
                 long newId = _pessoaRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -212,7 +220,13 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var pessoa = _mapper.Map<PessoaDto, Pessoa>(dto);
                 updateQuery = $@"UPDATE pessoa 
-                                 SET Nome = '{pessoa.Nome}', NomeReduzido = '{pessoa.NomeReduzido}',CPF = '{pessoa.CPF}', Sexo = '{pessoa.Sexo}', Email = '{pessoa.Email.ToLower()}', DataNascimento = '{pessoa.DataNascimento:yyyy-MM-dd}', Ativo = {pessoa.Ativo}
+                                 SET Nome = '{pessoa.Nome}'
+                                 ,NomeReduzido = '{pessoa.NomeReduzido}'
+                                 ,CPF = '{pessoa.CPF}'
+                                 ,Sexo = '{pessoa.Sexo}'
+                                 ,Email = '{pessoa.Email.ToLower()}'
+                                 ,DataNascimento = '{pessoa.DataNascimento:yyyy-MM-dd}'
+                                 ,Ativo = {pessoa.Ativo}
                                  WHERE id = {pessoa.Id};";
 
                 _pessoaRepository.Update(updateQuery);

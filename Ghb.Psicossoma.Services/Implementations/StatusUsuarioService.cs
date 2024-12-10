@@ -7,49 +7,47 @@ using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Serilog.Context;
 using System.Data;
 using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class PlanoConvenioService : BaseService<PlanoConvenioDto, PlanoConvenio>, IPlanoConvenioService
+    public class StatusUsuarioService : BaseService<StatusUsuarioDto, StatusUsuario>, IStatusUsuarioService
     {
-        private readonly IPlanoConvenioRepository _planoConvenioRepository;
+        private readonly IStatusUsuarioRepository _statusRepository;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<PlanoConvenioService> _logger;
+        private readonly ILogger<StatusUsuarioService> _logger;
 
-        public PlanoConvenioService(IPlanoConvenioRepository planoConvenioRepository,
-                                    ILogger<PlanoConvenioService> logger,
-                                    IMapper mapper,
-                                    IConfiguration configuration) : base(planoConvenioRepository, mapper)
+        public StatusUsuarioService(IStatusUsuarioRepository statusRepository,
+                             ILogger<StatusUsuarioService> logger,
+                             IMapper mapper,
+                             IConfiguration configuration) : base(statusRepository, mapper)
         {
-            _planoConvenioRepository = planoConvenioRepository;
+            _statusRepository = statusRepository;
             _configuration = configuration;
             _logger = logger;
         }
 
-        public override ResultDto<PlanoConvenioDto> GetAll()
+        public override ResultDto<StatusUsuarioDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<PlanoConvenioDto> returnValue = new();
-            string? selectQuery = null;
+            ResultDto<StatusUsuarioDto> returnValue = new();
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome FROM planoConvenio;";
+                string selectQuery = $@"SELECT Id, Nome FROM status;";
 
-                DataTable result = _planoConvenioRepository.GetAll(selectQuery);
-                List<PlanoConvenio> planos = result.CreateListFromTable<PlanoConvenio>();
+                DataTable result = _statusRepository.GetAll(selectQuery);
+                List<StatusUsuario> list = result.CreateListFromTable<StatusUsuario>();
 
-                if (planos?.Count > 0)
+                if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = planos.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<PlanoConvenio>, IEnumerable<PlanoConvenioDto>>(planos ?? Enumerable.Empty<PlanoConvenio>());
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<StatusUsuario>, IEnumerable<StatusUsuarioDto>>(list ?? Enumerable.Empty<StatusUsuario>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -61,7 +59,6 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
-                LogContext.PushProperty("Query", selectQuery);
                 _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 

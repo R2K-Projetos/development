@@ -37,7 +37,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT Id, Nome FROM grauparentesco;";
+                string selectQuery = $@"SELECT Id, Nome FROM grauparentesco order by Nome;";
 
                 DataTable result = _grauParentescoRepository.GetAll(selectQuery);
                 List<GrauParentesco> list = result.CreateListFromTable<GrauParentesco>();

@@ -2,7 +2,6 @@
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Ghb.Psicossoma.Repositories.Abstractions;
-using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;

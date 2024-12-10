@@ -37,18 +37,25 @@ public static class ContainerIoC
         services.AddScoped<IFuncionalidadeService, FuncionalidadeService>();
         services.AddScoped<IGrauParentescoService, GrauParentescoService>();
         services.AddScoped<IGrupoGuiaService, GrupoGuiaService>();
+        services.AddScoped<IGuiaAutorizacaoService, GuiaAutorizacaoService>();
+        services.AddScoped<ILaudoAnamneseService, LaudoAnamneseService>();
+        services.AddScoped<IModeloLaudoAnamneseService, ModeloLaudoAnamneseService>();
         services.AddScoped<IPacienteService, PacienteService>();
         services.AddScoped<IPerfilUsuarioService, PerfilUsuarioService>();
         services.AddScoped<IPessoaService, PessoaService>();
-        services.AddScoped<IPlanoConvenioService, PlanoConvenioService>();
         services.AddScoped<IPlanoSaudeService, PlanoSaudeService>();
-        services.AddScoped<IProdutoConvenioService, ProdutoConvenioService>();
+        services.AddScoped<IProcedimentoService, ProcedimentoService>();
+        services.AddScoped<IProcedimentoDetalheService, ProcedimentoDetalheService>();
         services.AddScoped<IProfissionalService, ProfissionalService>();
         services.AddScoped<IProntuarioHistoricoService, ProntuarioHistoricoService>();
         services.AddScoped<IProntuarioService, ProntuarioService>();
         services.AddScoped<IRegistroProfissionalService, RegistroProfissionalService>();
-        services.AddScoped<IStatusService, StatusService>();
+        services.AddScoped<IRelacionamentoPacienteService, RelacionamentoPacienteService>();
+        services.AddScoped<IRenovacaoEncaminhamentoService, RenovacaoEncaminhamentoService>();
+        services.AddScoped<IStatusUsuarioService, StatusUsuarioService>();
         services.AddScoped<ITelefoneService, TelefoneService>();
+        services.AddScoped<ITipoAcomodacaoService, TipoAcomodacaoService>();
+        services.AddScoped<ITipoArquivoService, TipoArquivoService>();
         services.AddScoped<ITipoTelefoneService, TipoTelefoneService>();
         services.AddScoped<IUfService, UfService>();
     }
@@ -65,20 +72,27 @@ public static class ContainerIoC
         services.AddScoped<IFuncionalidadeRepository, FuncionalidadeRepository>();
         services.AddScoped<IGrauParentescoRepository, GrauParentescoRepository>();
         services.AddScoped<IGrupoGuiaRepository, GrupoGuiaRepository>();
+        services.AddScoped<IGuiaAutorizacaoRepository, GuiaAutorizacaoRepository>();
+        services.AddScoped<ILaudoAnamneseRepository, LaudoAnamneseRepository>();
+        services.AddScoped<IModeloLaudoAnamneseRepository, ModeloLaudoAnamneseRepository>();
         services.AddScoped<IPacienteRepository, PacienteRepository>();
         services.AddScoped<IPerfilUsuarioRepository, PerfilUsuarioRepository>();
         services.AddScoped<IPessoaRepository, PessoaRepository>();
-        services.AddScoped<IPlanoConvenioRepository, PlanoConvenioRepository>();
         services.AddScoped<IPlanoSaudeRepository, PlanoSaudeRepository>();
-        services.AddScoped<IProdutoConvenioRepository, ProdutoConvenioRepository>();
+        services.AddScoped<IProcedimentoDetalheRepository, ProcedimentoDetalheRepository>();
+        services.AddScoped<IProcedimentoRepository, ProcedimentoRepository>();
         services.AddScoped<IProfissionalRepository, ProfissionalRepository>();
         services.AddScoped<IProntuarioHistoricoRepository, ProntuarioHistoricoRepository>();
         services.AddScoped<IProntuarioRepository, ProntuarioRepository>();
         services.AddScoped<IRegistroProfissionalRepository, RegistroProfissionalRepository>();
-        services.AddScoped<IStatusRepository, StatusRepository>();
+        services.AddScoped<IRelacionamentoPacienteRepository, RelacionamentoPacienteRepository>();
+        services.AddScoped<IStatusUsuarioRepository, StatusUsuarioRepository>();
+        services.AddScoped<IRenovacaoEncaminhamentoRepository, RenovacaoEncaminhamentoRepository>();
         services.AddScoped<ITelefoneRepository, TelefoneRepository>();        
-        services.AddScoped<ITipoTelefoneRepository, TipoTelefoneRepository>();        
-        services.AddScoped<IUfRepository, UfRepository>();        
+        services.AddScoped<ITipoAcomodacaoRepository, TipoAcomodacaoRepository>();
+        services.AddScoped<ITipoArquivoRepository, TipoArquivoRepository>();
+        services.AddScoped<ITipoTelefoneRepository, TipoTelefoneRepository>();
+        services.AddScoped<IUfRepository, UfRepository>();
     }
 
     private static void ResolveMiddlewares(this IServiceCollection services)

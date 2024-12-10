@@ -48,22 +48,28 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"select pc.Id
-                                               ,p.Id as PessoaId
+                string selectQuery = $@"select pc.Id                                               
+                                               ,pc.PessoaId
                                                ,p.Nome
                                                ,p.NomeReduzido
                                                ,p.Cpf
                                                ,p.Sexo
                                                ,p.Email
                                                ,p.DataNascimento
-                                               ,p.Ativo as IsAtivo
+                                               ,pc.EmissaoRG
+                                               ,pc.OrgaoRG
+                                               ,pc.RG
+                                               ,pc.NomeMae
+                                               ,pc.NomePai
+                                               ,pc.ObsPaciente
+                                               ,pc.Ativo as IsAtivo
                                                ,pu.Descricao as PerfilUsuario
                                                ,st.Descricao as StatuslUsuario
                                           from paciente pc
                                          INNER JOIN pessoa p on p.Id = pc.pessoaId
                                           LEFT JOIN usuario u on u.PessoaId = p.Id
                                           LEFT JOIN perfilusuario pu on pu.Id = u.PerfilUsuarioId
-                                          LEFT JOIN status st on st.Id = u.StatusId
+                                          LEFT JOIN statususuario st on st.Id = u.StatusUsuarioId
                                          WHERE pc.Id = {id};";
 
                 DataTable result = _pacienteRepository.Get(selectQuery);
@@ -104,22 +110,28 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"select pc.Id
-                                               ,p.Id as PessoaId
+                string selectQuery = $@"select pc.Id                                               
+                                               ,pc.PessoaId
                                                ,p.Nome
                                                ,p.NomeReduzido
                                                ,p.Cpf
                                                ,p.Sexo
                                                ,p.Email
                                                ,p.DataNascimento
-                                               ,p.Ativo as IsAtivo
+                                               ,pc.EmissaoRG
+                                               ,pc.OrgaoRG
+                                               ,pc.RG
+                                               ,pc.NomeMae
+                                               ,pc.NomePai
+                                               ,pc.ObsPaciente
+                                               ,pc.Ativo as IsAtivo
                                                ,pu.Descricao as PerfilUsuario
                                                ,st.Descricao as StatuslUsuario
                                           from paciente pc
                                          INNER JOIN pessoa p on p.Id = pc.pessoaId
                                           LEFT JOIN usuario u on u.PessoaId = p.Id
                                           LEFT JOIN perfilusuario pu on pu.Id = u.PerfilUsuarioId
-                                          LEFT JOIN status st on st.Id = u.StatusId
+                                          LEFT JOIN statususuario st on st.Id = u.StatusUsuarioId
                                          where 1 = 1
                                          order by p.Nome;";
 
@@ -207,8 +219,18 @@ namespace Ghb.Psicossoma.Services.Implementations
                 }
 
                 Paciente paciente = _mapper.Map<PacienteDto, Paciente>(dto);
-                insertQuery = $@"INSERT INTO paciente (Id, PessoaId, Ativo)
-                                 VALUES (null, {pessoaFound?.Id}, true);";
+                insertQuery = $@"INSERT INTO paciente 
+                                 (Id, PessoaId, EmissaoRG, OrgaoRG, RG, NomeMae, NomePai, ObsPaciente, Ativo)
+                                 VALUES 
+                                 (null 
+                                 ,{pessoaFound?.Id} 
+                                 ,'{dto.EmissaoRG}'
+                                 ,'{dto.OrgaoRG}'
+                                 ,'{dto.RG}'
+                                 ,'{dto.NomeMae}'
+                                 ,'{dto.NomePai}'
+                                 ,'{dto.ObsPaciente}'
+                                 ,true);";
 
                 long newId = _pacienteRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -285,8 +307,19 @@ namespace Ghb.Psicossoma.Services.Implementations
                     ResultDto<TelefoneDto> resultTelefone = _telefoneService.Update(telefone);
                 }
 
-                var paciente = _mapper.Map<PacienteDto, Paciente>(dto);
-                var item = _mapper.Map<Paciente, PacienteDto>(paciente);
+                var entidade = _mapper.Map<PacienteDto, Paciente>(dto);
+                updateQuery = $@"UPDATE paciente 
+                                 SET EmissaoRG = '{entidade.EmissaoRG}' 
+                                 ,OrgaoRG = '{entidade.OrgaoRG}' 
+                                 ,RG = '{entidade.RG}' 
+                                 ,NomeMae = '{entidade.NomeMae}' 
+                                 ,NomePai = '{entidade.NomePai}' 
+                                 ,ObsPaciente = '{entidade.ObsPaciente}' 
+                                 ,Ativo = {entidade.Ativo}
+                                 WHERE id = {entidade.Id};";
+
+                _pacienteRepository.Update(updateQuery);
+                var item = _mapper.Map<Paciente, PacienteDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;

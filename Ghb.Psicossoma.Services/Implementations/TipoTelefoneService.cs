@@ -37,7 +37,9 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT Id, Nome FROM tipoTelefone;";
+                string selectQuery = $@"SELECT Id, Nome 
+                                        FROM tipoTelefone 
+                                        order by Nome;";
 
                 DataTable result = _tipoTelefoneRepository.GetAll(selectQuery);
                 List<TipoTelefone> list = result.CreateListFromTable<TipoTelefone>();

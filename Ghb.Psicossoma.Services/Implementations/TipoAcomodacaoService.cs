@@ -12,41 +12,44 @@ using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class ProntuarioService : BaseService<ProntuarioDto, Prontuario>, IProntuarioService
+    public class TipoAcomodacaoService : BaseService<TipoAcomodacaoDto, TipoAcomodacao>, ITipoAcomodacaoService
     {
-        private readonly IProntuarioRepository _prontuarioRepository;
-        private readonly ILogger<ProntuarioService> _logger;
+        private readonly ITipoAcomodacaoRepository _tipoAcomodacaoRepository;
+        private readonly ILogger<TipoAcomodacaoService> _logger;
 
-        public ProntuarioService(IProntuarioRepository prontuarioRepository,
-                                 ILogger<ProntuarioService> logger,
-                                 IMapper mapper) : base(prontuarioRepository, mapper)
+        public TipoAcomodacaoService(ITipoAcomodacaoRepository tipoAcomodacaoRepository,
+                               ILogger<TipoAcomodacaoService> logger,
+                               IMapper mapper) : base(tipoAcomodacaoRepository, mapper)
         {
-            _prontuarioRepository = prontuarioRepository;
+            _tipoAcomodacaoRepository = tipoAcomodacaoRepository;
             _logger = logger;
         }
 
-        public override ResultDto<ProntuarioDto> GetAll()
+        public override ResultDto<TipoAcomodacaoDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<TipoAcomodacaoDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"SELECT Id, EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo
-                                 FROM prontuario;";
+                selectQuery = $@"select Id
+                                        ,Codigo
+                                        ,Nome
+                                   FROM tipoacomodacao
+                                  order by Nome";
 
-                DataTable result = _prontuarioRepository.GetAll(selectQuery);
-                List<Prontuario> list = result.CreateListFromTable<Prontuario>();
+                DataTable result = _tipoAcomodacaoRepository.GetAll(selectQuery);
+                List<TipoAcomodacao> list = result.CreateListFromTable<TipoAcomodacao>();
 
                 if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Prontuario>, IEnumerable<ProntuarioDto>>(list ?? Enumerable.Empty<Prontuario>());
+                    returnValue.Items = _mapper.Map<IEnumerable<TipoAcomodacao>, IEnumerable<TipoAcomodacaoDto>>(list ?? Enumerable.Empty<TipoAcomodacao>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -68,29 +71,31 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Get(string id)
+        public override ResultDto<TipoAcomodacaoDto> Get(string id)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<TipoAcomodacaoDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"SELECT Id, EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo
-                                 FROM prontuario
-                                 WHERE Id = {id};";
+                selectQuery = $@"select Id
+                                        ,Codigo
+                                        ,Nome
+                                   FROM tipoacomodacao
+                                  WHERE Id = {id};";
 
-                DataTable result = _prontuarioRepository.Get(selectQuery);
-                List<Prontuario> item = result.CreateListFromTable<Prontuario>();
+                DataTable result = _tipoAcomodacaoRepository.Get(selectQuery);
+                List<TipoAcomodacao> item = result.CreateListFromTable<TipoAcomodacao>();
 
                 if (item?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = item.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Prontuario>, IEnumerable<ProntuarioDto>>(item ?? Enumerable.Empty<Prontuario>());
+                    returnValue.Items = _mapper.Map<IEnumerable<TipoAcomodacao>, IEnumerable<TipoAcomodacaoDto>>(item ?? Enumerable.Empty<TipoAcomodacao>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -112,27 +117,27 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Insert(ProntuarioDto dto)
+        public override ResultDto<TipoAcomodacaoDto> Insert(TipoAcomodacaoDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<TipoAcomodacaoDto> returnValue = new();
             string? insertQuery = null;
 
             try
             {
-                var entidade = _mapper.Map<ProntuarioDto, Prontuario>(dto);
-                insertQuery = $@"INSERT INTO prontuario 
-                                 (EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo)
+                var entidade = _mapper.Map<TipoAcomodacaoDto, TipoAcomodacao>(dto);
+                insertQuery = $@"INSERT INTO tipoacomodacao 
+                                 (Codigo, Nome)
                                  VALUES 
-                                 ({entidade.EncaminhamentoId}, {entidade.ProfissionalId}, {entidade.PacienteId}, '{entidade.DescricaoGeral}', '{entidade.DataEntrada:yyyy-MM-dd}', true);";
+                                 ('{entidade.Codigo}', '{entidade.Nome}');";
 
-                long newId = _prontuarioRepository.Insert(insertQuery);
+                long newId = _tipoAcomodacaoRepository.Insert(insertQuery);
                 if (newId > 0)
                     entidade.Id = (int)newId;
 
-                var item = _mapper.Map<Prontuario, ProntuarioDto>(entidade);
+                var item = _mapper.Map<TipoAcomodacao, TipoAcomodacaoDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;
@@ -151,28 +156,23 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Update(ProntuarioDto dto)
+        public override ResultDto<TipoAcomodacaoDto> Update(TipoAcomodacaoDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<TipoAcomodacaoDto> returnValue = new();
             string? updateQuery = null;
 
             try
             {
-                var entidade = _mapper.Map<ProntuarioDto, Prontuario>(dto);
-                updateQuery = $@"UPDATE prontuario 
-                                 SET EncaminhamentoId = '{entidade.EncaminhamentoId}'
-                                 ,ProfissionalId = '{entidade.ProfissionalId}'
-                                 ,PacienteId = '{entidade.PacienteId}'
-                                 ,DescricaoGeral = '{entidade.DescricaoGeral}'
-                                 ,DataEntrada = '{entidade.DataEntrada:yyyy-MM-dd}'
-                                 ,Ativo = {entidade.Ativo}
-                                 WHERE id = {entidade.Id};";
+                var entidade = _mapper.Map<TipoAcomodacaoDto, TipoAcomodacao>(dto);
+                updateQuery = $@"UPDATE tipoacomodacao 
+                                 SET Codigo = '{entidade.Codigo}', Nome = '{entidade.Nome}'
+                                 WHERE Id = {entidade.Id};";
 
-                _prontuarioRepository.Update(updateQuery);
-                var item = _mapper.Map<Prontuario, ProntuarioDto>(entidade);
+                _tipoAcomodacaoRepository.Update(updateQuery);
+                var item = _mapper.Map<TipoAcomodacao, TipoAcomodacaoDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;

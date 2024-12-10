@@ -5,49 +5,50 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog.Context;
 using System.Data;
 using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class StatusService : BaseService<StatusUsuarioDto, StatusUsuario>, IStatusService
+    public class TipoArquivoService : BaseService<TipoArquivoDto, TipoArquivo>, ITipoArquivoService
     {
-        private readonly IStatusRepository _statusRepository;
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<StatusService> _logger;
+        private readonly ITipoArquivoRepository _tipoArquivoRepository;
+        private readonly ILogger<TipoArquivoService> _logger;
 
-        public StatusService(IStatusRepository statusRepository,
-                             ILogger<StatusService> logger,
-                             IMapper mapper,
-                             IConfiguration configuration) : base(statusRepository, mapper)
+        public TipoArquivoService(ITipoArquivoRepository tipoArquivoRepository,
+                               ILogger<TipoArquivoService> logger,
+                               IMapper mapper) : base(tipoArquivoRepository, mapper)
         {
-            _statusRepository = statusRepository;
-            _configuration = configuration;
+            _tipoArquivoRepository = tipoArquivoRepository;
             _logger = logger;
         }
 
-        public override ResultDto<StatusUsuarioDto> GetAll()
+        public override ResultDto<TipoArquivoDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<StatusUsuarioDto> returnValue = new();
+            ResultDto<TipoArquivoDto> returnValue = new();
+            string? selectQuery = null;
 
             try
             {
-                string selectQuery = $@"SELECT Id, Descricao FROM status;";
+                selectQuery = $@"select Id
+                                        ,Nome
+                                   FROM tipoarquivo
+                                  order by Nome";
 
-                DataTable result = _statusRepository.GetAll(selectQuery);
-                List<StatusUsuario> list = result.CreateListFromTable<StatusUsuario>();
+                DataTable result = _tipoArquivoRepository.GetAll(selectQuery);
+                List<TipoArquivo> list = result.CreateListFromTable<TipoArquivo>();
 
                 if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<StatusUsuario>, IEnumerable<StatusUsuarioDto>>(list ?? Enumerable.Empty<StatusUsuario>());
+                    returnValue.Items = _mapper.Map<IEnumerable<TipoArquivo>, IEnumerable<TipoArquivoDto>>(list ?? Enumerable.Empty<TipoArquivo>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -59,6 +60,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             catch (Exception ex)
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
                 _logger.LogError(ex, "Erro na recuperação dos dados");
             }
 

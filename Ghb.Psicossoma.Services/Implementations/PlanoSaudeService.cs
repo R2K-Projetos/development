@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System.Data;
 using System.Diagnostics;
+using System.Net;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
@@ -39,7 +40,19 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome FROM planoSaude order by Nome;";
+                selectQuery = $@"SELECT Id
+                                        ,ConvenioId
+                                        ,TipoAcomodacaoId
+                                        ,Nome
+                                        ,ProdutoPlano
+                                        ,Acompanhante
+                                        ,CodIdent
+                                        ,CNS
+                                        ,Cobertura
+                                        ,Empresa
+                                        ,Ativo
+                                   FROM planoSaude
+                                  order by Nome;";
 
                 DataTable result = _planoSaudeRepository.GetAll(selectQuery);
                 List<PlanoSaude> list = result.CreateListFromTable<PlanoSaude>();
@@ -81,9 +94,19 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome 
+                selectQuery = $@"SELECT Id
+                                        ,ConvenioId
+                                        ,TipoAcomodacaoId
+                                        ,Nome
+                                        ,ProdutoPlano
+                                        ,Acompanhante
+                                        ,CodIdent
+                                        ,CNS
+                                        ,Cobertura
+                                        ,Empresa
+                                        ,Ativo
                                    FROM planoSaude
-                                  WHERE id = {id};";
+                                  WHERE Id = {id};";
 
                 DataTable result = _planoSaudeRepository.Get(selectQuery);
                 List<PlanoSaude> item = result.CreateListFromTable<PlanoSaude>();
@@ -127,9 +150,27 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<PlanoSaudeDto, PlanoSaude>(dto);
                 insertQuery = $@"INSERT INTO planosaude 
-                                 (Nome)
+                                 (ConvenioId
+                                 ,TipoAcomodacaoId
+                                 ,Nome
+                                 ,ProdutoPlano
+                                 ,Acompanhante
+                                 ,CodIdent
+                                 ,CNS
+                                 ,Cobertura
+                                 ,Empresa
+                                 ,Ativo)
                                  VALUES 
-                                 ('{entidade.Nome}');";
+                                 ({entidade.ConvenioId}
+                                 ,{entidade.TipoAcomodacaoId}
+                                 ,'{entidade.Nome}'
+                                 ,'{entidade.ProdutoPlano}'
+                                 ,{entidade.Acompanhante}
+                                 ,'{entidade.CodIdent}'
+                                 ,'{entidade.CNS}'
+                                 ,'{entidade.Cobertura}'
+                                 ,'{entidade.Empresa}'
+                                 ,true)";
 
                 long newId = _planoSaudeRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -166,7 +207,16 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<PlanoSaudeDto, PlanoSaude>(dto);
                 updateQuery = $@"UPDATE planosaude 
-                                 SET Nome = '{entidade.Nome}'
+                                 SET ConvenioId = {entidade.Nome}
+                                 ,TipoAcomodacaoId = {entidade.TipoAcomodacaoId}
+                                 ,Nome = '{entidade.Nome}'
+                                 ,ProdutoPlano = '{entidade.ProdutoPlano}'
+                                 ,Acompanhante = {entidade.Acompanhante}
+                                 ,CodIdent = '{entidade.CodIdent}'
+                                 ,CNS = '{entidade.CNS}'
+                                 ,Cobertura = '{entidade.Cobertura}'
+                                 ,Empresa = '{entidade.Empresa}'
+                                 ,Ativo = {entidade.Ativo}
                                  WHERE id = {entidade.Id};";
 
                 _planoSaudeRepository.Update(updateQuery);

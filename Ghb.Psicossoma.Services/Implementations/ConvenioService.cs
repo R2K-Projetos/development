@@ -5,7 +5,6 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System.Data;
@@ -16,60 +15,43 @@ namespace Ghb.Psicossoma.Services.Implementations
     public class ConvenioService : BaseService<ConvenioDto, Convenio>, IConvenioService
     {
         private readonly IConvenioRepository _convenioRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<ConvenioService> _logger;
 
         public ConvenioService(IConvenioRepository convenioRepository,
                                ILogger<ConvenioService> logger,
-                               IMapper mapper,
-                               IConfiguration configuration) : base(convenioRepository, mapper)
+                               IMapper mapper) : base(convenioRepository, mapper)
         {
             _convenioRepository = convenioRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 
-        ResultDto<ConvenioResponseDto> IConvenioService.GetAll()
+        public override ResultDto<ConvenioDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ConvenioResponseDto> returnValue = new();
+            ResultDto<ConvenioDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"select c.Id
-                                        ,c.PlanoSaudeId
-                                        ,c.PlanoConvenioId
-                                        ,c.ProdutoConvenioId
-                                        ,c.Identificacao
-                                        ,c.Acomodacao
-                                        ,c.Cns
-                                        ,c.Cobertura
-                                        ,c.Empresa
-                                        ,c.Ativo
-                                        ,pls.Descricao as PlanoSaude
-                                        ,plc.Descricao as PlanoConvenio
-                                        ,pc.Descricao as ProdutoConvenio
-                                   FROM convenio c
-                                  inner join planosaude pls on pls.Id = c.PlanoSaudeId
-                                   left join planoconvenio plc on plc.Id = c.PlanoConvenioId
-                                   left join produtoconvenio pc on pc.Id = c.ProdutoConvenioId
-                                  where 1 = 1
-                                  order by pls.Descricao
-                                          ,plc.Descricao
-                                          ,pc.Descricao";
+                selectQuery = $@"select Id
+                                        ,Nome
+                                        ,CNPJ
+                                        ,Ativo
+                                        ,DataCadastro
+                                   FROM convenio
+                                  order by Nome";
 
                 DataTable result = _convenioRepository.GetAll(selectQuery);
-                List<ConvenioResponse> convenios = result.CreateListFromTable<ConvenioResponse>();
+                List<Convenio> list = result.CreateListFromTable<Convenio>();
 
-                if (convenios?.Count > 0)
+                if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = convenios.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<ConvenioResponse>, IEnumerable<ConvenioResponseDto>>(convenios ?? Enumerable.Empty<ConvenioResponse>());
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Convenio>, IEnumerable<ConvenioDto>>(list ?? Enumerable.Empty<Convenio>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -91,44 +73,33 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        ResultDto<ConvenioResponseDto> IConvenioService.Get(string id)
+        public override ResultDto<ConvenioDto> Get(string id)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ConvenioResponseDto> returnValue = new();
+            ResultDto<ConvenioDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"select c.Id
-                                        ,c.PlanoSaudeId
-                                        ,c.PlanoConvenioId
-                                        ,c.ProdutoConvenioId
-                                        ,c.Identificacao
-                                        ,c.Acomodacao
-                                        ,c.Cns
-                                        ,c.Cobertura
-                                        ,c.Empresa
-                                        ,c.Ativo
-                                        ,pls.Descricao as PlanoSaude
-                                        ,plc.Descricao as PlanoConvenio
-                                        ,pc.Descricao as ProdutoConvenio
-                                   FROM convenio c
-                                  inner join planosaude pls on pls.Id = c.PlanoSaudeId
-                                   left join planoconvenio plc on plc.Id = c.PlanoConvenioId
-                                   left join produtoconvenio pc on pc.Id = c.ProdutoConvenioId
-                                  WHERE c.id = {id};";
+                selectQuery = $@"select Id
+                                        ,Nome
+                                        ,CNPJ
+                                        ,Ativo
+                                        ,DataCadastro
+                                   FROM convenio
+                                  WHERE Id = {id};";
 
                 DataTable result = _convenioRepository.Get(selectQuery);
-                List<ConvenioResponse> convenio = result.CreateListFromTable<ConvenioResponse>();
+                List<Convenio> item = result.CreateListFromTable<Convenio>();
 
-                if (convenio?.Count > 0)
+                if (item?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
-                    returnValue.TotalItems = convenio.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<ConvenioResponse>, IEnumerable<ConvenioResponseDto>>(convenio ?? Enumerable.Empty<ConvenioResponse>());
+                    returnValue.TotalItems = item.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Convenio>, IEnumerable<ConvenioDto>>(item ?? Enumerable.Empty<Convenio>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -142,6 +113,80 @@ namespace Ghb.Psicossoma.Services.Implementations
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", selectQuery);
                 _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<ConvenioDto> Insert(ConvenioDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<ConvenioDto> returnValue = new();
+            string? insertQuery = null;
+
+            try
+            {
+                var entidade = _mapper.Map<ConvenioDto, Convenio>(dto);
+                insertQuery = $@"INSERT INTO convenio 
+                                 (Nome, CNPJ, Ativo, DataCadastro)
+                                 VALUES 
+                                 ('{entidade.Nome}', '{entidade.CNPJ}', true, Now());";
+
+                long newId = _convenioRepository.Insert(insertQuery);
+                if (newId > 0)
+                    entidade.Id = (int)newId;
+
+                var item = _mapper.Map<Convenio, ConvenioDto>(entidade);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<ConvenioDto> Update(ConvenioDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<ConvenioDto> returnValue = new();
+            string? updateQuery = null;
+
+            try
+            {
+                var entidade = _mapper.Map<ConvenioDto, Convenio>(dto);
+                updateQuery = $@"UPDATE convenio 
+                                 SET Nome = '{entidade.Nome}', CNPJ = '{entidade.CNPJ}', Ativo = {entidade.Ativo}
+                                 WHERE id = {entidade.Id};";
+
+                _convenioRepository.Update(updateQuery);
+                var item = _mapper.Map<Convenio, ConvenioDto>(entidade);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", updateQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
             }
 
             elapsedTime.Stop();

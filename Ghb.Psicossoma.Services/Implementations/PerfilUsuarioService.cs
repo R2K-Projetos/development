@@ -39,7 +39,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Descricao FROM perfilUsuario;";
+                selectQuery = $@"SELECT Id, Nome FROM perfilUsuario;";
 
                 DataTable result = _perfilUsuarioRepository.GetAll(selectQuery);
                 List<PerfilUsuario> status = result.CreateListFromTable<PerfilUsuario>();

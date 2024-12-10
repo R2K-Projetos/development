@@ -5,11 +5,11 @@ using Ghb.Psicossoma.SharedAbstractions.Repositories.Implementations.Base;
 
 namespace Ghb.Psicossoma.Repositories.Implementations
 {
-    public class StatusRepository : BaseRepository<StatusUsuario>, IStatusRepository
+    public class ProcedimentoDetalheRepository : BaseRepository<ProcedimentoDetalhe>, IProcedimentoDetalheRepository
     {
-        public StatusRepository(IContextDatabaseSettings settings) : base(settings)
+        public ProcedimentoDetalheRepository(IContextDatabaseSettings settings) : base(settings)
         {
-
+            
         }
     }
 }

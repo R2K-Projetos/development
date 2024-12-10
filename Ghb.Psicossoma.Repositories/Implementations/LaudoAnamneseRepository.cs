@@ -5,11 +5,11 @@ using Ghb.Psicossoma.SharedAbstractions.Repositories.Implementations.Base;
 
 namespace Ghb.Psicossoma.Repositories.Implementations
 {
-    public class ProdutoConvenioRepository : BaseRepository<ProdutoConvenio>, IProdutoConvenioRepository
+    public class LaudoAnamneseRepository : BaseRepository<LaudoAnamnese>, ILaudoAnamneseRepository
     {
-        public ProdutoConvenioRepository(IContextDatabaseSettings settings) : base(settings)
+        public LaudoAnamneseRepository(IContextDatabaseSettings settings) : base(settings)
         {
-
+            
         }
     }
 }

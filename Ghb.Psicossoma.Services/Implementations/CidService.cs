@@ -5,7 +5,6 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System.Data;
@@ -16,16 +15,13 @@ namespace Ghb.Psicossoma.Services.Implementations
     public class CidService : BaseService<CidDto, Cid>, ICidService
     {
         private readonly ICidRepository _cidRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<CidService> _logger;
 
         public CidService(ICidRepository cidRepository,
                           ILogger<CidService> logger,
-                          IMapper mapper,
-                          IConfiguration configuration) : base(cidRepository, mapper)
+                          IMapper mapper) : base(cidRepository, mapper)
         {
             _cidRepository = cidRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 
@@ -39,7 +35,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Codigo, Descricao FROM cid;";
+                selectQuery = $@"SELECT Id, Codigo, Nome FROM cid;";
 
                 DataTable result = _cidRepository.GetAll(selectQuery);
                 List<Cid> list = result.CreateListFromTable<Cid>();
@@ -81,7 +77,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Codigo, Descricao
+                selectQuery = $@"SELECT Id, Codigo, Nome
                                  FROM cid
                                  WHERE id = {id};";
 
@@ -165,7 +161,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<CidDto, Cid>(dto);
                 insertQuery = $@"INSERT INTO cid 
-                                 (Codigo, Descricao)
+                                 (Codigo, Nome)
                                  VALUES 
                                  ('{entidade.Codigo}', '{entidade.Nome}');";
 
@@ -204,7 +200,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<CidDto, Cid>(dto);
                 updateQuery = $@"UPDATE cid 
-                                 SET Codigo = '{entidade.Codigo}', Descricao = '{entidade.Nome}'
+                                 SET Codigo = '{entidade.Codigo}', Nome = '{entidade.Nome}'
                                  WHERE id = {entidade.Id};";
 
                 _cidRepository.Update(updateQuery);

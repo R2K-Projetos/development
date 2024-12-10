@@ -52,7 +52,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Codigo)</th>
-                        <th scope="col">@Html.DisplayNameFor(model => model.Descricao)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
                     </tr>
                 </thead>
                 <tbody class="linkLinha">
@@ -66,7 +66,7 @@
                                 @Html.DisplayFor(modelItem => item.Codigo)
                             </td>
                             <td class="text-start">
-                                @Html.DisplayFor(modelItem => item.Descricao)
+                                @Html.DisplayFor(modelItem => item.Nome)
                             </td>
                         </tr>
                     }

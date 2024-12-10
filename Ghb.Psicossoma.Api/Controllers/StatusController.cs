@@ -13,10 +13,10 @@ namespace Ghb.Psicossoma.Api.Controllers
     [Route("api/[controller]")]
     public class StatusController : BaseApiController
     {
-        private readonly IStatusService _statusService;
+        private readonly IStatusUsuarioService _statusService;
         private readonly IConfiguration _configuration;
 
-        public StatusController(IStatusService statusService, IConfiguration configuration)
+        public StatusController(IStatusUsuarioService statusService, IConfiguration configuration)
         {
             _statusService = statusService;
             _configuration = configuration;

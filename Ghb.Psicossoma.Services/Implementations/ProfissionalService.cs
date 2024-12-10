@@ -204,8 +204,22 @@ namespace Ghb.Psicossoma.Services.Implementations
                 }
 
                 Profissional profissional = _mapper.Map<ProfissionalDto, Profissional>(dto);
-                insertQuery = $@"INSERT INTO profissional(Id, PessoaId, RegistroProfissionalId, Numero, Ativo)
-                                 VALUES(null, {pessoaFound?.Id}, {profissional.RegistroProfissionalId}, '{profissional.Numero}', {profissional.Ativo});";
+                insertQuery = $@"INSERT INTO profissional 
+                                 (Id
+                                 ,PessoaId
+                                 ,RegistroProfissionalId
+                                 ,UFId
+                                 ,Numero
+                                 ,CNS
+                                 ,Ativo)
+                                 VALUES 
+                                 (null
+                                 ,{pessoaFound?.Id}
+                                 ,{profissional.RegistroProfissionalId}
+                                 ,{profissional.UFId}
+                                 ,'{profissional.Numero}'
+                                 ,'{profissional.CNS}'
+                                 ,true);";
 
                 long newId = _profissionalRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -283,8 +297,11 @@ namespace Ghb.Psicossoma.Services.Implementations
                 }
 
                 updateQuery = $@"UPDATE profissional
-                                 SET Numero = {dto.Numero},
-                                 RegistroProfissionalId = {dto.RegistroProfissionalId}
+                                 SET RegistroProfissionalId = {dto.RegistroProfissionalId}
+                                 ,UFId = {dto.UFId}
+                                 ,Numero = '{dto.Numero}'
+                                 ,CNS = '{dto.CNS}'
+                                 ,Ativo = {dto.Ativo}
                                  WHERE Id = {dto.Id};";
 
                 _profissionalRepository.Update(updateQuery);

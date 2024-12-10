@@ -3,7 +3,7 @@ using Ghb.Psicossoma.SharedAbstractions.Services.Abstractions.Base;
 
 namespace Ghb.Psicossoma.Services.Abstractions
 {
-    public interface IPlanoConvenioService : IBaseService<PlanoConvenioDto>
+    public interface IGuiaAutorizacaoService : IBaseService<GuiaAutorizacaoDto>
     {
     }
 }

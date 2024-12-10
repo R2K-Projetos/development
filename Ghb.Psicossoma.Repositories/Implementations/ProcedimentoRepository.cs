@@ -5,11 +5,11 @@ using Ghb.Psicossoma.SharedAbstractions.Repositories.Implementations.Base;
 
 namespace Ghb.Psicossoma.Repositories.Implementations
 {
-    public class PlanoConvenioRepository : BaseRepository<PlanoConvenio>, IPlanoConvenioRepository
+    public class ProcedimentoRepository : BaseRepository<Procedimento>, IProcedimentoRepository
     {
-        public PlanoConvenioRepository(IContextDatabaseSettings settings) : base(settings)
+        public ProcedimentoRepository(IContextDatabaseSettings settings) : base(settings)
         {
-
+            
         }
     }
 }

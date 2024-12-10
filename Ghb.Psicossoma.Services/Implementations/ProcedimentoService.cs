@@ -12,41 +12,45 @@ using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class ProntuarioService : BaseService<ProntuarioDto, Prontuario>, IProntuarioService
+    public class ProcedimentoService : BaseService<ProcedimentoDto, Procedimento>, IProcedimentoService
     {
-        private readonly IProntuarioRepository _prontuarioRepository;
-        private readonly ILogger<ProntuarioService> _logger;
+        private readonly IProcedimentoRepository _procedimentoRepository;
+        private readonly ILogger<ProcedimentoService> _logger;
 
-        public ProntuarioService(IProntuarioRepository prontuarioRepository,
-                                 ILogger<ProntuarioService> logger,
-                                 IMapper mapper) : base(prontuarioRepository, mapper)
+        public ProcedimentoService(IProcedimentoRepository procedimentoRepository,
+                               ILogger<ProcedimentoService> logger,
+                               IMapper mapper) : base(procedimentoRepository, mapper)
         {
-            _prontuarioRepository = prontuarioRepository;
+            _procedimentoRepository = procedimentoRepository;
             _logger = logger;
         }
 
-        public override ResultDto<ProntuarioDto> GetAll()
+        public override ResultDto<ProcedimentoDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<ProcedimentoDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"SELECT Id, EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo
-                                 FROM prontuario;";
+                selectQuery = $@"select Id
+                                        ,EspecialidadeId
+                                        ,Nome
+                                        ,ValorBase
+                                   FROM procedimento
+                                  order by Nome";
 
-                DataTable result = _prontuarioRepository.GetAll(selectQuery);
-                List<Prontuario> list = result.CreateListFromTable<Prontuario>();
+                DataTable result = _procedimentoRepository.GetAll(selectQuery);
+                List<Procedimento> list = result.CreateListFromTable<Procedimento>();
 
                 if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Prontuario>, IEnumerable<ProntuarioDto>>(list ?? Enumerable.Empty<Prontuario>());
+                    returnValue.Items = _mapper.Map<IEnumerable<Procedimento>, IEnumerable<ProcedimentoDto>>(list ?? Enumerable.Empty<Procedimento>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -68,29 +72,32 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Get(string id)
+        public override ResultDto<ProcedimentoDto> Get(string id)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<ProcedimentoDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"SELECT Id, EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo
-                                 FROM prontuario
-                                 WHERE Id = {id};";
+                selectQuery = $@"select Id
+                                        ,EspecialidadeId
+                                        ,Nome
+                                        ,ValorBase
+                                   FROM procedimento
+                                  WHERE Id = {id};";
 
-                DataTable result = _prontuarioRepository.Get(selectQuery);
-                List<Prontuario> item = result.CreateListFromTable<Prontuario>();
+                DataTable result = _procedimentoRepository.Get(selectQuery);
+                List<Procedimento> item = result.CreateListFromTable<Procedimento>();
 
                 if (item?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = item.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Prontuario>, IEnumerable<ProntuarioDto>>(item ?? Enumerable.Empty<Prontuario>());
+                    returnValue.Items = _mapper.Map<IEnumerable<Procedimento>, IEnumerable<ProcedimentoDto>>(item ?? Enumerable.Empty<Procedimento>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -112,27 +119,27 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Insert(ProntuarioDto dto)
+        public override ResultDto<ProcedimentoDto> Insert(ProcedimentoDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<ProcedimentoDto> returnValue = new();
             string? insertQuery = null;
 
             try
             {
-                var entidade = _mapper.Map<ProntuarioDto, Prontuario>(dto);
-                insertQuery = $@"INSERT INTO prontuario 
-                                 (EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo)
+                var entidade = _mapper.Map<ProcedimentoDto, Procedimento>(dto);
+                insertQuery = $@"INSERT INTO procedimento 
+                                 (EspecialidadeId, Nome, ValorBase)
                                  VALUES 
-                                 ({entidade.EncaminhamentoId}, {entidade.ProfissionalId}, {entidade.PacienteId}, '{entidade.DescricaoGeral}', '{entidade.DataEntrada:yyyy-MM-dd}', true);";
+                                 ({entidade.EspecialidadeId}, '{entidade.Nome}', {entidade.ValorBase});";
 
-                long newId = _prontuarioRepository.Insert(insertQuery);
+                long newId = _procedimentoRepository.Insert(insertQuery);
                 if (newId > 0)
                     entidade.Id = (int)newId;
 
-                var item = _mapper.Map<Prontuario, ProntuarioDto>(entidade);
+                var item = _mapper.Map<Procedimento, ProcedimentoDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;
@@ -151,28 +158,25 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<ProntuarioDto> Update(ProntuarioDto dto)
+        public override ResultDto<ProcedimentoDto> Update(ProcedimentoDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<ProntuarioDto> returnValue = new();
+            ResultDto<ProcedimentoDto> returnValue = new();
             string? updateQuery = null;
 
             try
             {
-                var entidade = _mapper.Map<ProntuarioDto, Prontuario>(dto);
-                updateQuery = $@"UPDATE prontuario 
-                                 SET EncaminhamentoId = '{entidade.EncaminhamentoId}'
-                                 ,ProfissionalId = '{entidade.ProfissionalId}'
-                                 ,PacienteId = '{entidade.PacienteId}'
-                                 ,DescricaoGeral = '{entidade.DescricaoGeral}'
-                                 ,DataEntrada = '{entidade.DataEntrada:yyyy-MM-dd}'
-                                 ,Ativo = {entidade.Ativo}
+                var entidade = _mapper.Map<ProcedimentoDto, Procedimento>(dto);
+                updateQuery = $@"UPDATE procedimento 
+                                 SET EspecialidadeId = {entidade.EspecialidadeId}
+                                 ,Nome = '{entidade.Nome}' 
+                                 ,ValorBase = {entidade.ValorBase}
                                  WHERE id = {entidade.Id};";
 
-                _prontuarioRepository.Update(updateQuery);
-                var item = _mapper.Map<Prontuario, ProntuarioDto>(entidade);
+                _procedimentoRepository.Update(updateQuery);
+                var item = _mapper.Map<Procedimento, ProcedimentoDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;

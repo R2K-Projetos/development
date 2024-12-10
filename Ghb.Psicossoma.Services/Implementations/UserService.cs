@@ -105,7 +105,7 @@ public class UserService : BaseService<UserDto, User>, IUserService
             string selectQuery = $@"SELECT us.Id, ps.Nome, ps.Email, pfu.Descricao AS Perfil, st.Descricao AS Status, us.Ativo
                                     FROM usuario us
                                     INNER JOIN pessoa ps ON us.PessoaId = ps.Id
-                                    INNER JOIN statususuario st ON us.StatusId = st.id
+                                    INNER JOIN statususuario st ON us.StatusUsuarioId = st.id
                                     INNER JOIN perfilUsuario pfu ON us.PerfilUsuarioId = pfu.Id
                                     WHERE us.Id = {id};";
 
@@ -150,7 +150,7 @@ public class UserService : BaseService<UserDto, User>, IUserService
             string selectQuery = $@"SELECT us.Id, ps.Nome, ps.Email, pfu.Descricao AS Perfil, st.Descricao AS Status, us.Ativo
                                     FROM usuario us
                                     INNER JOIN pessoa ps ON us.PessoaId = ps.Id
-                                    INNER JOIN statususuario st ON us.StatusId = st.id
+                                    INNER JOIN statususuario st ON us.StatusUsuarioId = st.id
                                     INNER JOIN perfilUsuario pfu ON us.PerfilUsuarioId = pfu.Id;";
 
             DataTable result = _userRepository.GetAll(selectQuery);
@@ -192,8 +192,8 @@ public class UserService : BaseService<UserDto, User>, IUserService
         try
         {
             User? mapped = _mapper.Map<UserDto, User>(dto);
-            string insertQuery = $@"INSERT INTO usuario(Id, PessoaId, PerfilUsuarioId, StatusId, Senha, Ativo) 
-                                    VALUES(null, {mapped.PessoaId}, {mapped.PerfilUsuarioId}, {mapped.StatusUsuarioId}, '{mapped.Senha}', {mapped.Ativo});";
+            string insertQuery = $@"INSERT INTO usuario(Id, PessoaId, PerfilUsuarioId, StatusUsuarioId, Senha, Ativo) 
+                                    VALUES(null, {mapped.PessoaId}, {mapped.PerfilUsuarioId}, {mapped.StatusUsuarioId}, '{mapped.Senha}', true);";
 
             long newId =_userRepository.Insert(insertQuery);
             if (newId > 0)

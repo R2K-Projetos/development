@@ -3,7 +3,7 @@ using Ghb.Psicossoma.SharedAbstractions.Domains.Abstractions.Base;
 
 namespace Ghb.Psicossoma.Repositories.Abstractions
 {
-    public interface IPlanoConvenioRepository : IBaseRepository<PlanoConvenio>
+    public interface IModeloLaudoAnamneseRepository : IBaseRepository<ModeloLaudoAnamnese>
     {
     }
 }

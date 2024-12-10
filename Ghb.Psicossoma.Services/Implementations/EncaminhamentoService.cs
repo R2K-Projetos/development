@@ -5,7 +5,6 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System.Data;
@@ -16,16 +15,13 @@ namespace Ghb.Psicossoma.Services.Implementations
     public class EncaminhamentoService : BaseService<EncaminhamentoDto, Encaminhamento>, IEncaminhamentoService
     {
         private readonly IEncaminhamentoRepository _encaminhamentoRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<EncaminhamentoService> _logger;
 
         public EncaminhamentoService(IEncaminhamentoRepository encaminhamentoRepository,
                                      ILogger<EncaminhamentoService> logger,
-                                     IMapper mapper,
-                                     IConfiguration configuration) : base(encaminhamentoRepository, mapper)
+                                     IMapper mapper) : base(encaminhamentoRepository, mapper)
         {
             _encaminhamentoRepository = encaminhamentoRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 
@@ -39,7 +35,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, PacienteId, EspecialidadeId, ConvenioId, CidId, TotalSessoes, MaximoSessoes, QuantidadeSessoes, SolicitacaoMedica, Observacao, Ativo
+                selectQuery = $@"SELECT Id, PacienteId, EspecialidadeId, PlanoSaudeId, CidId, TotalSessoes, MaximoSessoes, QuantidadeSessoes, SolicitacaoMedica, Observacao, Ativo
                                  FROM encaminhamento
                                  WHERE id = {id};";
 
@@ -83,7 +79,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, PacienteId, EspecialidadeId, ConvenioId, CidId, TotalSessoes, MaximoSessoes, QuantidadeSessoes, SolicitacaoMedica, Observacao, Ativo
+                selectQuery = $@"SELECT Id, PacienteId, EspecialidadeId, PlanoSaudeId, CidId, TotalSessoes, MaximoSessoes, QuantidadeSessoes, SolicitacaoMedica, Observacao, Ativo
                                  FROM encaminhamento;";
 
                 DataTable result = _encaminhamentoRepository.GetAll(selectQuery);
@@ -169,7 +165,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  (Id,  
                                  PacienteId,  
                                  EspecialidadeId,  
-                                 ConvenioId,  
+                                 PlanoSaudeId,  
                                  CidId,  
                                  TotalSessoes,  
                                  MaximoSessoes,  
@@ -204,6 +200,49 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 returnValue.BindError(500, ex.GetErrorMessage());
                 LogContext.PushProperty("Query", insertQuery);
+                _logger.LogError(ex, "Erro na gravação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
+        public override ResultDto<EncaminhamentoDto> Update(EncaminhamentoDto dto)
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<EncaminhamentoDto> returnValue = new();
+            string? updateQuery = null;
+
+            try
+            {
+                var entidade = _mapper.Map<EncaminhamentoDto, Encaminhamento>(dto);
+                updateQuery = $@"UPDATE encaminhamento 
+                                 SET EspecialidadeId = {entidade.EspecialidadeId}
+                                 ,PlanoSaudeId = {entidade.PlanoSaudeId}
+                                 ,CidId = {entidade.CidId}
+                                 ,TotalSessoes = {entidade.TotalSessoes}
+                                 ,MaximoSessoes = {entidade.MaximoSessoes}
+                                 ,QuantidadeSessoes = {entidade.QuantidadeSessoes}
+                                 ,SolicitacaoMedica = {entidade.SolicitacaoMedica}
+                                 ,Observacao = '{entidade.Observacao}'
+                                 ,Ativo = {entidade.Ativo}
+                                 WHERE id = {entidade.Id};";
+
+                _encaminhamentoRepository.Update(updateQuery);
+                var item = _mapper.Map<Encaminhamento, EncaminhamentoDto>(entidade);
+
+                returnValue.Items = returnValue.Items.Concat(new[] { item });
+                returnValue.WasExecuted = true;
+                returnValue.ResponseCode = 200;
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", updateQuery);
                 _logger.LogError(ex, "Erro na gravação dos dados");
             }
 

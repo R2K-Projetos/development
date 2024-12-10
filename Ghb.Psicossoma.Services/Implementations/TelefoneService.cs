@@ -41,8 +41,8 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 selectQuery = $@"SELECT t.Id
                                         ,t.TipoTelefoneId
-                                        ,t.Principal
                                         ,t.DDDNumero
+                                        ,t.Principal
                                         ,t.Ativo
                                         ,tt.Nome as TipoTelefone
                                    FROM telefone t
@@ -92,8 +92,8 @@ namespace Ghb.Psicossoma.Services.Implementations
                 selectQuery = $@"SELECT t.Id
                                         ,t.PessoaId                                        
                                         ,t.TipoTelefoneId
-                                        ,t.Principal
                                         ,t.DDDNumero
+                                        ,t.Principal
                                         ,t.Ativo
                                         ,tt.Nome as TipoTelefone
                                    FROM telefone t
@@ -151,9 +151,9 @@ namespace Ghb.Psicossoma.Services.Implementations
                                       WHERE PessoaId = {telefone.PessoaId};";
                 }
                 insertQuery += $@"INSERT INTO telefone 
-                                 (PessoaId, TipoTelefoneId, Principal, DDDNumero, Ativo)
+                                 (PessoaId, TipoTelefoneId, DDDNumero, Principal, Ativo)
                                  VALUES 
-                                 ({telefone.PessoaId}, {telefone.TipoTelefoneId}, {telefone.Principal}, '{telefone.DDDNumero}', {telefone.Ativo});";
+                                 ({telefone.PessoaId}, {telefone.TipoTelefoneId}, '{telefone.DDDNumero}', {telefone.Principal}, {telefone.Ativo});";
 
                 long newId = _telefoneRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -200,8 +200,8 @@ namespace Ghb.Psicossoma.Services.Implementations
                 updateQuery += $@"UPDATE telefone
                                     SET PessoaId = {telefone.PessoaId}
                                         ,TipoTelefoneId = {telefone.TipoTelefoneId}
-                                        ,Principal = {telefone.Principal}
                                         ,DDDNumero = '{telefone.DDDNumero}'
+                                        ,Principal = {telefone.Principal}
                                         ,Ativo = {telefone.Ativo}
                                   WHERE Id = {telefone.Id};";
 

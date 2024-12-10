@@ -20,7 +20,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
         public UfService(IUfRepository ufRepository,
                          ILogger<UfService> logger,
-        IMapper mapper,
+                         IMapper mapper,
                          IConfiguration configuration) : base(ufRepository, mapper)
         {
             _ufRepository = ufRepository;

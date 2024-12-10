@@ -21,9 +21,9 @@
                                         @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-12">
-                                        @Html.LabelFor(model => model.Descricao, new { @class = "form-label" })
+                                        @Html.LabelFor(model => model.Nome, new { @class = "form-label" })
                                         @Html.TextArea("Descricao", null, 1, 1, new { @class = "form-control form-control-sm", style = "height: 110px;" })
-                                        @Html.ValidationMessageFor(model => model.Descricao, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>
