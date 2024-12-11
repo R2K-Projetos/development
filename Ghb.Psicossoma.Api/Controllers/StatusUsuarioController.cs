@@ -1,22 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Ghb.Psicossoma.Services.Dtos;
-using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.AspNetCore.Authorization;
-using Ghb.Psicossoma.Api.Controllers.Base;
+﻿using Ghb.Psicossoma.Api.Controllers.Base;
 using Ghb.Psicossoma.Services.Abstractions;
+using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Ghb.Psicossoma.Api.Controllers
 {
     [ApiController]
     [Authorize]
     [Route("api/[controller]")]
-    public class StatusController : BaseApiController
+    public class StatusUsuarioController : BaseApiController
     {
         private readonly IStatusUsuarioService _statusService;
         private readonly IConfiguration _configuration;
 
-        public StatusController(IStatusUsuarioService statusService, IConfiguration configuration)
+        public StatusUsuarioController(IStatusUsuarioService statusService, IConfiguration configuration)
         {
             _statusService = statusService;
             _configuration = configuration;
