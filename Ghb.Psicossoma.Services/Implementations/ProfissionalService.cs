@@ -57,12 +57,17 @@ namespace Ghb.Psicossoma.Services.Implementations
                                          ,p.Email
                                          ,p.DataNascimento
                                          ,p.Ativo
+                                         ,pf.RegistroProfissionalId
+                                         ,pf.UFId
                                          ,pf.Numero
+                                         ,pf.CNS
                                          ,pf.Ativo AS IsAtivo
                                          ,rp.Nome AS RegistroProfissional
+                                         ,u.Sigla AS UFConselho
                                     FROM profissional pf
                                    INNER JOIN pessoa p ON pf.pessoaId = p.Id
-                                    LEFT JOIN registroprofissional rp ON pf.registroProfissionalId = rp.id
+                                    LEFT JOIN registroprofissional rp ON rp.id = pf.registroProfissionalId
+                                    LEFT JOIN uf u ON u.Id = pf.UFId
                                    WHERE pf.Id = {id};";
 
                 DataTable result = _profissionalRepository.Get(selectQuery);
@@ -108,14 +113,16 @@ namespace Ghb.Psicossoma.Services.Implementations
                 selectQuery = $@"SELECT pf.Id
                                         ,pf.pessoaId as PessoaId
                                         ,p.Nome
-                                        ,p.Cpf
+                                        ,p.CPF
                                         ,pf.Numero
                                         ,rp.nome AS RegistroProfissional
+                                        ,u.Sigla AS UFConselho
                                         ,pf.Ativo as IsAtivo
                                         ,IFNULL(GROUP_CONCAT(esp.Nome), '') as Especialidades
                                    FROM profissional pf
                                   INNER JOIN pessoa p ON pf.pessoaId = p.Id
                                    LEFT JOIN registroProfissional rp ON pf.registroProfissionalId = rp.id
+                                   LEFT JOIN uf u ON u.Id = pf.UFId
                                    LEFT JOIN profissionalespecialidade pfesp ON pf.Id = pfesp.profissionalid
                                    LEFT JOIN especialidade esp ON esp.id = pfesp.especialidadeid
                                   GROUP BY pf.Id,p.Nome,p.Cpf,rp.nome,pf.Numero,pf.Ativo

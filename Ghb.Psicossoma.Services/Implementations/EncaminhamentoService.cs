@@ -35,9 +35,19 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, PacienteId, EspecialidadeId, PlanoSaudeId, CidId, TotalSessoes, MaximoSessoes, QuantidadeSessoes, SolicitacaoMedica, Observacao, Ativo
-                                 FROM encaminhamento
-                                 WHERE id = {id};";
+                selectQuery = $@"SELECT Id
+                                        ,PacienteId
+                                        ,EspecialidadeId
+                                        ,PlanoSaudeId
+                                        ,CidId
+                                        ,TotalSessoes
+                                        ,MaximoSessoes
+                                        ,SessoesRealizadas
+                                        ,SolicitacaoMedica
+                                        ,Observacao
+                                        ,Ativo
+                                   FROM encaminhamento
+                                  WHERE id = {id};";
 
                 DataTable result = _encaminhamentoRepository.Get(selectQuery);
                 List<Encaminhamento> encaminhamentos = result.CreateListFromTable<Encaminhamento>();
@@ -79,8 +89,18 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, PacienteId, EspecialidadeId, PlanoSaudeId, CidId, TotalSessoes, MaximoSessoes, QuantidadeSessoes, SolicitacaoMedica, Observacao, Ativo
-                                 FROM encaminhamento;";
+                selectQuery = $@"SELECT Id
+                                        ,PacienteId
+                                        ,EspecialidadeId
+                                        ,PlanoSaudeId
+                                        ,CidId
+                                        ,TotalSessoes
+                                        ,MaximoSessoes
+                                        ,SessoesRealizadas
+                                        ,SolicitacaoMedica
+                                        ,Observacao
+                                        ,Ativo
+                                   FROM encaminhamento;";
 
                 DataTable result = _encaminhamentoRepository.GetAll(selectQuery);
                 List<Encaminhamento> encaminhamentos = result.CreateListFromTable<Encaminhamento>();
@@ -169,7 +189,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  CidId,  
                                  TotalSessoes,  
                                  MaximoSessoes,  
-                                 QuantidadeSessoes,  
+                                 SessoesRealizadas,  
                                  SolicitacaoMedica,  
                                  Observacao,  
                                  Ativo)
@@ -181,7 +201,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  {encaminhamento.CidId},  
                                  {encaminhamento.TotalSessoes},  
                                  {encaminhamento.MaximoSessoes},  
-                                 {encaminhamento.QuantidadeSessoes},  
+                                 {encaminhamento.SessoesRealizadas},  
                                  {encaminhamento.SolicitacaoMedica},  
                                  '{encaminhamento.Observacao}',  
                                  {encaminhamento.Ativo});";
@@ -226,7 +246,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  ,CidId = {entidade.CidId}
                                  ,TotalSessoes = {entidade.TotalSessoes}
                                  ,MaximoSessoes = {entidade.MaximoSessoes}
-                                 ,QuantidadeSessoes = {entidade.QuantidadeSessoes}
+                                 ,SessoesRealizadas = {entidade.SessoesRealizadas}
                                  ,SolicitacaoMedica = {entidade.SolicitacaoMedica}
                                  ,Observacao = '{entidade.Observacao}'
                                  ,Ativo = {entidade.Ativo}

@@ -23,9 +23,19 @@ namespace Ghb.Psicossoma.Repositories.Implementations
             {
                 using (cn = new(_settings.ConnectionString))
                 {
-                    selectQuery = $@"SELECT Id, PacienteId, EspecialidadeId, ConvenioId, CidId, TotalSessoes, MaximoSessoes, QuantidadeSessoes, SolicitacaoMedica, Observacao, Ativo
-                                     FROM encaminhamento
-                                     WHERE Pacienteid = {id};";
+                    selectQuery = $@"SELECT Id
+                                            ,PacienteId
+                                            ,EspecialidadeId
+                                            ,ConvenioId
+                                            ,CidId
+                                            ,TotalSessoes
+                                            ,MaximoSessoes
+                                            ,SessoesRealizadas
+                                            ,SolicitacaoMedica
+                                            ,Observacao
+                                            ,Ativo
+                                       FROM encaminhamento
+                                      WHERE Pacienteid = {id};";
 
                     cn.Open();
 

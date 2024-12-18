@@ -6,8 +6,7 @@ namespace Ghb.Psicossoma.Domains.Entities
     {
         public int EncaminhamentoId { get; set; }
         public int ProfissionalId { get; set; }
-        public int PacienteId { get; set; }
-        public string DescricaoGeral { get; set; } = string.Empty;
+        public int LaudoAnamneseId { get; set; }
         public DateTime DataEntrada { get; set; }
         public bool Ativo { get; set; }
     }

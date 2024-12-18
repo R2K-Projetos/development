@@ -12,47 +12,47 @@ using System.Diagnostics;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
-    public class RenovacaoEncaminhamentoService : BaseService<RenovacaoEncaminhamentoDto, RenovacaoEncaminhamento>, IRenovacaoEncaminhamentoService
+    public class AgendaProfissionalService : BaseService<AgendaProfissionalDto, AgendaProfissional>, IAgendaProfissionalService
     {
-        private readonly IRenovacaoEncaminhamentoRepository _renovacaoEncaminhamentoRepository;
-        private readonly ILogger<RenovacaoEncaminhamentoService> _logger;
+        private readonly IAgendaProfissionalRepository _agendaProfissionalRepository;
+        private readonly ILogger<AgendaProfissionalService> _logger;
 
-        public RenovacaoEncaminhamentoService(IRenovacaoEncaminhamentoRepository renovacaoEncaminhamentoRepository,
-                               ILogger<RenovacaoEncaminhamentoService> logger,
-                               IMapper mapper) : base(renovacaoEncaminhamentoRepository, mapper)
+        public AgendaProfissionalService(IAgendaProfissionalRepository agendaprofissionalRepository,
+                                         ILogger<AgendaProfissionalService> logger,
+                                         IMapper mapper) : base(agendaprofissionalRepository, mapper)
         {
-            _renovacaoEncaminhamentoRepository = renovacaoEncaminhamentoRepository;
+            _agendaProfissionalRepository = agendaprofissionalRepository;
             _logger = logger;
         }
 
-        public override ResultDto<RenovacaoEncaminhamentoDto> GetAll()
+        public ResultDto<AgendaProfissionalDto> GetByProfissional(string ProfissionalId)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<RenovacaoEncaminhamentoDto> returnValue = new();
+            ResultDto<AgendaProfissionalDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"select Id
-                                        ,EncaminhamentoId
-                                        ,DataRenovacao
-                                        ,QuemAutorizou
-                                        ,Validada
-                                        ,Ativo
-                                   FROM renovacaoencaminhamento
-                                  order by DataEncaminhamento desc";
+                selectQuery = $@"SELECT Id
+                                 ,ProfissionalId
+                                 ,EspecialidadeId
+                                 ,DiaSemana
+                                 ,Hora
+                                 ,Ativo
+                                 FROM agendaprofissional
+                                 WHERE ProfissionalId = {ProfissionalId};";
 
-                DataTable result = _renovacaoEncaminhamentoRepository.GetAll(selectQuery);
-                List<RenovacaoEncaminhamento> list = result.CreateListFromTable<RenovacaoEncaminhamento>();
+                DataTable result = _agendaProfissionalRepository.GetAll(selectQuery);
+                List<AgendaProfissional> list = result.CreateListFromTable<AgendaProfissional>();
 
                 if (list?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = list.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<RenovacaoEncaminhamento>, IEnumerable<RenovacaoEncaminhamentoDto>>(list ?? Enumerable.Empty<RenovacaoEncaminhamento>());
+                    returnValue.Items = _mapper.Map<IEnumerable<AgendaProfissional>, IEnumerable<AgendaProfissionalDto>>(list ?? Enumerable.Empty<AgendaProfissional>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -74,34 +74,34 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<RenovacaoEncaminhamentoDto> Get(string id)
+        public override ResultDto<AgendaProfissionalDto> Get(string id)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<RenovacaoEncaminhamentoDto> returnValue = new();
+            ResultDto<AgendaProfissionalDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"select Id
-                                        ,EncaminhamentoId
-                                        ,DataRenovacao
-                                        ,QuemAutorizou
-                                        ,Validada
-                                        ,Ativo
-                                   FROM renovacaoencaminhamento
-                                  WHERE Id = {id};";
+                selectQuery = $@"SELECT Id
+                                 ,ProfissionalId
+                                 ,EspecialidadeId
+                                 ,DiaSemana
+                                 ,Hora
+                                 ,Ativo
+                                 FROM agendaprofissional
+                                 WHERE Id = {id};";
 
-                DataTable result = _renovacaoEncaminhamentoRepository.Get(selectQuery);
-                List<RenovacaoEncaminhamento> item = result.CreateListFromTable<RenovacaoEncaminhamento>();
+                DataTable result = _agendaProfissionalRepository.Get(selectQuery);
+                List<AgendaProfissional> item = result.CreateListFromTable<AgendaProfissional>();
 
                 if (item?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = item.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<RenovacaoEncaminhamento>, IEnumerable<RenovacaoEncaminhamentoDto>>(item ?? Enumerable.Empty<RenovacaoEncaminhamento>());
+                    returnValue.Items = _mapper.Map<IEnumerable<AgendaProfissional>, IEnumerable<AgendaProfissionalDto>>(item ?? Enumerable.Empty<AgendaProfissional>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -123,27 +123,35 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<RenovacaoEncaminhamentoDto> Insert(RenovacaoEncaminhamentoDto dto)
+        public override ResultDto<AgendaProfissionalDto> Insert(AgendaProfissionalDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<RenovacaoEncaminhamentoDto> returnValue = new();
+            ResultDto<AgendaProfissionalDto> returnValue = new();
             string? insertQuery = null;
 
             try
             {
-                var entidade = _mapper.Map<RenovacaoEncaminhamentoDto, RenovacaoEncaminhamento>(dto);
-                insertQuery = $@"INSERT INTO renovacaoencaminhamento 
-                                 (EncaminhamentoId, DataRenovacao, QuemAutorizou, Validada, Ativo)
+                var entidade = _mapper.Map<AgendaProfissionalDto, AgendaProfissional>(dto);
+                insertQuery = $@"INSERT INTO agendaprofissional 
+                                 (ProfissionalId
+                                 ,EspecialidadeId
+                                 ,DiaSemana
+                                 ,Hora
+                                 ,Ativo)
                                  VALUES 
-                                 ({entidade.EncaminhamentoId}, '{entidade.DataRenovacao:yyyy-MM-dd}', '{entidade.QuemAutorizou}', {entidade.Validada}, true);";
+                                 ({entidade.ProfissionalId}
+                                 ,{entidade.EspecialidadeId}
+                                 ,'{entidade.DiaSemana}'
+                                 ,'{entidade.Hora}'
+                                 ,true);";
 
-                long newId = _renovacaoEncaminhamentoRepository.Insert(insertQuery);
+                long newId = _agendaProfissionalRepository.Insert(insertQuery);
                 if (newId > 0)
                     entidade.Id = (int)newId;
 
-                var item = _mapper.Map<RenovacaoEncaminhamento, RenovacaoEncaminhamentoDto>(entidade);
+                var item = _mapper.Map<AgendaProfissional, AgendaProfissionalDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;
@@ -162,26 +170,27 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<RenovacaoEncaminhamentoDto> Update(RenovacaoEncaminhamentoDto dto)
+        public override ResultDto<AgendaProfissionalDto> Update(AgendaProfissionalDto dto)
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<RenovacaoEncaminhamentoDto> returnValue = new();
+            ResultDto<AgendaProfissionalDto> returnValue = new();
             string? updateQuery = null;
 
             try
             {
-                var entidade = _mapper.Map<RenovacaoEncaminhamentoDto, RenovacaoEncaminhamento>(dto);
-                updateQuery = $@"UPDATE renovacaoencaminhamento 
-                                 SET DataRenovacao = '{entidade.DataRenovacao:yyyy-MM-dd}' 
-                                 ,QuemAutorizou = '{entidade.QuemAutorizou}' 
-                                 ,Validada = {entidade.Validada}
+                var entidade = _mapper.Map<AgendaProfissionalDto, AgendaProfissional>(dto);
+                updateQuery = $@"UPDATE agendaprofissional 
+                                 SET ProfissionalId = {entidade.ProfissionalId}
+                                 ,EspecialidadeId = {entidade.EspecialidadeId}
+                                 ,DiaSemana = '{entidade.DiaSemana}'
+                                 ,Hora = '{entidade.Hora}'
                                  ,Ativo = {entidade.Ativo}
-                                 WHERE id = {entidade.Id};";
+                                 WHERE Id = {entidade.Id};";
 
-                _renovacaoEncaminhamentoRepository.Update(updateQuery);
-                var item = _mapper.Map<RenovacaoEncaminhamento, RenovacaoEncaminhamentoDto>(entidade);
+                _agendaProfissionalRepository.Update(updateQuery);
+                var item = _mapper.Map<AgendaProfissional, AgendaProfissionalDto>(entidade);
 
                 returnValue.Items = returnValue.Items.Concat(new[] { item });
                 returnValue.WasExecuted = true;

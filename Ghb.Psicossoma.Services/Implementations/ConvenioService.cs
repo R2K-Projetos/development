@@ -73,6 +73,46 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
+        public ResultDto<ConvenioDto> GetSomenteAtivos()
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<ConvenioDto> returnValue = new();
+            string? selectQuery = null;
+
+            try
+            {
+                DataTable result = _convenioRepository.GetSomenteAtivos();
+                List<Convenio> list = result.CreateListFromTable<Convenio>();
+
+                if (list?.Count > 0)
+                {
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Convenio>, IEnumerable<ConvenioDto>>(list ?? Enumerable.Empty<Convenio>());
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
         public override ResultDto<ConvenioDto> Get(string id)
         {
             Stopwatch elapsedTime = new();

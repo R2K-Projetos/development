@@ -5,7 +5,6 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System.Data;
@@ -16,16 +15,13 @@ namespace Ghb.Psicossoma.Services.Implementations
     public class EnderecoService : BaseService<EnderecoDto, Endereco>, IEnderecoService
     {
         private readonly IEnderecoRepository _enderecoRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<EnderecoService> _logger;
 
         public EnderecoService(IEnderecoRepository enderecoRepository,
                                ILogger<EnderecoService> logger,
-                               IMapper mapper,
-                               IConfiguration configuration) : base(enderecoRepository, mapper)
+                               IMapper mapper) : base(enderecoRepository, mapper)
         {
             _enderecoRepository = enderecoRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 
@@ -229,21 +225,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT e.Id
-                                               ,e.PessoaId
-                                               ,e.CidadeId
-                                               ,e.CEP
-                                               ,e.Logradouro
-                                               ,e.Numero
-                                               ,e.Complemento
-                                               ,e.Bairro
-                                               ,e.Ativo
-                                               ,c.UFId
-                                          FROM endereco e
-                                         INNER JOIN cidade c on c.Id = e.CidadeId
-                                         WHERE e.PessoaId = {PessoaId};";
-
-                DataTable result = _enderecoRepository.Get(selectQuery);
+                DataTable result = _enderecoRepository.GetEnderecoPessoa(PessoaId);
                 List<EnderecoDto> list = result.CreateListFromTable<EnderecoDto>();
 
                 if (list?.Count > 0)

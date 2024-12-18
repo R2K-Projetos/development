@@ -42,7 +42,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                         ,DataEmissao
                                         ,ValorUnitario
                                         ,ValorTotal
-                                        ,TotalSessoes
+                                        ,SessoesAutorizadas
                                         ,Ativo
                                    FROM guiaAutorizacao
                                   order by Nome";
@@ -94,7 +94,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                         ,DataEmissao
                                         ,ValorUnitario
                                         ,ValorTotal
-                                        ,TotalSessoes
+                                        ,SessoesAutorizadas
                                         ,Ativo
                                    FROM guiaAutorizacao
                                   WHERE Id = {id};";
@@ -147,7 +147,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  ,DataEmissao
                                  ,ValorUnitario
                                  ,ValorTotal
-                                 ,TotalSessoes
+                                 ,SessoesAutorizadas
                                  ,Ativo)
                                  VALUES 
                                  ({entidade.EncaminhamentoId}
@@ -156,7 +156,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  ,'{entidade.DataEmissao:yyyy-MM-dd}'
                                  ,{entidade.ValorUnitario}
                                  ,{entidade.ValorTotal}
-                                 ,{entidade.TotalSessoes}
+                                 ,{entidade.SessoesAutorizadas}
                                  ,true);";
 
                 long newId = _guiaAutorizacaoRepository.Insert(insertQuery);
@@ -200,7 +200,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  ,DataEmissao = '{entidade.DataEmissao:yyyy-MM-dd}'
                                  ,ValorUnitario = {entidade.ValorUnitario}
                                  ,ValorTotal = {entidade.ValorTotal}
-                                 ,TotalSessoes = {entidade.TotalSessoes}
+                                 ,SessoesAutorizadas = {entidade.SessoesAutorizadas}
                                  ,Ativo = {entidade.Ativo}
                                  WHERE id = {entidade.Id};";
 

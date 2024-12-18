@@ -9,8 +9,11 @@ public class AutoMapperConfiguration : Profile
     public AutoMapperConfiguration()
     {
         //Retornos espelhados (idênticos às entidades) 
+        CreateMap<AgendaProfissional, AgendaProfissionalDto>().ReverseMap();
+        CreateMap<Arquivo, ArquivoDto>().ReverseMap();
         CreateMap<Cidade, CidadeDto>().ReverseMap();
         CreateMap<Cid, CidDto>().ReverseMap();
+        CreateMap<Consulta, ConsultaDto>().ReverseMap();
         CreateMap<Convenio, ConvenioDto>().ReverseMap();
         CreateMap<Encaminhamento, EncaminhamentoDto>().ReverseMap();
         CreateMap<Endereco, EnderecoDto>().ReverseMap();

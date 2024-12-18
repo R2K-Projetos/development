@@ -37,7 +37,6 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 selectQuery = $@"select Id
                                         ,EspecialidadeId
-                                        ,PacienteId
                                         ,Descricao
                                         ,Tipo
                                         ,Ativo
@@ -86,7 +85,6 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 selectQuery = $@"select Id
                                         ,EspecialidadeId
-                                        ,PacienteId
                                         ,Descricao
                                         ,Tipo
                                         ,Ativo
@@ -135,9 +133,9 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<LaudoAnamneseDto, LaudoAnamnese>(dto);
                 insertQuery = $@"INSERT INTO laudoanamnese 
-                                 (EspecialidadeId, PacienteId, Descricao, Tipo, Ativo)
+                                 (EspecialidadeId, Descricao, Tipo, Ativo)
                                  VALUES 
-                                 ({entidade.EspecialidadeId}, {entidade.PacienteId}, '{entidade.Descricao}', '{entidade.Tipo}', {entidade.Ativo});";
+                                 ({entidade.EspecialidadeId}, '{entidade.Descricao}', '{entidade.Tipo}', {entidade.Ativo});";
 
                 long newId = _laudoAnamneseRepository.Insert(insertQuery);
                 if (newId > 0)

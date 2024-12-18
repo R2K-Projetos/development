@@ -4,8 +4,8 @@ using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
 
 namespace Ghb.Psicossoma.Services.Abstractions
 {
-    public interface IConvenioService : IBaseService<ConvenioDto>
+    public interface IAgendaProfissionalService : IBaseService<AgendaProfissionalDto>
     {
-        ResultDto<ConvenioDto> GetSomenteAtivos();
+        ResultDto<AgendaProfissionalDto> GetByProfissional(string ProfissionalId);
     }
 }

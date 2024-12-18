@@ -35,8 +35,14 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, ProntuiarioId, ProfissionalId, DescricaoGeral, DescricaoReservada, DataHistorico, Ativo
-                                 FROM prontuarioHistorico;";
+                selectQuery = $@"SELECT Id
+                                        ,ProntuiarioId
+                                        ,ProfissionalId
+                                        ,DescricaoGeral
+                                        ,DescricaoReservada
+                                        ,DataHistorico
+                                        ,Ativo
+                                   FROM prontuarioHistorico;";
 
                 DataTable result = _prontuarioHistoricoRepository.GetAll(selectQuery);
                 List<ProntuarioHistorico> list = result.CreateListFromTable<ProntuarioHistorico>();
@@ -78,9 +84,15 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, ProntuiarioId, ProfissionalId, DescricaoGeral, DescricaoReservada, DataHistorico, Ativo
-                                 FROM prontuarioHistorico
-                                 WHERE Id = {id};";
+                selectQuery = $@"SELECT Id
+                                        ,ProntuiarioId
+                                        ,ProfissionalId
+                                        ,DescricaoGeral
+                                        ,DescricaoReservada
+                                        ,DataHistorico
+                                        ,Ativo
+                                   FROM prontuarioHistorico
+                                  WHERE Id = {id};";
 
                 DataTable result = _prontuarioHistoricoRepository.Get(selectQuery);
                 List<ProntuarioHistorico> item = result.CreateListFromTable<ProntuarioHistorico>();

@@ -5,28 +5,23 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System.Data;
 using System.Diagnostics;
-using System.Net;
 
 namespace Ghb.Psicossoma.Services.Implementations
 {
     public class PlanoSaudeService : BaseService<PlanoSaudeDto, PlanoSaude>, IPlanoSaudeService
     {
         private readonly IPlanoSaudeRepository _planoSaudeRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<PlanoSaudeService> _logger;
 
         public PlanoSaudeService(IPlanoSaudeRepository planoConvenioRepository,
                                  ILogger<PlanoSaudeService> logger,
-                                 IMapper mapper,
-                                 IConfiguration configuration) : base(planoConvenioRepository, mapper)
+                                 IMapper mapper) : base(planoConvenioRepository, mapper)
         {
             _planoSaudeRepository = planoConvenioRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 

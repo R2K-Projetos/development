@@ -5,7 +5,6 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Diagnostics;
@@ -15,16 +14,13 @@ namespace Ghb.Psicossoma.Services.Implementations
     public class StatusUsuarioService : BaseService<StatusUsuarioDto, StatusUsuario>, IStatusUsuarioService
     {
         private readonly IStatusUsuarioRepository _statusRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<StatusUsuarioService> _logger;
 
         public StatusUsuarioService(IStatusUsuarioRepository statusRepository,
                              ILogger<StatusUsuarioService> logger,
-                             IMapper mapper,
-                             IConfiguration configuration) : base(statusRepository, mapper)
+                             IMapper mapper) : base(statusRepository, mapper)
         {
             _statusRepository = statusRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 

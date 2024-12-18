@@ -5,7 +5,6 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Diagnostics;
@@ -15,16 +14,13 @@ namespace Ghb.Psicossoma.Services.Implementations
     public class GrauParentescoService : BaseService<GrauParentescoDto, GrauParentesco>, IGrauParentescoService
     {
         private readonly IGrauParentescoRepository _grauParentescoRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<GrauParentescoService> _logger;
 
         public GrauParentescoService(IGrauParentescoRepository grauParentescoRepository,
                              ILogger<GrauParentescoService> logger,
-                             IMapper mapper,
-                             IConfiguration configuration) : base(grauParentescoRepository, mapper)
+                             IMapper mapper) : base(grauParentescoRepository, mapper)
         {
             _grauParentescoRepository = grauParentescoRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 

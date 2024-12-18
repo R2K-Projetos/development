@@ -39,7 +39,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo, DataCadastro
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo, DataCadastro
                                  FROM pessoa
                                  WHERE id = {id};";
 
@@ -83,7 +83,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo
                                  FROM pessoa
                                  WHERE Nome LIKE '%{name}%'
                                  LIMIT 5;";
@@ -128,7 +128,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Nome, NomeReduzido, Cpf, Sexo, Email, DataNascimento, Ativo, DataCadastro
+                selectQuery = $@"SELECT Id, Nome, NomeReduzido, CPF, Sexo, Email, DataNascimento, Ativo, DataCadastro
                                  FROM pessoa;";
 
                 DataTable result = _pessoaRepository.GetAll(selectQuery);

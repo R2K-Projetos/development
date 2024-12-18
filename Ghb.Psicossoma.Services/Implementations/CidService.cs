@@ -35,7 +35,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Codigo, Nome FROM cid;";
+                selectQuery = $@"SELECT Id, Codigo, Nome, Ativo FROM cid;";
 
                 DataTable result = _cidRepository.GetAll(selectQuery);
                 List<Cid> list = result.CreateListFromTable<Cid>();
@@ -77,7 +77,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, Codigo, Nome
+                selectQuery = $@"SELECT Id, Codigo, Nome, Ativo
                                  FROM cid
                                  WHERE id = {id};";
 
@@ -161,9 +161,9 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<CidDto, Cid>(dto);
                 insertQuery = $@"INSERT INTO cid 
-                                 (Codigo, Nome)
+                                 (Codigo, Nome, Ativo)
                                  VALUES 
-                                 ('{entidade.Codigo}', '{entidade.Nome}');";
+                                 ('{entidade.Codigo}', '{entidade.Nome}', true);";
 
                 long newId = _cidRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -200,7 +200,9 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<CidDto, Cid>(dto);
                 updateQuery = $@"UPDATE cid 
-                                 SET Codigo = '{entidade.Codigo}', Nome = '{entidade.Nome}'
+                                 SET Codigo = '{entidade.Codigo}'
+                                 ,Nome = '{entidade.Nome}'
+                                 ,Ativo = {entidade.Ativo}
                                  WHERE id = {entidade.Id};";
 
                 _cidRepository.Update(updateQuery);

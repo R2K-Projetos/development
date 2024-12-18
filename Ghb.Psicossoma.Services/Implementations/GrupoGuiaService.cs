@@ -2,11 +2,9 @@
 using Ghb.Psicossoma.Domains.Entities;
 using Ghb.Psicossoma.Library.Extensions;
 using Ghb.Psicossoma.Repositories.Abstractions;
-using Ghb.Psicossoma.Repositories.Implementations;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System.Data;
@@ -17,16 +15,13 @@ namespace Ghb.Psicossoma.Services.Implementations
     public class GrupoGuiaService : BaseService<GrupoGuiaDto, GrupoGuia>, IGrupoGuiaService
     {
         private readonly IGrupoGuiaRepository _grupoGuiaRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<GrupoGuiaService> _logger;
 
         public GrupoGuiaService(IGrupoGuiaRepository grupoGuiaRepository,
                              ILogger<GrupoGuiaService> logger,
-                             IMapper mapper,
-                             IConfiguration configuration) : base(grupoGuiaRepository, mapper)
+                             IMapper mapper) : base(grupoGuiaRepository, mapper)
         {
             _grupoGuiaRepository = grupoGuiaRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 
@@ -39,7 +34,10 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT Id, Nome FROM grupoguia;";
+                string selectQuery = $@"SELECT Id
+                                               ,Nome
+                                          FROM grupoguia
+                                         ORDER BY Nome;";
 
                 DataTable result = _grupoGuiaRepository.GetAll(selectQuery);
                 List<GrupoGuia> list = result.CreateListFromTable<GrupoGuia>();

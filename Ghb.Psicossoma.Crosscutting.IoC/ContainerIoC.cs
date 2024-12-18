@@ -28,8 +28,10 @@ public static class ContainerIoC
     private static void ResolveServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAgendaProfissionalService, AgendaProfissionalService>();
         services.AddScoped<ICidadeService, CidadeService>();
         services.AddScoped<ICidService, CidService>();
+        services.AddScoped<IConsultaService, ConsultaService>();
         services.AddScoped<IConvenioService, ConvenioService>();
         services.AddScoped<IEncaminhamentoService, EncaminhamentoService>();
         services.AddScoped<IEnderecoService, EnderecoService>();
@@ -63,8 +65,10 @@ public static class ContainerIoC
     private static void ResolveRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IAgendaProfissionalRepository, AgendaProfissionalRepository>();
         services.AddScoped<ICidadeRepository, CidadeRepository>();
         services.AddScoped<ICidRepository, CidRepository>();
+        services.AddScoped<IConsultaRepository, ConsultaRepository>();
         services.AddScoped<IConvenioRepository, ConvenioRepository>();
         services.AddScoped<IEncaminhamentoRepository, EncaminhamentoRepository>();
         services.AddScoped<IEnderecoRepository, EnderecoRepository>();
@@ -86,8 +90,8 @@ public static class ContainerIoC
         services.AddScoped<IProntuarioRepository, ProntuarioRepository>();
         services.AddScoped<IRegistroProfissionalRepository, RegistroProfissionalRepository>();
         services.AddScoped<IRelacionamentoPacienteRepository, RelacionamentoPacienteRepository>();
-        services.AddScoped<IStatusUsuarioRepository, StatusUsuarioRepository>();
         services.AddScoped<IRenovacaoEncaminhamentoRepository, RenovacaoEncaminhamentoRepository>();
+        services.AddScoped<IStatusUsuarioRepository, StatusUsuarioRepository>();
         services.AddScoped<ITelefoneRepository, TelefoneRepository>();        
         services.AddScoped<ITipoAcomodacaoRepository, TipoAcomodacaoRepository>();
         services.AddScoped<ITipoArquivoRepository, TipoArquivoRepository>();

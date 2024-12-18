@@ -5,7 +5,6 @@ using Ghb.Psicossoma.Repositories.Abstractions;
 using Ghb.Psicossoma.Services.Abstractions;
 using Ghb.Psicossoma.Services.Dtos;
 using Ghb.Psicossoma.SharedAbstractions.Services.Implementations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog.Context;
 using System.Data;
@@ -16,16 +15,13 @@ namespace Ghb.Psicossoma.Services.Implementations
     public class FuncionalidadeService : BaseService<FuncionalidadeDto, Funcionalidade>, IFuncionalidadeService
     {
         private readonly IFuncionalidadeRepository _funcionalidadeRepository;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<FuncionalidadeService> _logger;
 
         public FuncionalidadeService(IFuncionalidadeRepository funcionalidadeRepository,
                              ILogger<FuncionalidadeService> logger,
-                             IMapper mapper,
-                             IConfiguration configuration) : base(funcionalidadeRepository, mapper)
+                             IMapper mapper) : base(funcionalidadeRepository, mapper)
         {
             _funcionalidadeRepository = funcionalidadeRepository;
-            _configuration = configuration;
             _logger = logger;
         }
 
@@ -38,7 +34,7 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                string selectQuery = $@"SELECT Id, Nome FROM funcionalidades order by Nome;";
+                string selectQuery = $@"SELECT Id, Nome FROM funcionalidade order by Nome;";
 
                 DataTable result = _funcionalidadeRepository.GetAll(selectQuery);
                 List<Funcionalidade> list = result.CreateListFromTable<Funcionalidade>();
@@ -80,7 +76,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 selectQuery = $@"SELECT Id, Nome
-                                 FROM funcionalidades
+                                 FROM funcionalidade
                                  WHERE id = {id};";
 
                 DataTable result = _funcionalidadeRepository.Get(selectQuery);
@@ -124,7 +120,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 var entidade = _mapper.Map<FuncionalidadeDto, Funcionalidade>(dto);
-                insertQuery = $@"INSERT INTO funcionalidades 
+                insertQuery = $@"INSERT INTO funcionalidade
                                  (Nome)
                                  VALUES 
                                  ('{entidade.Nome}');";
@@ -163,7 +159,7 @@ namespace Ghb.Psicossoma.Services.Implementations
             try
             {
                 var entidade = _mapper.Map<FuncionalidadeDto, Funcionalidade>(dto);
-                updateQuery = $@"UPDATE funcionalidades 
+                updateQuery = $@"UPDATE funcionalidade
                                  SET Nome = '{entidade.Nome}'
                                  WHERE id = {entidade.Id};";
 

@@ -10,7 +10,7 @@ namespace Ghb.Psicossoma.Domains.Entities
         public DateTime DataEmissao { get; set; }
         public decimal ValorUnitario { get; set; }
         public decimal ValorTotal { get; set; }
-        public int TotalSessoes { get; set; }
+        public int SessoesAutorizadas { get; set; }
         public bool Ativo { get; set; }
     }
 }

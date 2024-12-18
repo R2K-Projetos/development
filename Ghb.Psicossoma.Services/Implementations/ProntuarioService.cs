@@ -35,8 +35,13 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo
-                                 FROM prontuario;";
+                selectQuery = $@"SELECT Id
+                                        ,EncaminhamentoId
+                                        ,ProfissionalId
+                                        ,LaudoAnamneseId
+                                        ,DataEntrada
+                                        ,Ativo
+                                   FROM prontuario;";
 
                 DataTable result = _prontuarioRepository.GetAll(selectQuery);
                 List<Prontuario> list = result.CreateListFromTable<Prontuario>();
@@ -78,9 +83,14 @@ namespace Ghb.Psicossoma.Services.Implementations
 
             try
             {
-                selectQuery = $@"SELECT Id, EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo
-                                 FROM prontuario
-                                 WHERE Id = {id};";
+                selectQuery = $@"SELECT Id
+                                        ,EncaminhamentoId
+                                        ,ProfissionalId
+                                        ,LaudoAnamneseId
+                                        ,DataEntrada
+                                        ,Ativo
+                                   FROM prontuario
+                                  WHERE Id = {id};";
 
                 DataTable result = _prontuarioRepository.Get(selectQuery);
                 List<Prontuario> item = result.CreateListFromTable<Prontuario>();
@@ -124,9 +134,9 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var entidade = _mapper.Map<ProntuarioDto, Prontuario>(dto);
                 insertQuery = $@"INSERT INTO prontuario 
-                                 (EncaminhamentoId, ProfissionalId, PacienteId, DescricaoGeral, DataEntrada, Ativo)
+                                 (EncaminhamentoId, ProfissionalId, LaudoAnamneseId, DataEntrada, Ativo)
                                  VALUES 
-                                 ({entidade.EncaminhamentoId}, {entidade.ProfissionalId}, {entidade.PacienteId}, '{entidade.DescricaoGeral}', '{entidade.DataEntrada:yyyy-MM-dd}', true);";
+                                 ({entidade.EncaminhamentoId}, {entidade.ProfissionalId}, {entidade.LaudoAnamneseId}, '{entidade.DataEntrada:yyyy-MM-dd}', true);";
 
                 long newId = _prontuarioRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -165,8 +175,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                 updateQuery = $@"UPDATE prontuario 
                                  SET EncaminhamentoId = '{entidade.EncaminhamentoId}'
                                  ,ProfissionalId = '{entidade.ProfissionalId}'
-                                 ,PacienteId = '{entidade.PacienteId}'
-                                 ,DescricaoGeral = '{entidade.DescricaoGeral}'
+                                 ,LaudoAnamneseId = '{entidade.LaudoAnamneseId}'
                                  ,DataEntrada = '{entidade.DataEntrada:yyyy-MM-dd}'
                                  ,Ativo = {entidade.Ativo}
                                  WHERE id = {entidade.Id};";

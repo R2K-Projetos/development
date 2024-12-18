@@ -5,7 +5,6 @@ namespace Ghb.Psicossoma.Services.Dtos
     public class ConsultaDto : BaseDto
     {
         public int ProfissionalId { get; set; }
-        public int PacienteId { get; set; }
         public int EncaminhamentoId { get; set; }
         public int ProcedimentoDetalheId { get; set; }
         public decimal Valor { get; set; }
