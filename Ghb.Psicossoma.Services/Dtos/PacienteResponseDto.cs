@@ -10,6 +10,7 @@
         public string NomePai { get; set; } = string.Empty;
         public string ObsPaciente { get; set; } = string.Empty;
         public bool IsAtivo { get; set; }
+
         public string? PerfilUsuario { get; set; }
         public string? StatuslUsuario { get; set; }
     }

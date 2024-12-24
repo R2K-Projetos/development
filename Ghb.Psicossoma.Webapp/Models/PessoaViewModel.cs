@@ -38,6 +38,25 @@ namespace Ghb.Psicossoma.Webapp.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DataNascimento { get; set; }
 
+        [Display(Name = "Emissão")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime EmissaoRG { get; set; }
+
+        [Display(Name = "Orgão de Emissão")]
+        public string OrgaoRG { get; set; } = string.Empty;
+
+        public string RG { get; set; } = string.Empty;
+
+        [Display(Name = "Nome da Mãe")]
+        public string NomeMae { get; set; } = string.Empty;
+
+        [Display(Name = "Nome do Pai")]
+        public string NomePai { get; set; } = string.Empty;
+
+        [Display(Name = "Observação")]
+        public string ObsPaciente { get; set; } = string.Empty;
+
         public bool Ativo { get; set; }
 
         public EnderecoViewModel? Endereco { get; set; }

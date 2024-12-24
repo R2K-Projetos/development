@@ -63,7 +63,7 @@
                 <tbody class="linkLinha">
                     @foreach (var item in Model)
                     {
-                        <tr onclick="OpenEdit('@controllerName', 'Edit', '@item.Id');">
+                        <tr onclick="CallAction('@controllerName', 'Edit', '@item.Id');">
                             <td scope="row">
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>

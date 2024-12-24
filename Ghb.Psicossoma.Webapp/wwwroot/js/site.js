@@ -12,12 +12,6 @@ function CallAction(controller, action, Id) {
 
     location.href = url;
 }
-//======================
-function OpenEdit(controller, view, Id) {
-
-    let url = '/' + controller + '/' + view + '?id=' + Id;
-    location.href = url;
-}
 //=======================================
 //Retorna value comobox
 // Ex: let valor = RetornaComboSelecionado('comboId');

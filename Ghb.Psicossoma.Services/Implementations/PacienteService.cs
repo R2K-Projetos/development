@@ -19,7 +19,6 @@ namespace Ghb.Psicossoma.Services.Implementations
         private readonly IPessoaService _pessoaService;
         private readonly IEnderecoService _enderecoService;
         private readonly ITelefoneService _telefoneService;
-        private readonly IConfiguration _configuration;
         private readonly ILogger<PacienteService> _logger;
 
         public PacienteService(IPacienteRepository pacienteRepository,
@@ -27,14 +26,12 @@ namespace Ghb.Psicossoma.Services.Implementations
                                IEnderecoService enderecoService,
                                ITelefoneService telefoneService,
                                ILogger<PacienteService> logger,
-                               IMapper mapper,
-                               IConfiguration configuration) : base(pacienteRepository, mapper)
+                               IMapper mapper) : base(pacienteRepository, mapper)
         {
             _pacienteRepository = pacienteRepository;
             _pessoaService = pessoaService;
             _enderecoService = enderecoService;
             _telefoneService = telefoneService;
-            _configuration = configuration;
             _logger = logger;
         }
 
@@ -51,7 +48,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                                ,pc.PessoaId
                                                ,p.Nome
                                                ,p.NomeReduzido
-                                               ,p.Cpf
+                                               ,p.CPF
                                                ,p.Sexo
                                                ,p.Email
                                                ,p.DataNascimento
@@ -62,8 +59,8 @@ namespace Ghb.Psicossoma.Services.Implementations
                                                ,pc.NomePai
                                                ,pc.ObsPaciente
                                                ,pc.Ativo as IsAtivo
-                                               ,pu.Descricao as PerfilUsuario
-                                               ,st.Descricao as StatuslUsuario
+                                               ,pu.Nome as PerfilUsuario
+                                               ,st.Nome as StatuslUsuario
                                           from paciente pc
                                          INNER JOIN pessoa p on p.Id = pc.pessoaId
                                           LEFT JOIN usuario u on u.PessoaId = p.Id
@@ -113,7 +110,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                                ,pc.PessoaId
                                                ,p.Nome
                                                ,p.NomeReduzido
-                                               ,p.Cpf
+                                               ,p.CPF
                                                ,p.Sexo
                                                ,p.Email
                                                ,p.DataNascimento
@@ -124,8 +121,6 @@ namespace Ghb.Psicossoma.Services.Implementations
                                                ,pc.NomePai
                                                ,pc.ObsPaciente
                                                ,pc.Ativo as IsAtivo
-                                               ,pu.Descricao as PerfilUsuario
-                                               ,st.Descricao as StatuslUsuario
                                           from paciente pc
                                          INNER JOIN pessoa p on p.Id = pc.pessoaId
                                           LEFT JOIN usuario u on u.PessoaId = p.Id

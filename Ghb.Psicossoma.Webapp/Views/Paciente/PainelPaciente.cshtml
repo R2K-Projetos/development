@@ -1,0 +1,238 @@
+﻿@model PacienteViewModel
+
+<div class="row d-flex justify-content-center align-items-center py-5 h-100">
+    <div class="col-xxl-8 col-xl-9 col-lg-10 col-md-12 col-sm-12 col-xs-12 p-2">
+        <div class="row">
+            <!--Paciente-->
+            <div class="col-4 text-center p-2">
+                <div class="card border border-light rounded shadow bg-degradLight">
+                    <div class="card-header fw-bold">
+                        Paciente
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-start">
+                                <div class="row card-text">
+                                    <div class="col-12">Nome</div>
+                                </div>
+                                <div class="row card-text">
+                                    <div class="col-12 fw-bold">@Model.Nome</div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(@Model.NomeReduzido))
+                                {
+                                    <div class="row card-text">
+                                        <div class="col-12">Nome Reduzido</div>
+                                    </div>
+                                }
+                                <div class="row card-text">
+                                    <div class="col-12">CPF</div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(@Model.NomeReduzido))
+                                {
+                                    <div class="row card-text">
+                                        <div class="col-12 fw-bold">@Model.NomeReduzido</div>
+                                    </div>
+                                }
+                                <div class="row card-text">
+                                    <div class="col-12 fw-bold">@Model.Cpf</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <button type="button" name="btEditPaciente" id="btEditPaciente" class="btn btn-secondary btn-sm" onclick="CallAction('Paciente', 'Edit', '@Model.Id');">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                </svg>
+                                <span class="ps-1">Editar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Encaminhamento-->
+            <div class="col-4 text-center p-2">
+                <div class="card border border-light rounded shadow bg-degradLight">
+                    <div class="card-header fw-bold">
+                        Encaminhamento
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-file-post-fill" viewBox="0 0 16 16">
+                                    <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M4.5 3h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1m0 2h7a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pt-3 text-center">
+                                Encaminhamentos do Paciente
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <button type="button" name="btNovoEncaminhamento" id="btNovoEncaminhamento" class="btn btn-secondary btn-sm" onclick="CallAction('Encaminhamento', 'Create', '@Model.Id');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                    <span class="ps-1">Novo</span>
+                                </button>
+                            </div>
+                            <div class="col-6 text-center">
+                                <button type="button" name="btBuscaEncaminhamento" id="btBuscaEncaminhamento" class="btn btn-secondary btn-sm" onclick="CallAction('Encaminhamento', 'Index', '@Model.Id');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                    </svg>
+                                    <span class="ps-1">Buscar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Consulta-->
+            <div class="col-4 text-center p-2">
+                <div class="card border border-light rounded shadow bg-degradLight">
+                    <div class="card-header fw-bold">
+                        Consulta
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-calendar4-event" viewBox="0 0 16 16">
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
+                                    <path d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pt-3 text-center">
+                                Última consulta marcada
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <button type="button" name="btNovaConsulta" id="btNovaConsulta" class="btn btn-secondary btn-sm" onclick="CallAction('Consulta', 'Create', '@Model.Id');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                    <span class="ps-1">Nova</span>
+                                </button>
+                            </div>
+                            <div class="col-6 text-center">
+                                <button type="button" name="btBuscaConsulta" id="btBuscaConsulta" class="btn btn-secondary btn-sm" onclick="CallAction('Consulta', 'ConsultasPaciente', '@Model.Id');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                    </svg>
+                                    <span class="ps-1">Buscar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Guia de Autorização-->
+            <div class="col-4 text-center p-2">
+                <div class="card border border-light rounded shadow bg-degradLight">
+                    <div class="card-header fw-bold">
+                        Guia de Autorização
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pt-3 text-center">
+                                Guias do Paciente
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <button type="button" name="btNovaGuiaAutorizacao" id="btNovaGuiaAutorizacao" class="btn btn-secondary btn-sm" onclick="CallAction('GuiaAutorizacao', 'Create', '@Model.Id');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                    <span class="ps-1">Nova</span>
+                                </button>
+                            </div>
+                            <div class="col-6 text-center">
+                                <button type="button" name="btBuscaGuiaAutorizacao" id="btBuscaGuiaAutorizacao" class="btn btn-secondary btn-sm" onclick="CallAction('GuiaAutorizacao', 'Index', '@Model.Id');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                    </svg>
+                                    <span class="ps-1">Buscar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Prontuario-->
+            <div class="col-4 text-center p-2">
+                <div class="card border border-light rounded shadow bg-degradLight">
+                    <div class="card-header fw-bold">
+                        Prontuário
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-clipboard2-pulse" viewBox="0 0 16 16">
+                                    <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
+                                    <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z" />
+                                    <path d="M9.979 5.356a.5.5 0 0 0-.968.04L7.92 10.49l-.94-3.135a.5.5 0 0 0-.926-.08L4.69 10H4.5a.5.5 0 0 0 0 1H5a.5.5 0 0 0 .447-.276l.936-1.873 1.138 3.793a.5.5 0 0 0 .968-.04L9.58 7.51l.94 3.135A.5.5 0 0 0 11 11h.5a.5.5 0 0 0 0-1h-.128z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pt-3 text-center">
+                                Visualiza o prontuário
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <button type="button" name="btEditProntuario" id="btEditProntuario" class="btn btn-secondary btn-sm" onclick="CallAction('Prontuario', 'Edit', '@Model.Id');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                    </svg>
+                                    <span class="ps-1">Editar</span>
+                                </button>
+                            </div>
+                            <div class="col-6 text-center">
+                                <button type="button" name="btNovoProntuario" id="btNovoProntuario" class="btn btn-secondary btn-sm" onclick="CallAction('Prontuario', 'Create', '@Model.Id');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                    <span class="ps-1">Novo</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

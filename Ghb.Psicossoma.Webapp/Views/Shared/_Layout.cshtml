@@ -7,159 +7,220 @@
     <link href="~/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/StyleSideMenu.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-Custom bg-Custom border-bottom box-shadow mb-3">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <div class="areaLogoPrincipal rounded">
-                    <img src="~/img/logo.png" class="img-fluid" alt="Psicossoma" />
-                </div>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Consulta" asp-action="">Consultas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Encaminhamento" asp-action="">Encaminhamento</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Paciente" asp-action="Index">Pacientes</a>
-                    </li>
-                    <li class="dropdown dropend">
-                        <a class="dropdown-item dropdown-toggle" href="#" id="dropdown-Convenio" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Paciente
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown-Convenio">
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Paciente" asp-action="Index">Pacientes</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="GuiaAutorizacao" asp-action="Index">Guias de Autorização</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Prontuario" asp-action="Index">Prontuários</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropDownMenu01" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Profissionais
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropDownMenu01">
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Profissional" asp-action="Index">Listagem</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Profissional" asp-action="Agenda">Agenda</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Especialidade" asp-action="Index">Especialidades</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="RegistroProfissional" asp-action="Index">Registros de Profissional</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropDownMenu01" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Plano de Saúde
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropDownMenu01">
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="PlanoSaude" asp-action="Index">Listagem de Planos</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Convenio" asp-action="Index">Convênio</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="TipoAcomodacao" asp-action="Index">Tipos de Acomodação</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="RegistroProfissional" asp-action="Index">Registros de Profissional</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropDownMenu03" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Cadastros Base
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropDownMenu03">
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Pessoa" asp-action="Index">Pessoas</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Cid" asp-action="Index">CID</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Procedimento" asp-action="Index">Procedimentos</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="GrupoGuia" asp-action="Index">Grupo Guia</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="ModelLaudoAnamnese" asp-action="Index">Modelo - Laudo Anamnese</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropDownMenu02" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Usuários
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropDownMenu02">
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Listagem</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Funcionalidade" asp-action="Index">Funcionalidades</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="FuncionalidadesPerfil">Funcionalidades por Perfil</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">
-                            Sair
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
-                                <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
-                                <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z"/>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-                <div class="areaLogoEmpresa text-end">
-                    <div class="areaLogoEmpresa">
-                        <img src="~/img/logoHRBGradiente.png" class="img-fluid" alt="HRB Soluções" />
-                    </div>                    
-                    <div>
-                        <i>Usuário</i>
-                    </div>
+    <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex w-100">
+                <button class="toggle-btn" type="button">
+                    <img src="~/img/logoVazada.png" style="width: auto; height: 55px;" alt="Psicossoma" />
+                </button>
+                <div class="sidebar-logo text-white align-text-top">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        &nbsp;&nbsp;&nbsp;&nbsp;Sistema Psicossoma
+                    </a>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    <footer class="border-top border-secondary footer fixed-bottom">
-        <div class="text-muted bg-light ps-3 py-1">
-            &copy; 2024 - Psicossoma.App
+            <ul class="sidebar-nav">
+                <li>
+                    <a class="sidebar-link" asp-area="" asp-controller="Paciente" asp-action="Index">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                        </svg>
+                        <span class="ps-1"></span><span class="pe-1">Pacientes</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#Profissionais" aria-expanded="false" aria-controls="Profissionais">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
+                            <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
+                            <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
+                        </svg>
+                        <span class="ps-1"></span><span>Profissionais</span>
+                    </a>
+                    <ul id="Profissionais" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Profissional" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Lista
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="AgendaProfissional" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Agenda
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Especialidade" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Especialidades
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="RegistroProfissional" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Tipos de Registros
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#PlanoSaude" aria-expanded="false" aria-controls="PlanoSaude">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-clipboard2-pulse" viewBox="0 0 16 16">
+                            <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
+                            <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z" />
+                            <path d="M9.979 5.356a.5.5 0 0 0-.968.04L7.92 10.49l-.94-3.135a.5.5 0 0 0-.926-.08L4.69 10H4.5a.5.5 0 0 0 0 1H5a.5.5 0 0 0 .447-.276l.936-1.873 1.138 3.793a.5.5 0 0 0 .968-.04L9.58 7.51l.94 3.135A.5.5 0 0 0 11 11h.5a.5.5 0 0 0 0-1h-.128z" />
+                        </svg>
+                        <span class="ps-1"></span><span>Plano de Saúde</span>
+                    </a>
+                    <ul id="PlanoSaude" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="PlanoSaude" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Lista
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Convenio" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Convênio
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="TipoAcomodacao" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Tipos de Acomodação
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#CadastrosBasicos" aria-expanded="false" aria-controls="CadastrosBasicos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-columns-reverse" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 .5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10A.5.5 0 0 1 4 .5m-4 2A.5.5 0 0 1 .5 2h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 4h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 6h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 8h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
+                        </svg>
+                        <span class="ps-1"></span><span>Cadastros Básicos</span>
+                    </a>
+                    <ul id="CadastrosBasicos" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Pessoa" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Pessoas
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Cid" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                CID (Lista)
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Procedimento" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Procedimentos
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="GrupoGuia" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Grupo Guia
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="ModelLaudoAnamnese" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Modelo (Laudo Anamnese)
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#Usuarios" aria-expanded="false" aria-controls="Usuarios">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-gear" viewBox="0 0 16 16">
+                            <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0" />
+                        </svg>
+                        <span class="ps-1"></span><span>Usuários</span>
+                    </a>
+                    <ul id="Usuarios" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="User" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Lista
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Funcionalidade" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Funcionalidades
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="FuncionalidadesPerfil" asp-action="Index">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671" />
+                                </svg>
+                                Funcionalidades por Perfil
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <a class="sidebar-link w-100" asp-area="" asp-controller="Home" asp-action="Logout">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+                    <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+                </svg>
+                <span class="p-1">Sair</span>
+            </a>
+        </aside>
+        <div class="main">
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
         </div>
-    </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.mask.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/funcoesAlerta.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        const hamBurger = document.querySelector(".toggle-btn");
+        hamBurger.addEventListener("click", function () {
+            document.querySelector("#sidebar").classList.toggle("expand");
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

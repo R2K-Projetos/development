@@ -42,6 +42,21 @@ namespace Ghb.Psicossoma.Webapp.Controllers
             return View(pacientes);
         }
 
+        public IActionResult PainelPaciente(int id)
+        {
+            PacienteViewModel? itemFound = null;
+            HttpResponseMessage message = _httpClient.GetAsync($"paciente/get/{id}").Result;
+
+            if (message.IsSuccessStatusCode)
+            {
+                string content = message.Content.ReadAsStringAsync().Result;
+                ResultModel<PacienteViewModel>? model = JsonConvert.DeserializeObject<ResultModel<PacienteViewModel>>(content);
+                itemFound = model!.Items.FirstOrDefault()!;
+            }
+
+            return View(itemFound);
+        }
+
         public IActionResult Create()
         {
             PacienteViewModel model = new();

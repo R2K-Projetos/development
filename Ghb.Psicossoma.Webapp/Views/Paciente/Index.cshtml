@@ -56,17 +56,14 @@
                         <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Cpf)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Sexo)</th>
-                        <th scope="col">@Html.DisplayNameFor(model => model.Email)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.DataNascimento)</th>
-                        <th scope="col">@Html.DisplayNameFor(model => model.PerfilUsuario)</th>
-                        <th scope="col">@Html.DisplayNameFor(model => model.StatuslUsuario)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Ativo)</th>
                     </tr>
                 </thead>
                 <tbody class="linkLinha">
                     @foreach (var item in Model)
                     {
-                        <tr onclick="OpenEdit('@controllerName', 'Edit', '@item.Id');">
+                        <tr onclick="CallAction('@controllerName', 'PainelPaciente', '@item.Id');">
                             <td scope="row">
                                 @Html.DisplayFor(modelItem => item.Id)
                             </td>
@@ -80,16 +77,7 @@
                                 @Html.DisplayFor(modelItem => item.Sexo)
                             </td>
                             <td class="text-start">
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td class="text-start">
                                 @Html.DisplayFor(modelItem => item.DataNascimento)
-                            </td>
-                            <td class="text-start">
-                                @Html.DisplayFor(modelItem => item.PerfilUsuario)
-                            </td>
-                            <td class="text-start">
-                                @Html.DisplayFor(modelItem => item.StatuslUsuario)
                             </td>
                             <td class="text-center">
                                 @if (item.Ativo)
