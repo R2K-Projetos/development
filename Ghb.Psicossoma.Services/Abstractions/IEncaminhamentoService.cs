@@ -6,6 +6,7 @@ namespace Ghb.Psicossoma.Services.Abstractions
 {
     public interface IEncaminhamentoService : IBaseService<EncaminhamentoDto>
     {
+        new ResultDto<EncaminhamentoResponseDto> GetAll();
         ResultDto<EncaminhamentoDto> GetByIdPaciente(int id);
     }
 }

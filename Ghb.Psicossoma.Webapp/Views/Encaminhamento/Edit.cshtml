@@ -1,0 +1,108 @@
+﻿@model EncaminhamentoViewModel
+
+@{
+    var controllerName = "Encaminhamento";
+    ViewData["Title"] = "Alterar: Encaminhamento";
+
+    var statusAtivo = @Model.Ativo ? "checked" : "";
+}
+<div class="row justify-content-center py-3">
+    <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10 col-sm-12 col-xs-12">
+        <form id="formEntidade" asp-controller="Encaminhamento" asp-action="Edit" method="post">
+            @Html.HiddenFor(model => model.Id)
+            <div class="card">
+                <div class="card-body shadow">
+                    <div class="row">
+                        <partial name="~/Views/Shared/_headerForm.cshtml" />
+                        <div class="col-12">
+                            <label for="NomePaciente" class="form-label">Paciente</label>
+                            <br />
+                            @Model.NomePaciente
+                        </div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.EspecialidadeId, new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.EspecialidadeId, Model.OpcoesEspecialidade, new { name = "cmbEspecialidade", id = "cmbEspecialidade", @class = "form-select form-select-sm" })
+                            @Html.ValidationMessageFor(model => model.EspecialidadeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.PlanoSaudeId, new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.EspecialidadeId, Model.OpcoesPlanoSaude, new { name = "cmbPlanoSaude", id = "cmbPlanoSaude", @class = "form-select form-select-sm" })
+                            @Html.ValidationMessageFor(model => model.PlanoSaudeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-12">
+                            @Html.LabelFor(model => model.CidId, new { @class = "form-label" })
+                            @Html.DropDownListFor(model => model.EspecialidadeId, Model.OpcoesCID, new { name = "cmbCID", id = "cmbCID", @class = "form-select form-select-sm" })
+                            @Html.ValidationMessageFor(model => model.CidId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-6 py-3 px-4">
+                            <div class="row">
+                                <div class="col-12 border border-secondary rounded-3 pb-2">
+                                    <div class="row">
+                                        <div class="col-12 py-2 bg-secondary bg-opacity-50 rounded-top text-center">
+                                            Sessões
+                                        </div>
+                                    </div>
+                                    <div class="row border-top border-dark pt-1">
+                                        <div class="col-4 text-center">
+                                            <label for="TotalSessoes" class="form-label">Total</label>
+                                            @Html.TextBoxFor(model => model.TotalSessoes, new { @class = "form-control form-control-sm text-center" })
+                                            @Html.ValidationMessageFor(model => model.TotalSessoes, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <label for="MaximoSessoes" class="form-label">Máximo</label>
+                                            @Html.TextBoxFor(model => model.MaximoSessoes, new { @class = "form-control form-control-sm text-center" })
+                                            @Html.ValidationMessageFor(model => model.MaximoSessoes, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <label for="SessoesRealizadas" class="form-label">Realizadas</label>
+                                            @Html.TextBoxFor(model => model.SessoesRealizadas, new { @class = "form-control form-control-sm text-center" })
+                                            @Html.ValidationMessageFor(model => model.SessoesRealizadas, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 pb-2">
+                            <div class="accordion" id="accordionObservacao">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingObservacao">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseObservacao" aria-expanded="false" aria-controls="collapseObservacao">
+                                            Observação
+                                        </button>
+                                    </h2>
+                                    <div id="collapseObservacao" class="accordion-collapse collapse" aria-labelledby="headingObservacao" data-bs-parent="#accordionObservacao">
+                                        <div class="accordion-body">
+                                            <textarea name="Observacao" id="Observacao" class="form-control form-control-sm" rows="1" cols="1" style="width: 100%; height: 160px;">@Model.Observacao</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cod-12 border-top border-dark-subtle">
+                            <div class="row">
+                                <div class="col-2 text-start pt-2">
+                                    <button type="button" name="btVoltar" id="btVoltar" class="btn btn-outline-secondary btn-sm" onclick="CallAction('@controllerName', 'Index');">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-columns-reverse" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 .5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10A.5.5 0 0 1 4 .5m-4 2A.5.5 0 0 1 .5 2h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 4h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 6h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2A.5.5 0 0 1 .5 8h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m-4 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m4 0a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="col-8 text-center pt-2">
+                                    <button type="submit" class="btn btn-primary btn-sm">Atualizar</button>
+                                </div>
+                                <div class="col-2 text-end pt-2">
+                                    <button asp-action="Inativa" class="btn btn-outline-secondary btn-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

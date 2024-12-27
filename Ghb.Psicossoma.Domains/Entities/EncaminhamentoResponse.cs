@@ -1,8 +1,8 @@
-﻿using Ghb.Psicossoma.SharedAbstractions.Services.Dtos.Base;
+﻿using Ghb.Psicossoma.SharedAbstractions.Domains.Entities;
 
-namespace Ghb.Psicossoma.Services.Dtos
+namespace Ghb.Psicossoma.Domains.Entities
 {
-    public class EncaminhamentoDto : BaseDto
+    public class EncaminhamentoResponse : BaseEntity
     {
         public int PacienteId { get; set; }
         public int EspecialidadeId { get; set; }
@@ -16,5 +16,12 @@ namespace Ghb.Psicossoma.Services.Dtos
         public string Observacao { get; set; } = string.Empty;
         public bool Ativo { get; set; }
         public DateTime DataCadastro { get; set; }
+
+        public string NomePaciente { get; set; } = string.Empty;
+        public string Especialidade { get; set; } = string.Empty;
+        public string PlanoSaude { get; set; } = string.Empty;
+        public string Convenio { get; set; } = string.Empty;
+        public string CidCodigo { get; set; } = string.Empty;
+        public string CidDescricao { get; set; } = string.Empty;
     }
 }

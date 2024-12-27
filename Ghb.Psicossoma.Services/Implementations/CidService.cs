@@ -67,6 +67,53 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
+        public ResultDto<CidDto> GetAllAtivos()
+        {
+            Stopwatch elapsedTime = new();
+            elapsedTime.Start();
+
+            ResultDto<CidDto> returnValue = new();
+            string? selectQuery = null;
+
+            try
+            {
+                selectQuery = $@"SELECT Id
+                                        ,Codigo
+                                        ,concat(Codigo, ' - ' ,Nome) as Nome
+                                        ,Ativo
+                                   FROM cid
+                                  WHERE Ativo = 1;";
+
+                DataTable result = _cidRepository.GetAll(selectQuery);
+                List<Cid> list = result.CreateListFromTable<Cid>();
+
+                if (list?.Count > 0)
+                {
+                    returnValue.CurrentPage = 1;
+                    returnValue.PageSize = -1;
+                    returnValue.TotalItems = list.Count;
+                    returnValue.Items = _mapper.Map<IEnumerable<Cid>, IEnumerable<CidDto>>(list ?? Enumerable.Empty<Cid>());
+                    returnValue.WasExecuted = true;
+                    returnValue.ResponseCode = 200;
+                }
+                else
+                {
+                    returnValue.BindError(404, "Não foram encontrados dados para exibição");
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.BindError(500, ex.GetErrorMessage());
+                LogContext.PushProperty("Query", selectQuery);
+                _logger.LogError(ex, "Erro na recuperação dos dados");
+            }
+
+            elapsedTime.Stop();
+            returnValue.ElapsedTime = elapsedTime.Elapsed;
+
+            return returnValue;
+        }
+
         public override ResultDto<CidDto> Get(string id)
         {
             Stopwatch elapsedTime = new();

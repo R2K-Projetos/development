@@ -46,6 +46,7 @@ namespace Ghb.Psicossoma.Services.Implementations
                                         ,SolicitacaoMedica
                                         ,Observacao
                                         ,Ativo
+                                        ,DataCadastro
                                    FROM encaminhamento
                                   WHERE id = {id};";
 
@@ -79,38 +80,52 @@ namespace Ghb.Psicossoma.Services.Implementations
             return returnValue;
         }
 
-        public override ResultDto<EncaminhamentoDto> GetAll()
+        public ResultDto<EncaminhamentoResponseDto> GetAll()
         {
             Stopwatch elapsedTime = new();
             elapsedTime.Start();
 
-            ResultDto<EncaminhamentoDto> returnValue = new();
+            ResultDto<EncaminhamentoResponseDto> returnValue = new();
             string? selectQuery = null;
 
             try
             {
-                selectQuery = $@"SELECT Id
-                                        ,PacienteId
-                                        ,EspecialidadeId
-                                        ,PlanoSaudeId
-                                        ,CidId
-                                        ,TotalSessoes
-                                        ,MaximoSessoes
-                                        ,SessoesRealizadas
-                                        ,SolicitacaoMedica
-                                        ,Observacao
-                                        ,Ativo
-                                   FROM encaminhamento;";
+                selectQuery = $@"SELECT e.Id
+                                        ,e.PacienteId
+                                        ,e.EspecialidadeId
+                                        ,e.PlanoSaudeId
+                                        ,e.CidId
+                                        ,e.TotalSessoes
+                                        ,e.MaximoSessoes
+                                        ,e.SessoesRealizadas
+                                        ,e.SolicitacaoMedica
+                                        ,e.Observacao
+                                        ,e.Ativo
+                                        ,e.DataCadastro
+                                        ,p.Nome as NomePaciente
+                                        ,es.Nome as Especialidade
+                                        ,pl.Nome as PlanoSaude
+                                        ,cn.Nome as Convenio
+                                        ,c.Codigo as CidCodigo
+                                        ,c.Nome as CidDescricao
+                                   FROM encaminhamento e
+                                  INNER JOIN paciente pc ON pc.Id = e.PacienteId
+                                  INNER JOIN pessoa p ON p.Id = pc.PessoaId
+                                  INNER JOIN especialidade es ON es.Id = e.EspecialidadeId
+                                  INNER JOIN planosaude pl ON pl.Id = e.PlanoSaudeId
+                                  INNER JOIN convenio cn ON cn.Id = pl.ConvenioId
+                                  INNER JOIN cid c ON c.Id = e.CidId
+                                  ORDER BY p.Nome, e.DataCadastro DESC;";
 
                 DataTable result = _encaminhamentoRepository.GetAll(selectQuery);
-                List<Encaminhamento> encaminhamentos = result.CreateListFromTable<Encaminhamento>();
+                List<EncaminhamentoResponse> encaminhamentos = result.CreateListFromTable<EncaminhamentoResponse>();
 
                 if (encaminhamentos?.Count > 0)
                 {
                     returnValue.CurrentPage = 1;
                     returnValue.PageSize = -1;
                     returnValue.TotalItems = encaminhamentos.Count;
-                    returnValue.Items = _mapper.Map<IEnumerable<Encaminhamento>, IEnumerable<EncaminhamentoDto>>(encaminhamentos ?? Enumerable.Empty<Encaminhamento>());
+                    returnValue.Items = _mapper.Map<IEnumerable<EncaminhamentoResponse>, IEnumerable<EncaminhamentoResponseDto>>(encaminhamentos ?? Enumerable.Empty<EncaminhamentoResponse>());
                     returnValue.WasExecuted = true;
                     returnValue.ResponseCode = 200;
                 }
@@ -182,29 +197,31 @@ namespace Ghb.Psicossoma.Services.Implementations
             {
                 var encaminhamento = _mapper.Map<EncaminhamentoDto, Encaminhamento>(dto);
                 insertQuery = $@"INSERT INTO encaminhamento 
-                                 (Id,  
-                                 PacienteId,  
-                                 EspecialidadeId,  
-                                 PlanoSaudeId,  
-                                 CidId,  
-                                 TotalSessoes,  
-                                 MaximoSessoes,  
-                                 SessoesRealizadas,  
-                                 SolicitacaoMedica,  
-                                 Observacao,  
-                                 Ativo)
+                                 (Id
+                                 ,PacienteId
+                                 ,EspecialidadeId
+                                 ,PlanoSaudeId
+                                 ,CidId
+                                 ,TotalSessoes
+                                 ,MaximoSessoes
+                                 ,SessoesRealizadas
+                                 ,SolicitacaoMedica
+                                 ,Observacao
+                                 ,Ativo
+                                 ,DataCadastro)
                                  VALUES
-                                 (null,  
-                                 {encaminhamento.PacienteId},  
-                                 {encaminhamento.EspecialidadeId},  
-                                 {encaminhamento.PlanoSaudeId},  
-                                 {encaminhamento.CidId},  
-                                 {encaminhamento.TotalSessoes},  
-                                 {encaminhamento.MaximoSessoes},  
-                                 {encaminhamento.SessoesRealizadas},  
-                                 {encaminhamento.SolicitacaoMedica},  
-                                 '{encaminhamento.Observacao}',  
-                                 {encaminhamento.Ativo});";
+                                 (null
+                                 ,{encaminhamento.PacienteId}
+                                 ,{encaminhamento.EspecialidadeId}
+                                 ,{encaminhamento.PlanoSaudeId}
+                                 ,{encaminhamento.CidId}
+                                 ,{encaminhamento.TotalSessoes}
+                                 ,{encaminhamento.MaximoSessoes}
+                                 ,0
+                                 ,{encaminhamento.SolicitacaoMedica}
+                                 ,'{encaminhamento.Observacao}'
+                                 ,{encaminhamento.Ativo}'
+                                 ,now());";
 
                 long newId = _encaminhamentoRepository.Insert(insertQuery);
                 if (newId > 0)
@@ -246,7 +263,6 @@ namespace Ghb.Psicossoma.Services.Implementations
                                  ,CidId = {entidade.CidId}
                                  ,TotalSessoes = {entidade.TotalSessoes}
                                  ,MaximoSessoes = {entidade.MaximoSessoes}
-                                 ,SessoesRealizadas = {entidade.SessoesRealizadas}
                                  ,SolicitacaoMedica = {entidade.SolicitacaoMedica}
                                  ,Observacao = '{entidade.Observacao}'
                                  ,Ativo = {entidade.Ativo}

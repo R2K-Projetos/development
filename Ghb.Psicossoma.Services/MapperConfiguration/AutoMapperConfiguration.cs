@@ -46,7 +46,8 @@ public class AutoMapperConfiguration : Profile
         CreateMap<User, UserDto>().ReverseMap();
 
         //Retornos específicos     
-        CreateMap<PacienteResponse, PacienteResponseDto>().ReverseMap();        
+        CreateMap<EncaminhamentoResponse, EncaminhamentoResponseDto>().ReverseMap();
+        CreateMap<PacienteResponse, PacienteResponseDto>().ReverseMap();
         CreateMap<ProfissionalResponse, ProfissionalResponseDto>().ReverseMap();
         CreateMap<TelefoneResponse, TelefoneResponseDto>().ReverseMap();
         CreateMap<UserResponse, UserResponseDto>().ReverseMap();

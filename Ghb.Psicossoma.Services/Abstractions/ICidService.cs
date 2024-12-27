@@ -7,5 +7,7 @@ namespace Ghb.Psicossoma.Services.Abstractions
     public interface ICidService : IBaseService<CidDto>
     {
         ResultDto<CidDto> GetByCode(string code);
+
+        ResultDto<CidDto> GetAllAtivos();
     }
 }

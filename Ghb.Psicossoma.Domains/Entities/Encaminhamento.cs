@@ -15,5 +15,6 @@ namespace Ghb.Psicossoma.Domains.Entities
         public bool SolicitacaoMedica { get; set; }
         public string Observacao { get; set; } = string.Empty;
         public bool Ativo { get; set; }
+        public DateTime DataCadastro { get; set; }
     }
 }

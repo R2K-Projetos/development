@@ -64,11 +64,11 @@ namespace Ghb.Psicossoma.Api.Controllers
         Description = "Lista todos os encaminhamentos cadastrados",
         OperationId = "Encaminhamento.GetAll",
         Tags = new[] { "Encaminhamento" })]
-        [ProducesResponseType(typeof(ResultDto<EncaminhamentoDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultDto<EncaminhamentoDto>), StatusCodes.Status500InternalServerError)]
-        public ActionResult<EncaminhamentoDto> GetAll()
+        [ProducesResponseType(typeof(ResultDto<EncaminhamentoResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<EncaminhamentoResponseDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<EncaminhamentoResponseDto> GetAll()
         {
-            ResultDto<EncaminhamentoDto> result = new();
+            ResultDto<EncaminhamentoResponseDto> result = new();
 
             try
             {

@@ -85,6 +85,37 @@ namespace Ghb.Psicossoma.Api.Controllers
         }
 
         /// <summary>
+        /// Lista todos os cids cadastrados
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAllAtivos")]
+        [SwaggerOperation(
+        Summary = "Lista todos os cids cadastrados ativos",
+        Description = "Lista todos os cids cadastrados ativos",
+        OperationId = "Cid.GetAllAtivos",
+        Tags = new[] { "Cid" })]
+        [ProducesResponseType(typeof(ResultDto<CidDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultDto<CidDto>), StatusCodes.Status500InternalServerError)]
+        public ActionResult<CidDto> GetAllAtivos()
+        {
+            ResultDto<CidDto> result = new();
+
+            try
+            {
+                result = _cidService.GetAllAtivos();
+
+                if (!result.HasError)
+                    result.Message = "Cids listados com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                result.BindError(500, "Erro na listagem de cids", ex);
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Busca os dados de um determinado cid, pelo código
         /// </summary>
         /// <returns></returns>
